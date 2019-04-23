@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseAuditor.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Data.Entity;
 
 namespace CourseAuditor
 {
@@ -20,9 +23,12 @@ namespace CourseAuditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        ApplicationContext db = new ApplicationContext();
         public MainWindow()
         {
             InitializeComponent();
+            db.Users.Load();
+            phonesGrid.ItemsSource = db.Users.Local.ToBindingList();
         }
     }
 }

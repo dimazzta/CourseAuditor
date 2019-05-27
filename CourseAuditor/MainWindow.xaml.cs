@@ -23,11 +23,12 @@ namespace CourseAuditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        ApplicationContext db = new ApplicationContext();
         public MainWindow()
         {
             InitializeComponent();
-
-
+            //db.Users.Load();
+            //phonesGrid.ItemsSource = db.Users.Local.ToBindingList();
         }
     }
 }

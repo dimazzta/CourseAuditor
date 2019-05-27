@@ -12,6 +12,6 @@ namespace CourseAuditor.Models
 
         public DateTime Date { get; set; }
         [Column("Attendance_assessment")]
-        public string? AttendanceAssessment { get; set; }
+        public string AttendanceAssessment { get; set; }
     }
 }

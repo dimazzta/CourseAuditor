@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace CourseAuditor.Models
 {
-    class Parent
+    public class Parent
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -10,6 +11,6 @@ namespace CourseAuditor.Models
         public string Patronymic { get; set; }
         public string Phone { get; set; }
 
-        public virtual ICollection<PersonPerent> Children { get; set; }
+        public virtual ICollection<PersonParent> Children { get; set; }
     }
 }

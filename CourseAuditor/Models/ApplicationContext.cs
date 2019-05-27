@@ -10,11 +10,12 @@ namespace CourseAuditor.Models
 {
     class ApplicationContext : DbContext
     {
+       
         public ApplicationContext() : base("default")
         {
-
+            
         }
-
+        
         public DbSet<Student> Students { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Course> Courses { get; set; }
@@ -26,6 +27,7 @@ namespace CourseAuditor.Models
         public DbSet<PersonParent> PersonParents { get; set; }
         public DbSet<MedicalDoc> MedicalDocs { get; set; }
         public DbSet<Group> Groups { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

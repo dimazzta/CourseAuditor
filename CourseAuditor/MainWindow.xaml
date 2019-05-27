@@ -11,13 +11,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DataGrid AutoGenerateColumns="False" x:Name="phonesGrid">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="40"/>
-                <DataGridTextColumn Binding="{Binding Name}" Header="Имя" Width="110"/>
-                <DataGridTextColumn Binding="{Binding Module}" Header="Модуль" Width="70"/>
-            </DataGrid.Columns>
-        </DataGrid>
 
     </Grid>
 </Window>

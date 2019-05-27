@@ -27,8 +27,8 @@ namespace CourseAuditor
         public MainWindow()
         {
             InitializeComponent();
-            db.Users.Load();
-            phonesGrid.ItemsSource = db.Users.Local.ToBindingList();
+            //db.Users.Load();
+            //phonesGrid.ItemsSource = db.Users.Local.ToBindingList();
         }
     }
 }

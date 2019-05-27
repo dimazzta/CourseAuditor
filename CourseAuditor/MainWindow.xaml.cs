@@ -27,7 +27,10 @@ namespace CourseAuditor
         public MainWindow()
         {
             InitializeComponent();
-   
+            using(var context = new ApplicationContext())
+            {
+                var students = context.PersonParents.ToList();
+            }
         }
     }
 }

@@ -86,6 +86,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonParent.cs" />
+    <Compile Include="Models\Return.cs" />
     <Compile Include="Models\ApplicationContext.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\MedicalDoc.cs" />

@@ -86,8 +86,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ApplicationContext.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Journal.cs" />
+    <Compile Include="Models\Module.cs" />
+    <Compile Include="Models\Parent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

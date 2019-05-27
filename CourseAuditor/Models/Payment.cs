@@ -15,6 +15,6 @@ namespace CourseAuditor.Models
         public virtual Student Student { get; set; }
         public double Sum { get; set; }
         public DateTime Date { get; set; }
-        public double Discount { get; set; }
+        public double? Discount { get; set; }
     }
 }

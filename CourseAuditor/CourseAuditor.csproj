@@ -86,6 +86,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ApplicationContext.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\MedicalDoc.cs" />
+    <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,9 +119,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

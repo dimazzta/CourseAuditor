@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CourseAuditor.Models
 {
     [Table("Person_Parent")]
-    public class PersonParent
+    public class PersonParent : INotifyPropertyChanged
     {
         private int id;
         private int personId;

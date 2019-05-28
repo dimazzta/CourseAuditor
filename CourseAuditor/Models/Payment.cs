@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Payment
+    public class Payment : INotifyPropertyChanged
     {
         private int id;
         private int studentId;

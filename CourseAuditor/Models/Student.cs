@@ -1,81 +1,114 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Student : INotifyPropertyChanged
+    public class Student : ObservableObject
     {
-        private int id;
-        private int personId;
-        private DateTime dateStart;
-        private DateTime? dateEnd;
-        private int groupId;
+        private Person _Person;
+        private DateTime _DateStart;
+        private DateTime? _DateEnd;
+        private Group _Group;
+        private ICollection<Journal> _Journals;
+        private ICollection<Return> _Returns;
+        private ICollection<Payment> _Payments;
+        
 
-        public int Id
+        public virtual Person Person
         {
-            get { return id; }
+            get
+            {
+                return _Person;
+            }
             set
             {
-                id = value;
-                OnPropertyChanged("Id");
+                _Person = value;
+                OnPropertyChanged("Person");
             }
         }
 
-     
-        [Column("Person_ID")]
-        public int PersonId
-        {
-            get { return personId; }
-            set
-            {
-                personId = value;
-                OnPropertyChanged("PersonId");
-            }
-        }
-        public virtual Person Person { get; set; }
-
-        [Column("Date_Start")]
         public DateTime DateStart
         {
-            get { return dateStart; }
+            get
+            {
+                return _DateStart;
+            }
             set
             {
-                dateStart = value;
+                _DateStart = value;
                 OnPropertyChanged("DateStart");
             }
         }
 
-        [Column("Date_End")]
         public DateTime? DateEnd
         {
-            get { return dateEnd; }
+            get
+            {
+                return _DateEnd;
+            }
             set
-            { 
-                dateEnd = value;
+            {
+                _DateEnd = value;
                 OnPropertyChanged("DateEnd");
             }
         }
 
-        [Column("Group_ID")]
-        public int GroupId
+        public virtual Group Group
         {
-            get { return groupId; }
+            get
+            {
+                return _Group;
+            }
             set
             {
-                groupId = value;
-                OnPropertyChanged("GroupId");
+                _Group = value;
+                OnPropertyChanged("Group");
             }
         }
 
-        public virtual Group Group { get; set; }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public virtual ICollection<Journal> Journals
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            get
+            {
+                return _Journals;
+            }
+            set
+            {
+                _Journals = value;
+                OnPropertyChanged("Journals");
+            }
         }
+
+        public virtual ICollection<Return> Returns
+        {
+            get
+            {
+                return _Returns;
+            }
+            set
+            {
+                _Returns = value;
+                OnPropertyChanged("Returns");
+            }
+        }
+
+        public virtual ICollection<Payment> Payments
+        {
+            get
+            {
+                return _Payments;
+            }
+            set
+            {
+                _Payments = value;
+                OnPropertyChanged("Payments");
+            }
+        }
+
+        
     }
 }

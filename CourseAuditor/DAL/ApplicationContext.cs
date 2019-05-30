@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseAuditor.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -6,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseAuditor.Models
+namespace CourseAuditor.DAL
 {
     class ApplicationContext : DbContext
     {
        
         public ApplicationContext() : base("default")
         {
-            
+     
         }
         
         public DbSet<Student> Students { get; set; }
@@ -32,6 +33,7 @@ namespace CourseAuditor.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
         }
     }
 }

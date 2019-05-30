@@ -1,68 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Person : INotifyPropertyChanged
+    public class Person : ObservableObject
     {
-        private int id;
-        private string firstName;
-        private string secondName;
-        private string patronymic;
+        private string _FirstName;
+        private string _SecondName;
+        private string _Patronymic;
+        private string _Phone;
+        private ICollection<PersonParent> _Parents;
+        private ICollection<MedicalDoc> _MedicalDocs;
 
-        public int Id
+
+        public virtual ICollection<MedicalDoc> MedicalDocs
         {
-            get { return id; }
+            get
+            {
+                return _MedicalDocs;
+            }
             set
             {
-                id = value;
-                OnPropertyChanged("Id");
+                _MedicalDocs = value;
+                OnPropertyChanged("MedicalDocs");
             }
         }
-        [Column("First_Name")]
+
         public string FirstName
         {
-            get { return firstName; }
+            get
+            {
+                return _FirstName;
+            }
             set
             {
-                firstName = value;
+                _FirstName = value;
                 OnPropertyChanged("FirstName");
             }
         }
-        [Column("Second_Name")]
         public string SecondName
         {
-            get { return secondName; }
+            get
+            {
+                return _SecondName;
+            }
             set
             {
-                secondName = value;
+                _SecondName = value;
                 OnPropertyChanged("SecondName");
             }
         }
         public string Patronymic
         {
-            get { return patronymic; }
+            get
+            {
+                return _Patronymic;
+            }
             set
             {
-                patronymic = value;
+                _Patronymic = value;
                 OnPropertyChanged("Patronymic");
             }
         }
 
-        public virtual ICollection<PersonParent> Parents { get; set; }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public string Phone
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            get
+            {
+                return _Phone;
+            }
+            set
+            {
+                _Phone = value;
+                OnPropertyChanged("Phone");
+            }
+        }
+
+        public virtual ICollection<PersonParent> Parents
+        {
+            get
+            {
+                return _Parents;
+            }
+            set
+            {
+                _Parents = value;
+                OnPropertyChanged("Parents");
+            }
         }
     }
 }

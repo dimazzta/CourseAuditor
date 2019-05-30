@@ -1,76 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Payment : INotifyPropertyChanged
+    public class Payment : ObservableObject
     {
-        private int id;
-        private int studentId;
-        private double sum;
-        private DateTime date;
-        private double? discount;
+        private Student _Student;
+        private double _Sum;
+        private DateTime _Date;
+        private double? _Discount;
 
-        public int Id
+        public virtual Student Student
         {
-            get { return id; }
+            get
+            {
+                return _Student;
+            }
             set
             {
-                id = value;
-                OnPropertyChanged("Id");
+                _Student = value;
+                OnPropertyChanged("Student");
             }
         }
-        [Column("Student_ID")]
-        public int StudentId
-        {
-            get { return studentId; }
-            set
-            {
-                studentId = value;
-                OnPropertyChanged("StudentId");
-            }
-        }
-        public virtual Student Student { get; set; }
         public double Sum
         {
-            get { return sum; }
+            get
+            {
+                return _Sum;
+            }
             set
             {
-                sum = value;
+                _Sum = value;
                 OnPropertyChanged("Sum");
             }
         }
         public DateTime Date
         {
-            get { return date; }
+            get
+            {
+                return _Date;
+            }
             set
             {
-                date = value;
+                _Date = value;
                 OnPropertyChanged("Date");
             }
         }
-        public double? Discount
+        public double Discount
         {
-            get { return discount; }
+            get
+            {
+                return _Discount ?? 0;
+            }
             set
             {
-                discount = value;
+                _Discount = value;
                 OnPropertyChanged("Discount");
             }
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

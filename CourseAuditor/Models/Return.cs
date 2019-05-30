@@ -1,69 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Return : INotifyPropertyChanged
+    public class Return : ObservableObject
     {
-        private int id;
-        private int studentId;
-        private DateTime date;
-        private double sum;
+        private Student _Student;
+        private DateTime _Date;
+        private double _Sum;
 
-        public int Id
+        public virtual Student Student
         {
-            get { return id; }
+            get
+            {
+                return _Student;
+            }
             set
             {
-                id = value;
-                OnPropertyChanged("Id");
+                _Student = value;
+                OnPropertyChanged("Student");
             }
         }
-
-        [Column("Student_ID")]
-        public int StudentId
-        {
-            get { return studentId; }
-            set
-            {
-                studentId = value;
-                OnPropertyChanged("StudentId");
-            }
-        }
-        public virtual Student Student { get; set; }
-
         public DateTime Date
         {
-            get { return date; }
+            get
+            {
+                return _Date;
+            }
             set
             {
-                date = value;
+                _Date = value;
                 OnPropertyChanged("Date");
             }
         }
         public double Sum
         {
-            get { return sum; }
+            get
+            {
+                return _Sum;
+            }
             set
             {
-                sum = value;
+                _Sum = value;
                 OnPropertyChanged("Sum");
             }
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

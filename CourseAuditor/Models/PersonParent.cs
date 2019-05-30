@@ -1,59 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    [Table("Person_Parent")]
-    public class PersonParent : INotifyPropertyChanged
+    public class PersonParent : ObservableObject
     {
-        private int id;
-        private int personId;
-        private int parentId;
+        private Person _Person;
+        private Parent _Parent;
 
-        public int Id
+        public virtual Person Person
         {
-            get { return id; }
+            get
+            {
+                return _Person;
+            }
             set
             {
-                id = value;
-                OnPropertyChanged("Id");
+                _Person = value;
+                OnPropertyChanged("Person");
             }
         }
-        [Column("Person_ID")]
-        public int PersonId
+
+        public virtual Parent Parent
         {
-            get { return personId; }
+            get
+            {
+                return _Parent;
+            }
             set
             {
-                personId = value;
-                OnPropertyChanged("PersonId");
+                _Parent = value;
+                OnPropertyChanged("Parent");
             }
-        }
-        public virtual Person Person { get; set; }
-        [Column("Parent_ID")]
-        public int ParentId
-        {
-            get { return parentId; }
-            set
-            {
-                parentId = value;
-                OnPropertyChanged("ParentId");
-            }
-        }
-        public virtual Parent Parent { get; set; }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

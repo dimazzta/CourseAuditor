@@ -7,13 +7,47 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Return
+    public class Return : ObservableObject
     {
-        public int Id { get; set; }
-        [Column("Student_ID")]
-        public int StudentId { get; set; }
-        public virtual Student Student { get; set; }
-        public DateTime Date { get; set; }
-        public double Sum { get; set; }
+        private Student _Student;
+        private DateTime _Date;
+        private double _Sum;
+
+        public virtual Student Student
+        {
+            get
+            {
+                return _Student;
+            }
+            set
+            {
+                _Student = value;
+                OnPropertyChanged("Student");
+            }
+        }
+        public DateTime Date
+        {
+            get
+            {
+                return _Date;
+            }
+            set
+            {
+                _Date = value;
+                OnPropertyChanged("Date");
+            }
+        }
+        public double Sum
+        {
+            get
+            {
+                return _Sum;
+            }
+            set
+            {
+                _Sum = value;
+                OnPropertyChanged("Sum");
+            }
+        }
     }
 }

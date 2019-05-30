@@ -7,15 +7,35 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    [Table("Person_Parent")]
-    public class PersonParent
+    public class PersonParent : ObservableObject
     {
-        public int Id { get; set; }
-        [Column("Person_ID")]
-        public int PersonId { get; set; }
-        public virtual Person Person { get; set; }
-        [Column("Parent_ID")]
-        public int ParentId { get; set; }
-        public virtual Parent Parent { get; set; }
+        private Person _Person;
+        private Parent _Parent;
+
+        public virtual Person Person
+        {
+            get
+            {
+                return _Person;
+            }
+            set
+            {
+                _Person = value;
+                OnPropertyChanged("Person");
+            }
+        }
+
+        public virtual Parent Parent
+        {
+            get
+            {
+                return _Parent;
+            }
+            set
+            {
+                _Parent = value;
+                OnPropertyChanged("Parent");
+            }
+        }
     }
 }

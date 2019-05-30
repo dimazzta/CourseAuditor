@@ -7,14 +7,60 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Payment
+    public class Payment : ObservableObject
     {
-        public int Id { get; set; }
-        [Column("Student_ID")]
-        public int StudentId { get; set; }
-        public virtual Student Student { get; set; }
-        public double Sum { get; set; }
-        public DateTime Date { get; set; }
-        public double? Discount { get; set; }
+        private Student _Student;
+        private double _Sum;
+        private DateTime _Date;
+        private double? _Discount;
+
+        public virtual Student Student
+        {
+            get
+            {
+                return _Student;
+            }
+            set
+            {
+                _Student = value;
+                OnPropertyChanged("Student");
+            }
+        }
+        public double Sum
+        {
+            get
+            {
+                return _Sum;
+            }
+            set
+            {
+                _Sum = value;
+                OnPropertyChanged("Sum");
+            }
+        }
+        public DateTime Date
+        {
+            get
+            {
+                return _Date;
+            }
+            set
+            {
+                _Date = value;
+                OnPropertyChanged("Date");
+            }
+        }
+        public double Discount
+        {
+            get
+            {
+                return _Discount ?? 0;
+            }
+            set
+            {
+                _Discount = value;
+                OnPropertyChanged("Discount");
+            }
+        }
     }
 }

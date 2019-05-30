@@ -1,4 +1,4 @@
-﻿using CourseAuditor.Models;
+﻿using CourseAuditor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +11,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.ComponentModel;
-using System.Data.Entity;
-using CourseAuditor.DAL;
 
-namespace CourseAuditor
+namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для Main.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Main : Window
     {
-
-        public MainWindow()
+        public Main()
         {
-            ApplicationContext ct = new ApplicationContext();
-            InitializeComponent(); 
+            InitializeComponent();
+            DataContext = new MainVM();
         }
     }
 }

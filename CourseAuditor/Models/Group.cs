@@ -7,12 +7,53 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Group
+    public class Group : ObservableObject
     {
-        public int Id { get; set; }
-        [Column("Course_ID")]
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
-        public int Number { get; set; }
+
+        private Course _Course;
+        private string _Title;
+        private ICollection<Student> _Students;
+
+        public virtual ICollection<Student> Students
+        {
+            get
+            {
+                return _Students;
+            }
+            set
+            {
+                _Students = value;
+                OnPropertyChanged("Students");
+            }
+        }
+
+        public virtual Course Course
+        {
+            get
+            {
+                return _Course;
+            }
+            set
+            {
+                _Course = value;
+                OnPropertyChanged("Course");
+            }
+        }
+
+       
+        public string Title
+        {
+            get
+            {
+                return "Группа " + _Title;
+            }
+            set
+            {
+                _Title = value;
+                OnPropertyChanged("Title");
+            }
+        }
+
+        
     }
 }

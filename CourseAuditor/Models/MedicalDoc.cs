@@ -7,18 +7,64 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    [Table("Medical_Doc")]
-    public class MedicalDoc
+
+    public class MedicalDoc : ObservableObject
     {
-        public int Id { get; set; }
-        [Column("Person_ID")]
-        public int PersonId { get; set; }
-        public virtual Person Person { get; set; }
-        [Column("Date_Start")]
-        public DateTime DateStart { get; set; }
-        [Column("Date_End")]
-        public DateTime DateEnd { get; set; }
-        public string Comment { get; set; }
+        private Person _Person;
+        private DateTime _DateStart;
+        private DateTime _DateEnd;
+        private string _Comment;
+
+        public virtual Person Person
+        {
+            get
+            {
+                return _Person;
+            }
+            set
+            {
+                _Person = value;
+                OnPropertyChanged("Person");
+            }
+        }
+
+        public DateTime DateStart
+        {
+            get
+            {
+                return _DateStart;
+            }
+            set
+            {
+                _DateStart = value;
+                OnPropertyChanged("DateStart");
+            }
+        }
+        public DateTime DateEnd
+        {
+            get
+            {
+                return _DateEnd;
+            }
+            set
+            {
+                _DateEnd = value;
+                OnPropertyChanged("DateEnd");
+            }
+        }
+
+        public string Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                _Comment = value;
+                OnPropertyChanged("Comment");
+            }
+        }
 
     }
 }

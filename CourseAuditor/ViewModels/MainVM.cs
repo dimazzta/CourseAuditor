@@ -14,10 +14,13 @@ namespace CourseAuditor.ViewModels
         private ApplicationContext _context;
         public ObservableCollection<Course> Courses { get; set; }
 
+        public ObservableCollection<Student> Students { get; set; }
+
         public MainVM()
         {
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
+            Students = new ObservableCollection<Student>(_context.Students);
         }
     }
 }

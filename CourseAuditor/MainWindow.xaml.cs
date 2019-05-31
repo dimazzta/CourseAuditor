@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Data.Entity;
 using CourseAuditor.DAL;
+using CourseAuditor.ViewModels;
 
 namespace CourseAuditor
 {
@@ -28,7 +29,9 @@ namespace CourseAuditor
         public MainWindow()
         {
             ApplicationContext ct = new ApplicationContext();
-            InitializeComponent(); 
+            InitializeComponent();
+            DataContext = new MainVM();
+            
         }
     }
 }

@@ -6,11 +6,16 @@
         xmlns:local="clr-namespace:CourseAuditor"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+    <!--<Window.Resources>
+        <local:App x:Key="MainVM.Courses"/>
+    </Window.Resources>-->
+    <Grid x:Name="name">
+        <!--DataContext="StaticResource  MainVM.Courses"-->
+        <Grid.RowDefinitions >
+            <RowDefinition  Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <DataGrid HorizontalAlignment="Left" Height="165" Margin="122,111,0,0" VerticalAlignment="Top" Width="370" />
 
     </Grid>
 </Window>

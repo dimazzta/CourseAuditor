@@ -28,5 +28,11 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+        <StackPanel/>
+        <DataGrid HorizontalAlignment="Left" Height="210" Margin="146,32,0,0" VerticalAlignment="Top" Width="282" ItemsSource="{Binding Students}" Grid.Column="1" Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

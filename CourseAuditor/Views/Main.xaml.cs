@@ -24,6 +24,7 @@ namespace CourseAuditor.Views
         {
             InitializeComponent();
             DataContext = new MainVM();
+            //верная ветка
         }
     }
 }

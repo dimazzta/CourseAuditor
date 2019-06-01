@@ -29,15 +29,23 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <StackPanel/>
-        <DataGrid Grid.Column="1" 
+        <DataGrid 
+                  x:Name="studentsGrid"
+                  AutoGenerateColumns="False"
+                  Grid.Column="3" 
                   HorizontalAlignment="Left" 
                   Height="424" 
                   Margin="10,10,0,0" 
                   Grid.Row="1" 
                   VerticalAlignment="Top" 
                   Width="590" 
-                  AutomationProperties.Name="studentGrid"
                   ItemsSource="{Binding Students}"
-                  />
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ученик" Binding="{Binding Path=Person}" Width="300"/>
+                <DataGridTextColumn Header="Дата поступления" Binding="{Binding Path=DateStart}" Width="120"/>
+                <DataGridTextColumn Header="Дата отчисления" Binding="{Binding Path=DateEnd}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

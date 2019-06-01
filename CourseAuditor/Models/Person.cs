@@ -92,5 +92,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Parents");
             }
         }
+
+        public override string ToString()
+        {
+            return $"{SecondName} {FirstName} {Patronymic}";
+        }
     }
 }

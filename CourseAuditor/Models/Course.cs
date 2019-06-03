@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseAuditor.Models
 {
-    public class Course : ObservableObject
+    public class Course : ObservableObject, INotifyPropertyChanged
     {
         private string _Name;
         private double _Price;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Group : ObservableObject
+    public class Group : ObservableObject, INotifyPropertyChanged
     {
 
         private Course _Course;
         private string _Title;
         private ICollection<Student> _Students;
+
 
         public virtual ICollection<Student> Students
         {

@@ -51,7 +51,7 @@
                   Grid.Row="1" 
                   VerticalAlignment="Top" 
                   Width="590" 
-                  ItemsSource="{Binding Students}"
+                  ItemsSource="{Binding Students, Mode=TwoWay}"
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ученик" Binding="{Binding Path=Person}" Width="300"/>

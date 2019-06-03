@@ -37,8 +37,11 @@ namespace CourseAuditor.Views
                 {
                     //keep SelectedItem in sync with Treeview.SelectedItem
                     (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
+                    (DataContext as MainVM).Students = new System.Collections.ObjectModel.ObservableCollection<Student>((e.NewValue as Group).Students);
                 }
             }
         }
+
+
     }
 }

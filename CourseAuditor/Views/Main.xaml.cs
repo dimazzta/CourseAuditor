@@ -25,7 +25,13 @@ namespace CourseAuditor.Views
         {
             InitializeComponent();
             DataContext = new MainVM();
+            this.Loaded += Main_Loaded;
             //верная ветка
+        }
+
+        private void Main_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -37,7 +43,7 @@ namespace CourseAuditor.Views
                 {
                     //keep SelectedItem in sync with Treeview.SelectedItem
                     (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
-                    (DataContext as MainVM).Students = new System.Collections.ObjectModel.ObservableCollection<Student>((e.NewValue as Group).Students);
+                    Students.ItemsSource = (DataContext as MainVM).SelectedGroup.Students;
                 }
             }
         }

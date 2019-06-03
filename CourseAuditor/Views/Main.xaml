@@ -42,22 +42,17 @@
         </TreeView>
         <StackPanel/>
         <DataGrid 
-                  x:Name="studentsGrid"
-                  AutoGenerateColumns="False"
+                  x:Name="Students"
+                  AutoGenerateColumns="True"
                   Grid.Column="3" 
                   HorizontalAlignment="Left" 
                   Height="424" 
                   Margin="10,10,0,0" 
                   Grid.Row="1" 
                   VerticalAlignment="Top" 
-                  Width="590" 
-                  ItemsSource="{Binding Students, Mode=TwoWay}"
+                  Width="590"
                   >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Ученик" Binding="{Binding Path=Person}" Width="300"/>
-                <DataGridTextColumn Header="Дата поступления" Binding="{Binding Path=DateStart}" Width="120"/>
-                <DataGridTextColumn Header="Дата отчисления" Binding="{Binding Path=DateEnd}" Width="120"/>
-            </DataGrid.Columns>
         </DataGrid>
+
     </Grid>
 </Window>

@@ -28,7 +28,7 @@ namespace CourseAuditor.DAL
         public DbSet<PersonParent> PersonParents { get; set; }
         public DbSet<MedicalDoc> MedicalDocs { get; set; }
         public DbSet<Group> Groups { get; set; }
-
+        public DbSet<Assessment> Assessments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

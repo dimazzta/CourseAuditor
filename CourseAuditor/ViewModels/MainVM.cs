@@ -15,17 +15,11 @@ namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM
     {
-        //public List<string> test { get; set; } = new List<string>()
-        //{
-        //    "werth",
-        //    "dasfghj",
-        //    "dsasfgh"
-        //};
-        
         private ApplicationContext _context;
 
         public ObservableCollection<Course> Courses { get; set; }
         public ObservableCollection<Student> Students { get; set; }
+        public ObservableCollection<Assessment> Assessments { get; set; }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -68,9 +62,7 @@ namespace CourseAuditor.ViewModels
             List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).Select(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                var c = table.Columns.Add(column.ToString("dd MM"));
-                
-                break;
+                var c = table.Columns.Add(column.ToString("dd-MM"));
             }
       
             foreach (var student in students)
@@ -82,9 +74,7 @@ namespace CourseAuditor.ViewModels
                 int i = 1;
                 foreach (var j in journals)
                 {
-                    row[i] = j.AttendanceAssessment;
-                         
-                    break;
+                    row[i] = j.Assessment.Title;
                     i++;
                 }
                 table.Rows.Add(row);
@@ -97,13 +87,14 @@ namespace CourseAuditor.ViewModels
         {
             Table.Rows[_row][_col] = "!@3546";
         }
+
         public MainVM(IView view)
         {
             CurrentView = view;
             CurrentView.DataContext = this;
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
-            
+            Assessments = new ObservableCollection<Assessment>(_context.Assessments);
             CurrentView.Show();
         }
     }

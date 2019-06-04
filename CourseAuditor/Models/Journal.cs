@@ -8,8 +8,21 @@ namespace CourseAuditor.Models
 
         private Student _Student;
         private DateTime _Date;
-        private string _AttendanceAssessment;
+        private Assessment _Assessment;
 
+
+        public virtual Assessment Assessment
+        {
+            get
+            {
+                return _Assessment;
+            }
+            set
+            {
+                _Assessment = value;
+                OnPropertyChanged("Assessment");
+            }
+        }
         public virtual Student Student
         {
             get
@@ -37,19 +50,6 @@ namespace CourseAuditor.Models
             }
         }
 
-        
-        public string AttendanceAssessment
-        {
-            get
-
-            {
-                return _AttendanceAssessment;
-            }
-            set
-            {
-                _AttendanceAssessment = value;
-                OnPropertyChanged("AttendanceAssessment");
-            }
-        }
+       
     }
 }

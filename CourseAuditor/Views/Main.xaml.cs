@@ -27,6 +27,7 @@ namespace CourseAuditor.Views
         {
             InitializeComponent();
             Students.CellEditEnding += Students_CellEditEnding;
+            
         }
 
         private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -36,6 +37,7 @@ namespace CourseAuditor.Views
             (DataContext as MainVM).CellChangedHanlder(_row, _col);
         }
 
+        
         public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -43,9 +45,6 @@ namespace CourseAuditor.Views
             if (e.NewValue is Group)
                   (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
         }
-
-
-       
 
     }
 }

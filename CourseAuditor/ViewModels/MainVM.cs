@@ -93,12 +93,17 @@ namespace CourseAuditor.ViewModels
         }
         public IView CurrentView { get; set; }
 
+        public void CellChangedHanlder(int _row, int _col)
+        {
+            Table.Rows[_row][_col] = "!@3546";
+        }
         public MainVM(IView view)
         {
             CurrentView = view;
             CurrentView.DataContext = this;
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
+            
             CurrentView.Show();
         }
     }

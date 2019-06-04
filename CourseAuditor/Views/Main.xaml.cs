@@ -26,30 +26,17 @@ namespace CourseAuditor.Views
         public Main()
         {
             InitializeComponent();
-            Students.PreparingCellForEdit += Students_PreparingCellForEdit;
             Students.CellEditEnding += Students_CellEditEnding;
-            this.Loaded += Main_Loaded;
         }
 
         private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            var el = e.EditingElement;
+            int _row = e.Row.GetIndex();
+            int _col = e.Column.DisplayIndex;
+            (DataContext as MainVM).CellChangedHanlder(_row, _col);
         }
 
-        private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
-        {
-            var cb = new ComboBox();
-            cb.Items.Add("aesrdt");
- 
-        }
-
-      
         public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        private void Main_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

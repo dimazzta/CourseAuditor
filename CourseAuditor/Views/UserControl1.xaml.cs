@@ -21,13 +21,11 @@ namespace CourseAuditor.Views
     public partial class UserControl1 : UserControl, IFrame
     {
 
-
         public int CountElements
         {
             get { return (int)GetValue(CountElementsProperty); }
             set { SetValue(CountElementsProperty, value); }
         }
-
         // Using a DependencyProperty as the backing store for CountElements.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CountElementsProperty =
             DependencyProperty.Register("CountElements", typeof(int), typeof(UserControl1), new PropertyMetadata(0));

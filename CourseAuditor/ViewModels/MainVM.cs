@@ -6,10 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace CourseAuditor.ViewModels
 {
@@ -17,9 +20,25 @@ namespace CourseAuditor.ViewModels
     {
         private ApplicationContext _context;
 
+
+        public IView CurrentView { get; set; }
         public ObservableCollection<Course> Courses { get; set; }
         public ObservableCollection<Student> Students { get; set; }
         public ObservableCollection<Assessment> Assessments { get; set; }
+
+        private Assessment _SelectedAssessment;
+        public Assessment SelectedAssessment
+        {
+            get
+            {
+                return _SelectedAssessment;
+            }
+            set
+            {
+                _SelectedAssessment = value;
+                OnPropertyChanged("SelectedAssessment");
+            }
+        }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -62,7 +81,7 @@ namespace CourseAuditor.ViewModels
             List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).Select(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                var c = table.Columns.Add(column.ToString("dd-MM"));
+                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Assessment));
             }
       
             foreach (var student in students)
@@ -74,27 +93,37 @@ namespace CourseAuditor.ViewModels
                 int i = 1;
                 foreach (var j in journals)
                 {
-                    row[i] = j.Assessment.Title;
+                    row[i] = j.Assessment;
                     i++;
                 }
                 table.Rows.Add(row);
             }
             Table = table;
-        }
-        public IView CurrentView { get; set; }
 
-        public void CellChangedHanlder(int _row, int _col)
+        }
+        
+        public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)
         {
-            Table.Rows[_row][_col] = "!@3546";
+            int selectedColumn = e.Column.DisplayIndex;
+            if (selectedColumn != 0)
+                (e.Row.Item as DataRowView).Row[selectedColumn] = SelectedAssessment;
+        }
+
+        public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
+        {
+            int selectedColumn = e.Column.DisplayIndex;
+            if (selectedColumn != 0)
+                SelectedAssessment = (e.Row.Item as DataRowView).Row[selectedColumn] as Assessment;
         }
 
         public MainVM(IView view)
         {
-            CurrentView = view;
-            CurrentView.DataContext = this;
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
             Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+
+            CurrentView = view;
+            CurrentView.DataContext = this;
             CurrentView.Show();
         }
     }

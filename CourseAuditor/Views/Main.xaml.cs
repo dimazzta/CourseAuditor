@@ -23,22 +23,25 @@ namespace CourseAuditor.Views
     /// </summary>
     public partial class Main : Window, IView
     {
+        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public Main()
         {
             InitializeComponent();
+            Students.PreparingCellForEdit += Students_PreparingCellForEdit;
             Students.CellEditEnding += Students_CellEditEnding;
-            
+        }
+
+        private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            Students.Columns[0].IsReadOnly = true; // хз что здесь можно придумать
+            (DataContext as MainVM).BeforeCellChangedHandler(e);
         }
 
         private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            int _row = e.Row.GetIndex();
-            int _col = e.Column.DisplayIndex;
-            (DataContext as MainVM).CellChangedHanlder(_row, _col);
+            (DataContext as MainVM).CellChangedHanlder(e);
         }
-
-        
-        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

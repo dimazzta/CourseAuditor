@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CourseAuditor.ViewModels;
+using CourseAuditor.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,9 @@ namespace CourseAuditor
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            new MainVM(new Main());
+        }
     }
 }

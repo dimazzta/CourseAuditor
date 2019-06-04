@@ -30,7 +30,7 @@ namespace CourseAuditor
         {
             ApplicationContext ct = new ApplicationContext();
             InitializeComponent();
-            DataContext = new MainVM();
+           
             
         }
     }

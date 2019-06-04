@@ -14,7 +14,20 @@ namespace CourseAuditor.Models
         private Course _Course;
         private string _Title;
         private ICollection<Student> _Students;
+        private ICollection<Module> _Modules;
 
+        public virtual ICollection<Module> Modules
+        {
+            get
+            {
+                return _Modules;
+            }
+            set
+            {
+                _Modules = value;
+                OnPropertyChanged("Modules");
+            }
+        }
 
         public virtual ICollection<Student> Students
         {

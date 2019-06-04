@@ -16,6 +16,24 @@ namespace CourseAuditor.Models
         private ICollection<PersonParent> _Parents;
         private ICollection<MedicalDoc> _MedicalDocs;
 
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return _FirstName + " " + _SecondName;
+            }
+            set
+            {
+                string[] parts = value.Split(' ');
+                _FirstName = parts[0];
+                _SecondName = parts[1];
+                if (parts.Length > 2)
+                {
+                    _Patronymic = parts[2];
+                }
+            }
+        }
 
         public virtual ICollection<MedicalDoc> MedicalDocs
         {

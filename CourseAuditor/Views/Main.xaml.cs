@@ -1,7 +1,9 @@
-﻿using CourseAuditor.Models;
+﻿using CourseAuditor.Helpers;
+using CourseAuditor.Models;
 using CourseAuditor.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,15 +21,30 @@ namespace CourseAuditor.Views
     /// <summary>
     /// Логика взаимодействия для Main.xaml
     /// </summary>
-    public partial class Main : Window
+    public partial class Main : Window, IView
     {
         public Main()
         {
             InitializeComponent();
-            DataContext = new MainVM();
+            Students.PreparingCellForEdit += Students_PreparingCellForEdit;
+            Students.CellEditEnding += Students_CellEditEnding;
             this.Loaded += Main_Loaded;
-            //верная ветка
         }
+
+        private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            var el = e.EditingElement;
+        }
+
+        private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            var cb = new ComboBox();
+            cb.Items.Add("aesrdt");
+ 
+        }
+
+      
+        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private void Main_Loaded(object sender, RoutedEventArgs e)
         {
@@ -37,17 +54,11 @@ namespace CourseAuditor.Views
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is Group)
-            {
-                Group group = e.NewValue as Group;
-                if (group != (DataContext as MainVM).SelectedGroup)
-                {
-                    //keep SelectedItem in sync with Treeview.SelectedItem
-                    (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
-                    Students.ItemsSource = (DataContext as MainVM).SelectedGroup.Students;
-                }
-            }
+                  (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
         }
 
+
+       
 
     }
 }

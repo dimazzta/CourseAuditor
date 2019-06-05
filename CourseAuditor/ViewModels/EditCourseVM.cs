@@ -48,11 +48,10 @@ namespace CourseAuditor.ViewModels
 
         public void AddCourse(string name, string price, string lessonscount)
         {
-            Course course  = new Course();
+            Course course = new Course();
             course.Name = name;
             course.Price = Convert.ToDouble(price);
             course.LessonsCount = Convert.ToInt32(lessonscount);
-            course.Id = 4;
             using (_context = new ApplicationContext()) {
                 _context.Courses.Add(course);
                 _context.SaveChanges();

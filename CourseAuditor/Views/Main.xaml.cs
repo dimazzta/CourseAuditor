@@ -41,7 +41,7 @@ namespace CourseAuditor.Views
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
-            Students.Columns[0].IsReadOnly = true;
+            //Students.Columns[0].IsReadOnly = true;
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
@@ -62,7 +62,7 @@ namespace CourseAuditor.Views
 
         private void EditCourse_Click(object sender, RoutedEventArgs e)
         {
-            CurrentFrame = (new EditCourseVM(new EditCourseFrame(),new Course())).CurrentFrame;
+            CurrentFrame = (new EditCourseVM(new EditCourseFrame())).CurrentFrame;
         }
     }
 }

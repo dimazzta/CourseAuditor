@@ -28,6 +28,15 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        public EditCourseVM(IFrame frame)
+        {
+            CurrentFrame = frame;
+            Course = new Course();
+
+            CurrentFrame = frame;
+            CurrentFrame.DataContext = this;
+        }
+
         public EditCourseVM(IFrame frame,Course course)
         {
             CurrentFrame = frame;
@@ -35,7 +44,6 @@ namespace CourseAuditor.ViewModels
 
             CurrentFrame = frame;
             CurrentFrame.DataContext = this;
-            //CurrentFrame.Show();
         }
 
         public void AddCourse(string name, string price, string lessonscount)
@@ -44,6 +52,7 @@ namespace CourseAuditor.ViewModels
             course.Name = name;
             course.Price = Convert.ToDouble(price);
             course.LessonsCount = Convert.ToInt32(lessonscount);
+            course.Id = 4;
             using (_context = new ApplicationContext()) {
                 _context.Courses.Add(course);
                 _context.SaveChanges();

@@ -37,12 +37,9 @@ namespace CourseAuditor.Views
             {
                 dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
             }
+
         }
 
-        public void RefreshJournal()
-        {
-            Students.Items.Refresh();
-        }
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {

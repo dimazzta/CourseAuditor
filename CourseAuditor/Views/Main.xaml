@@ -9,14 +9,14 @@
         mc:Ignorable="d"
         Title="Main"
         WindowState="Normal">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="./Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -51,11 +51,6 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Button Style="{StaticResource ResourceKey=DefaultButton}" Margin="0, 0, 10, 0" Content="Сохранить изменения" Command="{Binding SaveChangesCommand}"></Button>
-            <Button Style="{StaticResource ResourceKey=DefaultButton}" Margin="0, 0, 10, 0" Content="Отменить изменения" Command="{Binding DiscardChangesCommand}"></Button>
-        </StackPanel>
         <DataGrid 
                   CanUserAddRows="False"
                   SelectionUnit="Cell" 
@@ -64,7 +59,7 @@
                   ItemsSource="{Binding Table}"
                   Grid.Column="1" 
                   Grid.Row="1">
-            
+
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
@@ -89,6 +84,11 @@
                 </Style>
             </DataGrid.CellStyle>
         </DataGrid>
+        <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
+            <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
+        </StackPanel>
+ 
         <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
     </Grid>
     

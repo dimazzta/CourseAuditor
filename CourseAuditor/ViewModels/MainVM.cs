@@ -76,10 +76,14 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _SelectedModule = value;
-                Students = new ObservableCollection<Student>(value.Students);
-                UpdateJournal(_SelectedModule);
-                OnPropertyChanged("SelectedModule");
+                if (value != _SelectedModule)
+                {
+                    UnsavedChangesPrompt();
+                    _SelectedModule = value;
+                    Students = new ObservableCollection<Student>(value.Students);
+                    UpdateJournal(_SelectedModule);
+                    OnPropertyChanged("SelectedModule");
+                }
             }
         }
 
@@ -133,12 +137,16 @@ namespace CourseAuditor.ViewModels
         {
             _context.SaveChanges();
             CopyValues(Table, TableInitialValues);  // Новый слепок только что сохраненной таблицы.
+            SaveChangesCommand.RaiseCanExecuteChanged();
+            DiscardChangesCommand.RaiseCanExecuteChanged();
         }
 
         private void DiscardChanges()
         {
             RestoreValues(TableInitialValues);  // Откат
             UpdateJournal(_SelectedModule);
+            SaveChangesCommand.RaiseCanExecuteChanged();
+            DiscardChangesCommand.RaiseCanExecuteChanged();
         }
 
         private bool HasChanges(List<Tuple<Journal, Assessment>> source)
@@ -177,6 +185,23 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private void UnsavedChangesPrompt()
+        {
+            if (HasChanges(TableInitialValues))
+            {
+                var result = MessageBox.Show("В журнале есть несохраненные данные. Сохранить перед переходом к новой группе?", "Несохраненные данные", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    SaveChanges();
+                }
+                else
+                {
+                    DiscardChanges();
+                }
+            }
+                
+        }
+
         #endregion
 
         #region Handlers
@@ -208,8 +233,6 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     SaveChanges();
-                    SaveChangesCommand.RaiseCanExecuteChanged();
-                    DiscardChangesCommand.RaiseCanExecuteChanged();
                 },
                 (obj) =>
                 {
@@ -224,8 +247,6 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     DiscardChanges();
-                    SaveChangesCommand.RaiseCanExecuteChanged();
-                    DiscardChangesCommand.RaiseCanExecuteChanged();
                 },
                 (obj) =>
                 {
@@ -241,7 +262,6 @@ namespace CourseAuditor.ViewModels
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
             Assessments = new ObservableCollection<Assessment>(_context.Assessments);
-            
             
             CurrentView = view;
             CurrentView.DataContext = this;

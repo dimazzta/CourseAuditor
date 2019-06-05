@@ -15,6 +15,8 @@ namespace CourseAuditor.Models
         {
             get
             {
+                if (_Assessment == null)
+                    _Assessment = new Assessment();
                 return _Assessment;
             }
             set
@@ -49,7 +51,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Date");
             }
         }
+        public override string ToString()
+        {
+            return Assessment.ToString();
+        }
 
-       
     }
 }

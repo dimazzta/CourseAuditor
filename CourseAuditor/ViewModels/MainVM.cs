@@ -13,18 +13,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM
     {
+        #region Props
         private ApplicationContext _context;
-
         public IView CurrentView { get; set; }
         public ObservableCollection<Course> Courses { get; set; }
         public ObservableCollection<Assessment> Assessments { get; set; }
-
-
         private ObservableCollection<Student> _Students;
         public ObservableCollection<Student> Students
         {
@@ -97,57 +96,157 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("Table");
             }
         }
+        public List<Tuple<Journal, Assessment>> TableInitialValues;
+        #endregion
 
+        #region Methods
         private void UpdateJournal(Module module)
         {
             DataTable table = new DataTable();
 
-            List<Student> students = module.Students.ToList();
-            table.Columns.Add("Студент");
+            List<Student> students = module.Students.OrderBy(x => x.Person.FullName).ToList();
+            table.Columns.Add("Студент", typeof(Student));
 
-            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).Select(x => x.Date).ToList();
+            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).Select(x => x.Date).OrderBy(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Assessment));
+                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Journal));
             }
       
             foreach (var student in students)
             {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).ToList();
+                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).OrderBy(x => x.Date).ToList();
                 DataRow row = table.NewRow();
-                row[0] = student.Person.FullName;
+                row[0] = student;
                 int i = 1;
                 foreach (var j in journals)
-                    row[i++] = j.Assessment;
+                    row[i++] = j;
 
                 table.Rows.Add(row);
             }
             Table = table;
+            TableInitialValues = new List<Tuple<Journal, Assessment>>();
+            CopyValues(Table, TableInitialValues);  // Данная копия хранит изначальный слепок таблицы. На нее будем откатываться.
         }
-        
+
+        private void SaveChanges()
+        {
+            _context.SaveChanges();
+            CopyValues(Table, TableInitialValues);  // Новый слепок только что сохраненной таблицы.
+        }
+
+        private void DiscardChanges()
+        {
+            RestoreValues(TableInitialValues);  // Откат
+            UpdateJournal(_SelectedModule);
+        }
+
+        private bool HasChanges(List<Tuple<Journal, Assessment>> source)
+        {
+            bool result = true;
+            if (source != null)
+                foreach (var pair in source)
+                {
+                    result &= (pair.Item1 as Journal).Assessment == pair.Item2;
+                }
+            return !result;
+        }
+
+        private void CopyValues(DataTable source, List<Tuple<Journal, Assessment>> dest)
+        {
+            dest.Clear();
+            int rows = source.Rows.Count;
+            int cols = source.Columns.Count;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (source.Rows[i][j] is Journal)
+                    {
+                        dest.Add(new Tuple<Journal, Assessment>(source.Rows[i][j] as Journal, (source.Rows[i][j] as Journal).Assessment));
+                    }
+                }
+            }
+        }
+
+        private void RestoreValues(List<Tuple<Journal, Assessment>> source)
+        {
+            foreach(var pair in source)
+            {
+                (pair.Item1 as Journal).Assessment = pair.Item2;
+            }
+        }
+
+        #endregion
+
+        #region Handlers
         public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)
         {
             int selectedColumn = e.Column.DisplayIndex;
             if (selectedColumn != 0)
-                (e.Row.Item as DataRowView).Row[selectedColumn] = SelectedAssessment;
+            {
+                ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment = SelectedAssessment;
+                SaveChangesCommand.RaiseCanExecuteChanged();
+                DiscardChangesCommand.RaiseCanExecuteChanged();
+            }
+                
         }
 
         public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
         {
             int selectedColumn = e.Column.DisplayIndex;
             if (selectedColumn != 0)
-                SelectedAssessment = (e.Row.Item as DataRowView).Row[selectedColumn] as Assessment;
+                SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
         }
+        #endregion
 
+        #region Commands
+        private RelayCommand _SaveChangesCommand;
+        public RelayCommand SaveChangesCommand =>
+            _SaveChangesCommand ??
+            (_SaveChangesCommand = new RelayCommand(
+                (obj) =>
+                {
+                    SaveChanges();
+                    SaveChangesCommand.RaiseCanExecuteChanged();
+                    DiscardChangesCommand.RaiseCanExecuteChanged();
+                },
+                (obj) =>
+                {
+                    return HasChanges(TableInitialValues);
+                }
+        ));
+
+        private RelayCommand _DiscardChangesCommand;
+        public RelayCommand DiscardChangesCommand =>
+            _DiscardChangesCommand ??
+            (_DiscardChangesCommand = new RelayCommand(
+                (obj) =>
+                {
+                    DiscardChanges();
+                    SaveChangesCommand.RaiseCanExecuteChanged();
+                    DiscardChangesCommand.RaiseCanExecuteChanged();
+                },
+                (obj) =>
+                {
+                    return HasChanges(TableInitialValues);
+                }
+        ));
+
+        #endregion
+
+        #region Contructors
         public MainVM(IView view)
         {
             _context = new ApplicationContext();
             Courses = new ObservableCollection<Course>(_context.Courses);
             Assessments = new ObservableCollection<Assessment>(_context.Assessments);
-
+            
+            
             CurrentView = view;
             CurrentView.DataContext = this;
             CurrentView.Show();
         }
+        #endregion
     }
 }

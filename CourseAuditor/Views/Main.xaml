@@ -10,12 +10,18 @@
         Title="Main"
         WindowState="Normal">
 
-
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -46,6 +52,10 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button Style="{StaticResource ResourceKey=DefaultButton}" Margin="0, 0, 10, 0" Content="Сохранить изменения" Command="{Binding SaveChangesCommand}"></Button>
+            <Button Style="{StaticResource ResourceKey=DefaultButton}" Margin="0, 0, 10, 0" Content="Отменить изменения" Command="{Binding DiscardChangesCommand}"></Button>
+        </StackPanel>
         <DataGrid 
                   CanUserAddRows="False"
                   SelectionUnit="Cell" 

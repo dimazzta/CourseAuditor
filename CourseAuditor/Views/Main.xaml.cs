@@ -3,6 +3,7 @@ using CourseAuditor.Models;
 using CourseAuditor.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -30,11 +31,21 @@ namespace CourseAuditor.Views
             InitializeComponent();
             Students.PreparingCellForEdit += Students_PreparingCellForEdit;
             Students.CellEditEnding += Students_CellEditEnding;
+
+            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
+            if (dpd != null)
+            {
+                dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
+            }
+        }
+
+        private void ItemsSourceChangedHanlder(object sender, EventArgs e)
+        {
+            Students.Columns[0].IsReadOnly = true;
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
         {
-            Students.Columns[0].IsReadOnly = true; // хз что здесь можно придумать
             (DataContext as MainVM).BeforeCellChangedHandler(e);
         }
 

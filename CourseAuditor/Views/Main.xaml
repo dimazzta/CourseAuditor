@@ -33,6 +33,7 @@
         </TreeView>
 
         <DataGrid 
+                  CanUserAddRows="False"
                   SelectionUnit="Cell" 
                   SelectionMode="Extended"
                   x:Name="Students"

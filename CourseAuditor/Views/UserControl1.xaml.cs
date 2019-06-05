@@ -26,6 +26,9 @@ namespace CourseAuditor.Views
             get { return (int)GetValue(CountElementsProperty); }
             set { SetValue(CountElementsProperty, value); }
         }
+
+        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         // Using a DependencyProperty as the backing store for CountElements.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CountElementsProperty =
             DependencyProperty.Register("CountElements", typeof(int), typeof(UserControl1), new PropertyMetadata(0));
@@ -33,6 +36,16 @@ namespace CourseAuditor.Views
         public UserControl1()
         {
             InitializeComponent();
+        }
+
+        public void Show()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Close()
+        {
+            throw new NotImplementedException();
         }
     }
 }

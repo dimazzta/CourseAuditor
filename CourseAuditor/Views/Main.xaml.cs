@@ -24,7 +24,7 @@ namespace CourseAuditor.Views
     /// </summary>
     public partial class Main : Window, IView
     {
-        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => Content = value; }
 
         public Main()
         {
@@ -60,5 +60,9 @@ namespace CourseAuditor.Views
                   (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
         }
 
+        private void EditCourse_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentFrame = (new EditCourseVM(new EditCourseFrame(),new Course())).CurrentFrame;
+        }
     }
 }

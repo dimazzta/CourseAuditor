@@ -40,7 +40,7 @@
                   ItemsSource="{Binding Table}"
                   Grid.Column="1" 
                   Grid.Row="1">
-            
+
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
@@ -65,6 +65,15 @@
                 </Style>
             </DataGrid.CellStyle>
         </DataGrid>
+        <Menu HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <MenuItem Header="Добавить">
+                <MenuItem x:Name="EditCourse" Header="Курс" Click="EditCourse_Click"/>
+                <MenuItem Header="Группу"/>
+                <MenuItem Header="Студента"/>
+            </MenuItem>
+            <MenuItem Header="Сертификат"/>
+        </Menu>
+            
     </Grid>
-    
+
 </Window>

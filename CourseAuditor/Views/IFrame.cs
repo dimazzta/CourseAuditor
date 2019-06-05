@@ -9,5 +9,6 @@ namespace CourseAuditor.Views
     public interface IFrame
     {
         // Something like GetDataContext ?
+        object DataContext { get; set; }
     }
 }

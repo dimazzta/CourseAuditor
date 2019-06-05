@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="CourseAuditor.Views.EditCourseFrame"
+             x:Name="EditCourse"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseAuditor.Views"
+             mc:Ignorable="d"
+             Background="White" Height="289.916" Width="250.42">
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,31,0,0" TextWrapping="Wrap" Text="Название курса" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbCourseName" HorizontalAlignment="Left" Height="23" Margin="40,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,86,0,0" TextWrapping="Wrap" Text="Цена курса" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbCoursePrice" HorizontalAlignment="Left" Height="23" Margin="40,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,149,0,0" TextWrapping="Wrap" Text="Количество занятий" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbCourseLessonsCount" HorizontalAlignment="Left" Height="23" Margin="40,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="40,222,0,0" VerticalAlignment="Top" Width="171" Height="37" Click="Button_Click"/>
+
+    </Grid>
+</UserControl>

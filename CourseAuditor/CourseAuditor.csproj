@@ -76,7 +76,12 @@
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
+    <Compile Include="ViewModels\EditCourseVM.cs" />
+    <Compile Include="ViewModels\IAddEditFrameVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
+    <Compile Include="Views\EditCourseFrame.xaml.cs">
+      <DependentUpon>EditCourseFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IFrame.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\Main.xaml.cs">
@@ -90,6 +95,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Page Include="Views\EditCourseFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Main.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

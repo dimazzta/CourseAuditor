@@ -60,5 +60,9 @@ namespace CourseAuditor.Views
                   (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
         }
 
+        private void TVCourseGroups_Expanded(object sender, RoutedEventArgs e)
+        {
+            var rr = e;
+        }
     }
 }

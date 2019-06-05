@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseAuditor.Models
 {
     public class Module : ObservableObject
     {
-        public Group _Group;
-        public int _Number;
-        public DateTime _DateStart;
-        public DateTime _DateEnd;
+        private Group _Group;
+        private int _Number;
+        private DateTime _DateStart;
+        private DateTime _DateEnd;
 
         public Group Group
         {
@@ -59,6 +60,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("DateEnd");
             }
         }
-        
+
+        public override string ToString()
+        {
+            return "Модуль " + Number.ToString();
+        }
     }
 }

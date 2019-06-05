@@ -23,8 +23,23 @@ namespace CourseAuditor.ViewModels
 
         public IView CurrentView { get; set; }
         public ObservableCollection<Course> Courses { get; set; }
-        public ObservableCollection<Student> Students { get; set; }
+        
         public ObservableCollection<Assessment> Assessments { get; set; }
+
+
+        private ObservableCollection<Student> _Students;
+        public ObservableCollection<Student> Students
+        {
+            get
+            {
+                return _Students;
+            }
+            set
+            {
+                _Students = value;
+                OnPropertyChanged("Students");
+            }
+        }
 
         private Assessment _SelectedAssessment;
         public Assessment SelectedAssessment
@@ -55,6 +70,8 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("SelectedGroup");
             }
         }
+
+        
 
         private DataTable _Table;
         public DataTable Table

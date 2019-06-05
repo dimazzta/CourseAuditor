@@ -1,6 +1,8 @@
-﻿using System;
+﻿using CourseAuditor.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CourseAuditor.Models
 {
@@ -10,6 +12,16 @@ namespace CourseAuditor.Models
         private int _Number;
         private DateTime _DateStart;
         private DateTime _DateEnd;
+
+        [NotMapped]
+        public ICollection<Student> Students
+        {
+            get
+            {
+                return Group.Students.Where(x => x.DateStart.InRange(DateStart, DateEnd)).ToList();
+            }
+        }
+
 
         public Group Group
         {

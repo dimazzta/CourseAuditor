@@ -16,6 +16,16 @@ namespace CourseAuditor.Models
         private ICollection<Student> _Students;
         private ICollection<Module> _Modules;
 
+
+        [NotMapped]
+        public Module LastModule
+        {
+            get
+            {
+                return Modules.OrderBy(x => x.DateStart).LastOrDefault();
+            }
+        }
+
         public virtual ICollection<Module> Modules
         {
             get

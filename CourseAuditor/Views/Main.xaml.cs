@@ -57,12 +57,9 @@ namespace CourseAuditor.Views
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is Group)
-                  (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
-        }
-
-        private void TVCourseGroups_Expanded(object sender, RoutedEventArgs e)
-        {
-            var rr = e;
+                (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
+            if (e.NewValue is Module)
+                (DataContext as MainVM).SelectedModule = e.NewValue as Module;
         }
     }
 }

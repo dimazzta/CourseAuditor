@@ -20,10 +20,8 @@ namespace CourseAuditor.ViewModels
     {
         private ApplicationContext _context;
 
-
         public IView CurrentView { get; set; }
         public ObservableCollection<Course> Courses { get; set; }
-        
         public ObservableCollection<Assessment> Assessments { get; set; }
 
 
@@ -65,13 +63,26 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                Students = new ObservableCollection<Student>(value.Students);
-                UpdateJournal();
+                SelectedModule = _SelectedGroup.LastModule;
                 OnPropertyChanged("SelectedGroup");
             }
         }
 
-        
+        private Module _SelectedModule;
+        public Module SelectedModule
+        {
+            get
+            {
+                return _SelectedModule;
+            }
+            set
+            {
+                _SelectedModule = value;
+                Students = new ObservableCollection<Student>(value.Students);
+                UpdateJournal(_SelectedModule);
+                OnPropertyChanged("SelectedModule");
+            }
+        }
 
         private DataTable _Table;
         public DataTable Table
@@ -87,15 +98,14 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private void UpdateJournal()
+        private void UpdateJournal(Module module)
         {
             DataTable table = new DataTable();
 
-            Module lastModule = _SelectedGroup.Modules.OrderBy(x => x.DateStart).Last();
-            List<Student> students = _SelectedGroup.Students.ToList();
+            List<Student> students = module.Students.ToList();
             table.Columns.Add("Студент");
 
-            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).Select(x => x.Date).ToList();
+            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).Select(x => x.Date).ToList();
             foreach (var column in columns)
             {
                 var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Assessment));
@@ -103,20 +113,16 @@ namespace CourseAuditor.ViewModels
       
             foreach (var student in students)
             {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).ToList();
+                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).ToList();
                 DataRow row = table.NewRow();
                 row[0] = student.Person.FullName;
-                
                 int i = 1;
                 foreach (var j in journals)
-                {
-                    row[i] = j.Assessment;
-                    i++;
-                }
+                    row[i++] = j.Assessment;
+
                 table.Rows.Add(row);
             }
             Table = table;
-
         }
         
         public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)

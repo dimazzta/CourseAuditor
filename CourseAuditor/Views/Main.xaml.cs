@@ -29,22 +29,22 @@ namespace CourseAuditor.Views
         public Main()
         {
             InitializeComponent();
-            Students.PreparingCellForEdit += Students_PreparingCellForEdit;
-            Students.CellEditEnding += Students_CellEditEnding;
+            //Students.PreparingCellForEdit += Students_PreparingCellForEdit;
+            //Students.CellEditEnding += Students_CellEditEnding;
 
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null)
-            {
-                dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
-            }
+            //var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
+            //if (dpd != null)
+            //{
+            //    dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
+            //}
 
         }
 
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
-            Students.Columns[0].IsReadOnly = true;
-            Students.Columns[0].CanUserSort = true;
+            //Students.Columns[0].IsReadOnly = true;
+            //Students.Columns[0].CanUserSort = true;
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)

@@ -51,7 +51,10 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <DataGrid 
+        <Frame Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Source="JournalFrame.xaml">
+            
+        </Frame>
+        <!--<DataGrid 
                   CanUserAddRows="False"
                   SelectionUnit="Cell" 
                   SelectionMode="Extended"
@@ -87,7 +90,7 @@
         <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
             <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
-        </StackPanel>
+        </StackPanel>-->
  
         <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
     </Grid>

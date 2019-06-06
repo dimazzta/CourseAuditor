@@ -19,6 +19,7 @@ namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM
     {
+        public string h = "hey";
         #region Props
         private ApplicationContext _context;
         public IView CurrentView { get; set; }

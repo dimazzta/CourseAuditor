@@ -169,6 +169,11 @@ namespace CourseAuditor.ViewModels
             if (selectedColumn != 0)
                 SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
         }
+
+        public void DelectedModuleHandler()
+        {
+
+        }
         #endregion
 
         #region Commands
@@ -209,6 +214,7 @@ namespace CourseAuditor.ViewModels
 
             CurrentFrame = frame;
             frame.DataContext = this;
+            VM.SelectedModule.PropertyChanged +=;
         }
     }
 }

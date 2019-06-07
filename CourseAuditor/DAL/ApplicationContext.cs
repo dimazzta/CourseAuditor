@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.DAL
 {
-    class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
        
         public ApplicationContext() : base("default")
         {
-     
+
         }
         
         public DbSet<Student> Students { get; set; }

@@ -1,25 +1,30 @@
-﻿<Page x:Class="CourseAuditor.Views.JournalFrame"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CourseAuditor.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="JournalFrame">
-
+﻿<UserControl x:Class="CourseAuditor.Views.JournalFrame"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseAuditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, 
-AncestorType={x:Type Window}}, Path=DataContext.h}"></TextBlock>
-        <!--<DataGrid 
+
+        <DataGrid 
                   CanUserAddRows="False"
                   SelectionUnit="Cell" 
                   SelectionMode="Extended"
                   x:Name="Students"
+                  AutoGenerateColumns="True"
                   ItemsSource="{Binding Table}"
                   Grid.Row="0">
 
@@ -35,8 +40,8 @@ AncestorType={x:Type Window}}, Path=DataContext.h}"></TextBlock>
                                     <ControlTemplate TargetType="{x:Type DataGridCell}">
                                         <Grid>
                                             <ComboBox x:Name="cbCondition1" 
-                                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.Assessments}"
-                                                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.SelectedAssessment}">
+                                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Assessments}"
+                                                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SelectedAssessment}">
                                             </ComboBox>
                                         </Grid>
                                     </ControlTemplate>
@@ -47,10 +52,11 @@ AncestorType={x:Type Window}}, Path=DataContext.h}"></TextBlock>
                 </Style>
             </DataGrid.CellStyle>
         </DataGrid>
-        <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
             <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
-        </StackPanel>-->
+        </StackPanel>
+
 
     </Grid>
-</Page>
+</UserControl>

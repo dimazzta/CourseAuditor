@@ -75,12 +75,19 @@
     <Compile Include="Helpers\Ext.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
+    <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
+    <Compile Include="ViewModels\IPageVM.cs" />
+    <Compile Include="ViewModels\IViewVM.cs" />
+    <Compile Include="ViewModels\JournalPageVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
-    <Compile Include="Views\IFrame.cs" />
+    <Compile Include="Views\AddCoursePage.xaml.cs">
+      <DependentUpon>AddCoursePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IPage.cs" />
     <Compile Include="Views\IView.cs" />
-    <Compile Include="Views\JournalFrame.xaml.cs">
-      <DependentUpon>JournalFrame.xaml</DependentUpon>
+    <Compile Include="Views\JournalPage.xaml.cs">
+      <DependentUpon>JournalPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
@@ -90,7 +97,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Page Include="Views\JournalFrame.xaml">
+    <Page Include="Views\AddCoursePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JournalPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

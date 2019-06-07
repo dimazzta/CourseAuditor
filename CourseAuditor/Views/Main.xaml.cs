@@ -24,7 +24,7 @@ namespace CourseAuditor.Views
     /// </summary>
     public partial class Main : Window, IView
     {
-        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public Main()
         {
@@ -47,15 +47,15 @@ namespace CourseAuditor.Views
             //Students.Columns[0].CanUserSort = true;
         }
 
-        private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
-        {
-            (DataContext as MainVM).BeforeCellChangedHandler(e);
-        }
+        //private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        //{
+        //    (DataContext as MainVM).BeforeCellChangedHandler(e);
+        //}
 
-        private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            (DataContext as MainVM).CellChangedHanlder(e);
-        }
+        //private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //{
+        //    (DataContext as MainVM).CellChangedHanlder(e);
+        //}
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для JournalFrame.xaml
+    /// Логика взаимодействия для AddCoursePage.xaml
     /// </summary>
-    public partial class JournalFrame : Page
+    public partial class AddCoursePage : UserControl
     {
-        public JournalFrame()
+        public AddCoursePage()
         {
             InitializeComponent();
         }

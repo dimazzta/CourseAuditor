@@ -38,6 +38,7 @@ namespace CourseAuditor.Views
                 dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
             }
 
+            ContentControlMain.Content = new JournalFrameVM(DataContext as MainVM,new JournalFrame());
         }
 
 

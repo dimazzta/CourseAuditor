@@ -14,7 +14,7 @@ namespace CourseAuditor.DAL
        
         public ApplicationContext() : base("default")
         {
-
+            
         }
         
         public DbSet<Student> Students { get; set; }

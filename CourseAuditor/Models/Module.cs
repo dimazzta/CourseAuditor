@@ -1,4 +1,5 @@
-﻿using CourseAuditor.Helpers;
+﻿using CourseAuditor.DAL;
+using CourseAuditor.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,12 +19,15 @@ namespace CourseAuditor.Models
         {
             get
             {
-                return Group.Students.Where(x => x.DateStart.InRange(DateStart, DateEnd)).ToList();
+                using (var _context = new ApplicationContext())
+                {
+                    return _context.Groups.Find(Group.ID).Students.Where(x => x.DateStart.InRange(DateStart, DateEnd)).ToList();
+                }
             }
         }
 
 
-        public Group Group
+        public virtual Group Group
         {
             get
             {

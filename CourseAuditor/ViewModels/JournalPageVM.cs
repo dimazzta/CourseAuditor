@@ -19,9 +19,12 @@ namespace CourseAuditor.ViewModels
         public JournalPageVM(IViewVM parent)
         {
             ParentViewVM = parent;
-            _context = new ApplicationContext();
-            
-            Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+
+            //(ParentViewVM as MainVM).SelectedModule.PropertyChanged += (s, e) => this.SelectedModule = (ParentViewVM as MainVM).SelectedModule;
+            //_context = (parent as MainVM)._context;
+
+            //Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+
         }
 
         #region Props

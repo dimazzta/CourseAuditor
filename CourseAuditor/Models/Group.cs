@@ -26,7 +26,7 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual ICollection<Module> Modules
+        public virtual  ICollection<Module> Modules
         {
             get
             {

@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Data.Entity;
 
 namespace CourseAuditor.ViewModels
 {
@@ -87,10 +88,11 @@ namespace CourseAuditor.ViewModels
 
 
         //Логика самого View
-        public ApplicationContext _context;
 
 
         public ObservableCollection<Course> Courses { get; set; }
+        public ObservableCollection<Student> Students { get; set; }
+
         private Group _SelectedGroup;
         public Group SelectedGroup
         {
@@ -368,12 +370,15 @@ namespace CourseAuditor.ViewModels
         //#endregion
 
         #region Contructors
-
         public MainVM(IView view)
         {
-            _context = new ApplicationContext();
-            Courses = new ObservableCollection<Course>(_context.Courses);
-           
+            using(var _context = new ApplicationContext())
+            {
+                var c = _context.Courses.Include(x => x.Groups.Select(t => t.Modules));
+                Students = new ObservableCollection<Student>(_context.Students.Include(x => x.Person).Include(x => x.Group));
+                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+            }
+
 
             CurrentView = view;
             CurrentView.DataContext = this;

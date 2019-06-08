@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Data.Entity;
 
 namespace CourseAuditor.Models
 {
@@ -21,7 +22,10 @@ namespace CourseAuditor.Models
             {
                 using (var _context = new ApplicationContext())
                 {
-                    return _context.Groups.Find(Group.ID).Students.Where(x => x.DateStart.InRange(DateStart, DateEnd)).ToList();
+                    return _context.Students
+                        .Where(x => (x.Group.ID == _Group.ID) && (x.DateStart >= _DateStart && x.DateStart < _DateEnd))
+                        .Include(t => t.Person)
+                        .ToList();
                 }
             }
         }

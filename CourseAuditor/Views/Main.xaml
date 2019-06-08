@@ -39,7 +39,7 @@
                             <TextBlock Text="{Binding Title}" />
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <HierarchicalDataTemplate 
-                                    ItemsSource="{Binding Path=Students}">
+                                    ItemsSource="{Binding Students}">
                                     <TextBlock Text="{Binding}" />
                                     <HierarchicalDataTemplate.ItemTemplate>
                                         <DataTemplate>

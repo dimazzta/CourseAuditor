@@ -1,7 +1,9 @@
-﻿using CourseAuditor.ViewModels;
+﻿using CourseAuditor.Models;
+using CourseAuditor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,5 +52,7 @@ namespace CourseAuditor.Views
         {
             (DataContext as JournalPageVM).CellChangedHanlder(e);
         }
+
+      
     }
 }

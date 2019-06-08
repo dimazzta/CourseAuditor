@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,14 +23,26 @@ namespace CourseAuditor.ViewModels
 
             //(ParentViewVM as MainVM).SelectedModule.PropertyChanged += (s, e) => this.SelectedModule = (ParentViewVM as MainVM).SelectedModule;
             //_context = (parent as MainVM)._context;
-
-            //Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+            using (var _context = new ApplicationContext())
+                Assessments = new ObservableCollection<Assessment>(_context.Assessments);
 
         }
 
         #region Props
-        private ApplicationContext _context;
         public IViewVM ParentViewVM { get; private set; }
+
+        private bool _HasChanges;
+        public bool HasChanges
+        {
+            get
+            {
+                return _HasChanges;
+            }
+            set
+            {
+                _HasChanges = value;
+            }
+        }
 
         public ObservableCollection<Assessment> Assessments { get; set; }
         private ObservableCollection<Student> _Students;
@@ -60,6 +73,10 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        internal void BeforeCellChangedHandler1(object item)
+        {
+            SelectedAssessment = (item as Journal).Assessment;
+        }
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -98,19 +115,26 @@ namespace CourseAuditor.ViewModels
         #endregion
 
         #region Methods
-
         private void UpdateJournal(Module module)
         {
 
             DataTable table = new DataTable();
-
-            List<Student> students = module.Students.OrderBy(x => x.Person.FullName).ToList();
             table.Columns.Add("Студент", typeof(Student));
 
-            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).Select(x => x.Date).OrderBy(x => x.Date).ToList();
+            List<Student> students;
+            using (var _context = new ApplicationContext())
+            {
+                students = _context.Students
+                    .Where(x => x.Group.ID == module.Group.ID && x.DateStart >= module.DateStart && x.DateStart < module.DateEnd)
+                    .Include(x => x.Journals
+                    .Select(t => t.Assessment))
+                    .Include(x => x.Person)
+                    .ToList();
+            }
+            List<DateTime> columns = students[0].Journals.Select(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Journal));
+                table.Columns.Add(column.ToString("dd-MM"), typeof(Journal));
             }
 
             foreach (var student in students)
@@ -122,69 +146,50 @@ namespace CourseAuditor.ViewModels
                 int i = 1;
                 foreach (var j in journals)
                     row[i++] = j;
-
                 table.Rows.Add(row);
             }
             Table = table;
-            TableInitialValues = new List<Tuple<Journal, Assessment>>();
-            CopyValues(Table, TableInitialValues);  // Данная копия хранит изначальный слепок таблицы. На нее будем откатываться.
         }
 
         private void SaveChanges()
         {
-            _context.SaveChanges();
-            CopyValues(Table, TableInitialValues);  // Новый слепок только что сохраненной таблицы.
+            using (var _context = new ApplicationContext())
+            {
+                int rows = Table.Rows.Count;
+                int cols = Table.Columns.Count;
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < cols; j++)
+                    {
+                        if (Table.Rows[i][j] is Journal)
+                        {
+                            var journal = Table.Rows[i][j] as Journal;
+                            var bJournal = _context.Journals.First(x => x.ID == journal.ID);
+                            var bAssessment = _context.Assessments.First(x => x.ID == journal.Assessment.ID);
+                            bJournal.Assessment = bAssessment;
+                        }
+                    }
+                }
+                _context.SaveChanges();
+            }
+            HasChanges = false;
             SaveChangesCommand.RaiseCanExecuteChanged();
             DiscardChangesCommand.RaiseCanExecuteChanged();
         }
 
         private void DiscardChanges()
         {
-            RestoreValues(TableInitialValues);  // Откат
+            HasChanges = false;
             UpdateJournal(_SelectedModule);
             SaveChangesCommand.RaiseCanExecuteChanged();
             DiscardChangesCommand.RaiseCanExecuteChanged();
         }
 
-        private bool HasChanges(List<Tuple<Journal, Assessment>> source)
-        {
-            bool result = true;
-            if (source != null)
-                foreach (var pair in source)
-                {
-                    result &= (pair.Item1 as Journal).Assessment == pair.Item2;
-                }
-            return !result;
-        }
 
-        private void CopyValues(DataTable source, List<Tuple<Journal, Assessment>> dest)
-        {
-            dest.Clear();
-            int rows = source.Rows.Count;
-            int cols = source.Columns.Count;
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (source.Rows[i][j] is Journal)
-                    {
-                        dest.Add(new Tuple<Journal, Assessment>(source.Rows[i][j] as Journal, (source.Rows[i][j] as Journal).Assessment));
-                    }
-                }
-            }
-        }
-
-        private void RestoreValues(List<Tuple<Journal, Assessment>> source)
-        {
-            foreach (var pair in source)
-            {
-                (pair.Item1 as Journal).Assessment = pair.Item2;
-            }
-        }
 
         private void UnsavedChangesPrompt()
         {
-            if (HasChanges(TableInitialValues))
+            if (HasChanges)
             {
                 var result = MessageBox.Show("В журнале есть несохраненные данные. Сохранить перед переходом к новой группе?", "Несохраненные данные", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
@@ -196,7 +201,6 @@ namespace CourseAuditor.ViewModels
                     DiscardChanges();
                 }
             }
-
         }
 
         #endregion
@@ -208,6 +212,7 @@ namespace CourseAuditor.ViewModels
             if (selectedColumn != 0)
             {
                 ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment = SelectedAssessment;
+                HasChanges = true;
                 SaveChangesCommand.RaiseCanExecuteChanged();
                 DiscardChangesCommand.RaiseCanExecuteChanged();
             }
@@ -218,7 +223,10 @@ namespace CourseAuditor.ViewModels
         {
             int selectedColumn = e.Column.DisplayIndex;
             if (selectedColumn != 0)
+            {
                 SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
+            }
+
         }
         #endregion
 
@@ -233,7 +241,7 @@ namespace CourseAuditor.ViewModels
                 },
                 (obj) =>
                 {
-                    return HasChanges(TableInitialValues);
+                    return HasChanges;
                 }
         ));
 
@@ -247,7 +255,7 @@ namespace CourseAuditor.ViewModels
                 },
                 (obj) =>
                 {
-                    return HasChanges(TableInitialValues);
+                    return HasChanges;
                 }
         ));
 

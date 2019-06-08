@@ -91,7 +91,6 @@ namespace CourseAuditor.ViewModels
 
 
         public ObservableCollection<Course> Courses { get; set; }
-        public ObservableCollection<Student> Students { get; set; }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -374,11 +373,8 @@ namespace CourseAuditor.ViewModels
         {
             using(var _context = new ApplicationContext())
             {
-                var c = _context.Courses.Include(x => x.Groups.Select(t => t.Modules));
-                Students = new ObservableCollection<Student>(_context.Students.Include(x => x.Person).Include(x => x.Group));
                 Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
             }
-
 
             CurrentView = view;
             CurrentView.DataContext = this;

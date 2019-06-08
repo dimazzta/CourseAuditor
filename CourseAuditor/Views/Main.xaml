@@ -29,7 +29,8 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        <!-- Очень просто, указываем ChangePage в в качестве команды VM, который надо показать. -->
+        <Button Content="Тестовая кнопка смены страницы" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></Button>
         <TreeView x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}" >
@@ -55,6 +56,7 @@
         </TreeView>
         
         <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
+            <!-- Обязательно указываем все вновь добавленные VM + V в таком формате. Т.е. DataType = наша VM, внутри соответствующий ей V-->
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">
                     <views:JournalFrame></views:JournalFrame>

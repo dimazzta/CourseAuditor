@@ -8,10 +8,6 @@ namespace CourseAuditor.ViewModels
 {
     public class AddCoursePageVM : BaseVM, IPageVM
     {
-        public AddCoursePageVM(IViewVM parent)
-        {
-            ParentViewVM = parent;
-        }
-        public IViewVM ParentViewVM { get; private set; }
+
     }
 }

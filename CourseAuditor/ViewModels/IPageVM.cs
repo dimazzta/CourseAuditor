@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.ViewModels
 {
+    // Интерфейс VM страницы. Страница - контент динамической области окна
     public interface IPageVM
     {
-        IViewVM ParentViewVM { get; }
+     
     }
 }

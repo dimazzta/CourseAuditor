@@ -76,6 +76,7 @@
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
+    <Compile Include="ViewModels\AppState.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
     <Compile Include="ViewModels\IViewVM.cs" />

@@ -39,8 +39,12 @@ namespace CourseAuditor.Views
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
-            Students.Columns[0].IsReadOnly = true;
-            Students.Columns[0].CanUserSort = true;
+            if (Students.Columns.Count > 0)
+            {
+                Students.Columns[0].IsReadOnly = true;
+                Students.Columns[0].CanUserSort = true;
+            }
+                
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)

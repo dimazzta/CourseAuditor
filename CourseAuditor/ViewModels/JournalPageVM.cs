@@ -5,6 +5,7 @@ using CourseAuditor.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -17,19 +18,29 @@ namespace CourseAuditor.ViewModels
 {
     public class JournalPageVM : BaseVM, IPageVM
     {
-        public JournalPageVM(IViewVM parent)
+        public JournalPageVM()
         {
-            ParentViewVM = parent;
-
-            //(ParentViewVM as MainVM).SelectedModule.PropertyChanged += (s, e) => this.SelectedModule = (ParentViewVM as MainVM).SelectedModule;
-            //_context = (parent as MainVM)._context;
             using (var _context = new ApplicationContext())
                 Assessments = new ObservableCollection<Assessment>(_context.Assessments);
 
+            // Подписка
+            AppState.I.PropertyChanged += StatePropertyChanged;
         }
 
+        // Обработчик изменения состояния
+        private void StatePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // В данном случае нас интересует только одно свойство
+            switch (e.PropertyName)
+            {
+                case "SelectedModule":
+                    this.SelectedModule = AppState.I.SelectedModule;
+                    break;
+            }
+        }
+
+
         #region Props
-        public IViewVM ParentViewVM { get; private set; }
 
         private bool _HasChanges;
         public bool HasChanges
@@ -167,6 +178,7 @@ namespace CourseAuditor.ViewModels
                             var bJournal = _context.Journals.First(x => x.ID == journal.ID);
                             var bAssessment = _context.Assessments.First(x => x.ID == journal.Assessment.ID);
                             bJournal.Assessment = bAssessment;
+                            _context.Entry(bJournal).State = EntityState.Modified;
                         }
                     }
                 }
@@ -260,7 +272,6 @@ namespace CourseAuditor.ViewModels
         ));
 
         #endregion
-
         
     }
 }

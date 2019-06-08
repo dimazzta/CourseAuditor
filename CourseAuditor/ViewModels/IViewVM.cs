@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
+    // Интерфейс VM вью (окна). Пока одно, возможно будет отдельное окно на печать
     public interface IViewVM
     {
         IPageVM CurrentPageVM { get; set; }

@@ -38,6 +38,12 @@
                 <MenuItem Header="Студента"/>
                 <MenuItem Header="Модуль"/>
             </MenuItem>
+            <MenuItem Header="Изменить">
+                <MenuItem Header="Курс" Command="{Binding ChangePage}" CommandParameter="{Binding EditCourseVM}"/>
+                <MenuItem Header="Группу"/>
+                <MenuItem Header="Студента"/>
+                <MenuItem Header="Модуль"/>
+            </MenuItem>
             <MenuItem Header="Журнал" Command="{Binding ChangePage}" CommandParameter="{Binding JournalPage}"/>
             <MenuItem Header="Сертификат"/>
             <MenuItem Header="Справка"/>
@@ -75,6 +81,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
                     <views:AddCoursePage></views:AddCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
+                    <views:EditCoursePage></views:EditCoursePage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

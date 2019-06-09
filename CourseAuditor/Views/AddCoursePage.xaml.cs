@@ -18,7 +18,7 @@ namespace CourseAuditor.Views
     /// <summary>
     /// Логика взаимодействия для AddCoursePage.xaml
     /// </summary>
-    public partial class AddCoursePage : UserControl
+    public partial class AddCoursePage : UserControl, IPage
     {
         public AddCoursePage()
         {

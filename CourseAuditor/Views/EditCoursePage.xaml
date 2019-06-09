@@ -15,6 +15,8 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+            <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
+            <ComboBox ItemsSource="{Binding Courses}" SelectedItem="{Binding SelectedCourse}" Margin="0, 0, 0, 10"/>
             <TextBlock TextWrapping="Wrap" Text="Название курса" Margin="0, 0, 0, 4"/>
             <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseName, Mode=TwoWay}"/>
 
@@ -24,7 +26,11 @@
             <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
             <TextBox Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseLessonsCount, Mode=TwoWay}"/>
 
-            <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding AddCourseCommand}"/>
-        </StackPanel>      
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding EditCourseCommand}" Margin="0,0,5,0"/>
+                <Button Content="Удалить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding DeleteCourseCommand}"/>
+            </StackPanel>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

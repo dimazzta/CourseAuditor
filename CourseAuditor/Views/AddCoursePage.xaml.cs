@@ -24,5 +24,6 @@ namespace CourseAuditor.Views
         {
             InitializeComponent();
         }
+
     }
 }

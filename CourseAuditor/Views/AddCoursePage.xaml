@@ -7,6 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Adding course page"></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="337,161,0,0" TextWrapping="Wrap" Text="Название курса" VerticalAlignment="Top" Height="20" Width="120"/>
+        <TextBox x:Name="CourseName" HorizontalAlignment="Left" Height="23" Margin="337,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CourseName}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="337,210,0,0" TextWrapping="Wrap" Text="Цена курса" VerticalAlignment="Top" Height="20" Width="120"/>
+            <TextBox x:Name="CoursePrice" HorizontalAlignment="Left" Height="23" Margin="337,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CoursePrice}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="337,260,0,0" TextWrapping="Wrap" Text="Количество занятий" VerticalAlignment="Top" Height="20" Width="120"/>
+        <TextBox x:Name="CourseLessonsCount" HorizontalAlignment="Left" Height="23" Margin="337,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CourseLessonsCount}"/>
+        <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Left" Margin="337,319,0,0" VerticalAlignment="Top" Width="120" Height="23" Command="{Binding AddCourseCommand}"/>
     </Grid>
 </UserControl>

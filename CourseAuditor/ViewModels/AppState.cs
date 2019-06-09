@@ -28,8 +28,6 @@ namespace CourseAuditor.ViewModels
         {
             get
             {
-                if (_SelectedGroup == null)
-                    _SelectedGroup = new Group();
                 return _SelectedGroup;
             }
             set
@@ -44,8 +42,6 @@ namespace CourseAuditor.ViewModels
         {
             get
             {
-                if (_SelectedModule == null)
-                    _SelectedModule = new Module();
                 return _SelectedModule;
             }
             set

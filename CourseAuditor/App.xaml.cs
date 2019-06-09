@@ -1,4 +1,5 @@
 ﻿using CourseAuditor.ViewModels;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace CourseAuditor
     {
         public App()
         {
+            DialogService.I.Register<DateTimeDialogVM, DateTimeDialogWindow>();
             new MainVM(new Main());
         }
     }

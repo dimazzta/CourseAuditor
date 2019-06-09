@@ -57,11 +57,14 @@
                 </Style>
             </DataGrid.CellStyle>
         </DataGrid>
-        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
-            <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
-        </StackPanel>
-
-
+        <Grid Grid.Column="0" Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
+                <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button  Content="Новое занятие" Style="{StaticResource DefaultButton}" Margin="10,0,0,0" Command="{Binding AddNewClassCommand}"></Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

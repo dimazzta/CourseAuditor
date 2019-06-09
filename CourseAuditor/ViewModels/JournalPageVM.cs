@@ -1,6 +1,7 @@
 ﻿using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace CourseAuditor.ViewModels
             AppState.I.PropertyChanged += StatePropertyChanged;
         }
 
-        // Обработчик изменения состояния
+        // Обработчик изменения состояния приложения
         private void StatePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // В данном случае нас интересует только одно свойство
@@ -52,6 +53,7 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _HasChanges = value;
+                OnPropertyChanged("HasChanges");
             }
         }
 
@@ -142,10 +144,10 @@ namespace CourseAuditor.ViewModels
                     .Include(x => x.Person)
                     .ToList();
             }
-            List<DateTime> columns = students[0].Journals.Select(x => x.Date).ToList();
+            List<DateTime> columns = students[0].Journals.Select(x => x.Date).OrderBy(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                table.Columns.Add(column.ToString("dd-MM"), typeof(Journal));
+                table.Columns.Add(column.ToString("dd MMM HH:mm"), typeof(Journal));
             }
 
             foreach (var student in students)
@@ -162,6 +164,47 @@ namespace CourseAuditor.ViewModels
             Table = table;
         }
 
+        private void AddNewClass()
+        {
+            var currentDate = DateTime.Now;
+            var dialog = new DateTimeDialogVM("Пожалуйста, выберите дату", currentDate);
+            bool? result = DialogService.I.ShowDialog(dialog);
+
+            if (result.HasValue)
+            {
+                if (result.Value)
+                {
+                    currentDate = dialog.PickedDate;
+                    var columnName = currentDate.ToString("dd MMM HH:mm");
+                    try
+                    {
+                        Table.Columns.Add(columnName, typeof(Journal));
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Данная дата уже есть в таблице."); // TODO: нумерация одинаковых дат в таблице
+                        return;
+                    }
+
+                    foreach (DataRow row in Table.Rows)
+                    {
+                        var journal = new Journal()
+                        {
+                            Date = currentDate,
+                            Student = row[0] as Student,
+                            Assessment = Assessments.First(x => x.Title == ""),
+                            ID = 0
+                        };
+                        row[columnName] = journal;
+                    }
+                    HasChanges = true;
+                    Table = Table.Copy(); // чтобы обновить UI. Не самое эффективное решение, но зато VM по прежнему ничего не знает о V
+                }
+                
+            }
+            
+        }
+
         private void SaveChanges()
         {
             using (var _context = new ApplicationContext())
@@ -175,26 +218,37 @@ namespace CourseAuditor.ViewModels
                         if (Table.Rows[i][j] is Journal)
                         {
                             var journal = Table.Rows[i][j] as Journal;
-                            var bJournal = _context.Journals.First(x => x.ID == journal.ID);
+                            var bJournal = _context.Journals.FirstOrDefault(x => x.ID == journal.ID);
                             var bAssessment = _context.Assessments.First(x => x.ID == journal.Assessment.ID);
-                            bJournal.Assessment = bAssessment;
-                            _context.Entry(bJournal).State = EntityState.Modified;
+                            if (bJournal != null)
+                            {
+                                bJournal.Assessment = bAssessment;
+                                _context.Entry(bJournal).State = EntityState.Modified;
+                            }
+                            else
+                            {
+                                var newJournal = new Journal()
+                                {
+                                    Student = _context.Students.First(x => x.ID == journal.Student.ID),
+                                    Date = journal.Date,
+                                    Assessment = _context.Assessments.FirstOrDefault(x => x.ID == journal.Assessment.ID)
+                                };
+                                _context.Journals.Add(newJournal);
+                                _context.Entry(newJournal).State = EntityState.Added;
+                            }
                         }
                     }
                 }
                 _context.SaveChanges();
             }
             HasChanges = false;
-            SaveChangesCommand.RaiseCanExecuteChanged();
-            DiscardChangesCommand.RaiseCanExecuteChanged();
         }
 
         private void DiscardChanges()
         {
             HasChanges = false;
             UpdateJournal(_SelectedModule);
-            SaveChangesCommand.RaiseCanExecuteChanged();
-            DiscardChangesCommand.RaiseCanExecuteChanged();
+          
         }
 
 
@@ -225,8 +279,6 @@ namespace CourseAuditor.ViewModels
             {
                 ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment = SelectedAssessment;
                 HasChanges = true;
-                SaveChangesCommand.RaiseCanExecuteChanged();
-                DiscardChangesCommand.RaiseCanExecuteChanged();
             }
 
         }
@@ -270,6 +322,20 @@ namespace CourseAuditor.ViewModels
                     return HasChanges;
                 }
         ));
+
+        private RelayCommand _AddNewClassCommand;
+        public RelayCommand AddNewClassCommand =>
+            _AddNewClassCommand ??
+            (_AddNewClassCommand = new RelayCommand(
+                (obj) =>
+                {
+                    AddNewClass();
+                },
+                (obj) =>
+                {
+                    return _SelectedModule != null;
+                }
+                ));
 
         #endregion
         

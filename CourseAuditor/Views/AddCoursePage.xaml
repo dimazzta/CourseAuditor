@@ -6,7 +6,19 @@
              xmlns:local="clr-namespace:CourseAuditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="Adding course page"></TextBlock>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="15, 0, 0, 0">
+ 
+            
+            
+        </StackPanel>
+  
     </Grid>
 </UserControl>

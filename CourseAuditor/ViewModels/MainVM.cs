@@ -53,6 +53,22 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private IPageVM _EditCourseVM;
+        public IPageVM EditCourseVM
+        {
+            get
+            {
+                if (_EditCourseVM == null)
+                    _EditCourseVM = new EditCoursePageVM();
+                return _EditCourseVM;
+            }
+            set
+            {
+                _EditCourseVM = value;
+                OnPropertyChanged("EditCourseVM");
+            }
+        }
+
         // Текущая страница
         private IPageVM _CurrentPageVM;
         public IPageVM CurrentPageVM

@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AddCoursePage.xaml
+    /// Логика взаимодействия для EditCoursePage.xaml
     /// </summary>
-    public partial class AddCoursePage : UserControl, IPage
+    public partial class EditCoursePage : UserControl
     {
-        public AddCoursePage()
+        public EditCoursePage()
         {
             InitializeComponent();
         }
-
     }
 }

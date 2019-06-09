@@ -65,5 +65,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Groups");
             }
         }
+
+        public override string ToString()
+        {
+            return $"ID - {ID} Название: {Name}";
+        }
     }
 }

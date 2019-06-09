@@ -77,6 +77,7 @@
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
+    <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
@@ -96,6 +97,9 @@
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditCoursePage.xaml.cs">
+      <DependentUpon>EditCoursePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IPage.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\JournalPage.xaml.cs">
@@ -114,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DateTimeDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditCoursePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

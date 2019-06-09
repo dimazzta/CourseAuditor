@@ -24,7 +24,7 @@
     <Grid>
         
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -80,6 +80,26 @@
                 </ContextMenu>
             </TreeView.Resources>
 
+        <!--<Button Content="Тестовая кнопка смены страницы" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></Button>-->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Добавить">
+                <MenuItem Header="Курс" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"/>
+                <MenuItem Header="Группу"/>
+                <MenuItem Header="Студента"/>
+                <MenuItem Header="Модуль"/>
+            </MenuItem>
+            <MenuItem Header="Изменить">
+                <MenuItem Header="Курс" Command="{Binding ChangePage}" CommandParameter="{Binding EditCourseVM}"/>
+                <MenuItem Header="Группу"/>
+                <MenuItem Header="Студента"/>
+                <MenuItem Header="Модуль"/>
+            </MenuItem>
+            <MenuItem Header="Журнал" Command="{Binding ChangePage}" CommandParameter="{Binding JournalPage}"/>
+            <MenuItem Header="Сертификат"/>
+            <MenuItem Header="Справка"/>
+        </Menu>
+
+        <TreeView x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}">
                     <TextBlock Text="{Binding Name}"/>
@@ -112,6 +132,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
                     <views:AddCoursePage></views:AddCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
+                    <views:EditCoursePage></views:EditCoursePage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

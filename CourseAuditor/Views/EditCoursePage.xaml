@@ -27,8 +27,8 @@
             <TextBox Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseLessonsCount, Mode=TwoWay}"/>
 
             <StackPanel Orientation="Horizontal">
-                <Button Content="Добавить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding EditCourseCommand}" Margin="0,0,5,0"/>
-                <Button Content="Удалить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding DeleteCourseCommand}"/>
+                <Button Content="Изменить" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding EditCourseCommand}" Margin="0,0,5,0"/>
+                <Button Content="Удалить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding DeleteCourseCommand}"/>
             </StackPanel>
         </StackPanel>
         

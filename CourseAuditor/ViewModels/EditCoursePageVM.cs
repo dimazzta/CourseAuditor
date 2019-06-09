@@ -35,11 +35,16 @@ namespace CourseAuditor.ViewModels
         {
             if(e.ObjectChanged is Course)
             {
+                int id = SelectedCourse.ID;
                 using (var _context = new ApplicationContext())
                 {
                     Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups));
                 }
-                this.SelectedCourse = Courses.First();
+                if (!Courses.Any(x => x.ID == id))
+                    SelectedCourse = Courses.First();
+                else
+                    SelectedCourse = Courses.First(x => x.ID == id);
+                    
             }
         }
 

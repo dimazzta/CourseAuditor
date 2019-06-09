@@ -13,32 +13,81 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Data.Entity;
 
 namespace CourseAuditor.ViewModels
 {
-    public class MainVM : BaseVM
+    public class MainVM : BaseVM, IViewVM
     {
-        private ApplicationContext _context;
-
-
-        public IView CurrentView { get; set; }
-        public ObservableCollection<Course> Courses { get; set; }
-        public ObservableCollection<Student> Students { get; set; }
-        public ObservableCollection<Assessment> Assessments { get; set; }
-
-        private Assessment _SelectedAssessment;
-        public Assessment SelectedAssessment
+        // Список доступных страниц в данной View
+        private IPageVM _JournalPage;
+        public IPageVM JournalPage
         {
             get
             {
-                return _SelectedAssessment;
+                if (_JournalPage == null)
+                    _JournalPage = new JournalPageVM();
+                return _JournalPage;
             }
             set
             {
-                _SelectedAssessment = value;
-                OnPropertyChanged("SelectedAssessment");
+                _JournalPage = value;
+                OnPropertyChanged("JournalPage");
             }
         }
+
+        private IPageVM _AddCourseVM;
+        public IPageVM AddCourseVM
+        {
+            get
+            {
+                if (_AddCourseVM == null)
+                    _AddCourseVM = new AddCoursePageVM();
+                return _AddCourseVM;
+            }
+            set
+            {
+                _AddCourseVM = value;
+                OnPropertyChanged("AddCourseVM");
+            }
+        }
+
+        // Текущая страница
+        private IPageVM _CurrentPageVM;
+        public IPageVM CurrentPageVM
+        {
+            get
+            {
+                return _CurrentPageVM;
+            }
+            set
+            {
+                _CurrentPageVM = value;
+                OnPropertyChanged("CurrentPageVM");
+            }
+        }
+
+
+        // Команда для смены страницы. Параметр команды - IPageVM, его передаем из xaml 
+        // за счет того что указан DataTemplate. Таким образом реализуется главный принцип
+        // MVVM - VM ничего не знают о V
+        private ICommand _ChangePage;
+        public ICommand ChangePage =>
+            _ChangePage ??
+            (_ChangePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = (obj as IPageVM);
+                }
+             ));
+
+        //UI View
+        public IView CurrentView { get; set; }
+
+
+        //Логика самого View
+        public ObservableCollection<Course> Courses { get; set; }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -50,81 +99,66 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                Students = new ObservableCollection<Student>(value.Students);
-                UpdateJournal();
+                SelectedModule = _SelectedGroup.LastModule;
+                if (_SelectedGroup != AppState.I.SelectedGroup)
+                    AppState.I.SelectedGroup = _SelectedGroup;
+
                 OnPropertyChanged("SelectedGroup");
             }
         }
 
-        private DataTable _Table;
-        public DataTable Table
+        private Module _SelectedModule;
+        public Module SelectedModule
         {
             get
             {
-                return _Table;
+                return _SelectedModule;
             }
             set
             {
-                _Table = value;
-                OnPropertyChanged("Table");
-            }
-        }
-
-        private void UpdateJournal()
-        {
-            DataTable table = new DataTable();
-
-            Module lastModule = _SelectedGroup.Modules.OrderBy(x => x.DateStart).Last();
-            List<Student> students = _SelectedGroup.Students.ToList();
-            table.Columns.Add("Студент");
-
-            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).Select(x => x.Date).ToList();
-            foreach (var column in columns)
-            {
-                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Assessment));
-            }
-      
-            foreach (var student in students)
-            {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(lastModule.DateStart, lastModule.DateEnd)).ToList();
-                DataRow row = table.NewRow();
-                row[0] = student.Person.FullName;
-                
-                int i = 1;
-                foreach (var j in journals)
+                if (value != _SelectedModule)
                 {
-                    row[i] = j.Assessment;
-                    i++;
+                    _SelectedModule = value;
+
+                    // В сеттере меняем глобальное состояние (если это предсмотрено логикой)
+                    if (_SelectedModule != AppState.I.SelectedModule)
+                        AppState.I.SelectedModule = _SelectedModule;
+
+                    OnPropertyChanged("SelectedModule");
                 }
-                table.Rows.Add(row);
             }
-            Table = table;
-
-        }
-        
-        public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)
-        {
-            int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
-                (e.Row.Item as DataRowView).Row[selectedColumn] = SelectedAssessment;
         }
 
-        public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
-        {
-            int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
-                SelectedAssessment = (e.Row.Item as DataRowView).Row[selectedColumn] as Assessment;
-        }
 
+        #region Contructors
         public MainVM(IView view)
         {
-            _context = new ApplicationContext();
-            Courses = new ObservableCollection<Course>(_context.Courses);
-            Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+            using(var _context = new ApplicationContext())
+            {
+                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+            }
+
+            AppState.I.PropertyChanged += StatePropertyChanged;
 
             CurrentView = view;
             CurrentView.DataContext = this;
+            CurrentPageVM = JournalPage;
             CurrentView.Show();
         }
+
+        private void StatePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedModule":
+                    this.SelectedModule = AppState.I.SelectedModule;
+                    break;
+                case "SelectedGroup":
+                    this.SelectedGroup = AppState.I.SelectedGroup;
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

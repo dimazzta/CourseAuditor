@@ -5,75 +5,70 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local1="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+        xmlns:sdk="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:views="clr-namespace:CourseAuditor.Views"
+        xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
         mc:Ignorable="d"
         Title="Main"
         WindowState="Normal">
-
-
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="TVCourseGroups" Grid.Row="1" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+        <!-- Очень просто, указываем ChangePage в в качестве команды VM, который надо показать. -->
+        <Button Content="Тестовая кнопка смены страницы" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></Button>
+        <TreeView x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}" >
                     <TextBlock Text="{Binding Name}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
-                        <DataTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Modules}">
                             <TextBlock Text="{Binding Title}" />
-                        </DataTemplate>
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <HierarchicalDataTemplate 
+                                    ItemsSource="{Binding Students}">
+                                    <TextBlock Text="{Binding}" />
+                                    <HierarchicalDataTemplate.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </HierarchicalDataTemplate.ItemTemplate>
+                                </HierarchicalDataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
                     </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-
-        <DataGrid 
-                  CanUserAddRows="False"
-                  SelectionUnit="Cell" 
-                  SelectionMode="Extended"
-                  x:Name="Students"
-                  ItemsSource="{Binding Table}"
-                  Grid.Column="1" 
-                  Grid.Row="1">
-
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsEditing"  Value="True"></Condition>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid>
-                                            <ComboBox x:Name="cbCondition1" 
-                                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.Assessments}"
-                                                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.SelectedAssessment}">
-                                            </ComboBox>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </MultiTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-        </DataGrid>
-        <Menu HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <MenuItem Header="Добавить">
-                <MenuItem x:Name="EditCourse" Header="Курс" Click="EditCourse_Click"/>
-                <MenuItem Header="Группу"/>
-                <MenuItem Header="Студента"/>
-            </MenuItem>
-            <MenuItem Header="Сертификат"/>
-        </Menu>
-            
+        
+        <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
+            <!-- Обязательно указываем все вновь добавленные VM + V в таком формате. Т.е. DataType = наша VM, внутри соответствующий ей V-->
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">
+                    <views:JournalFrame></views:JournalFrame>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
+                    <views:AddCoursePage></views:AddCoursePage>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+        
+        
+        <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
     </Grid>
-
+    
 </Window>

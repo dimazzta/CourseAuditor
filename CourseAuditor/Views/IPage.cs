@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Views
 {
-    public interface IFrame
+    public interface IPage
     {
-        // Something like GetDataContext ?
-        object DataContext { get; set; }
+
     }
 }

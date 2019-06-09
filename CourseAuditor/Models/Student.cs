@@ -109,6 +109,9 @@ namespace CourseAuditor.Models
             }
         }
 
-        
+        public override string ToString()
+        {
+            return Person.FullName;
+        }
     }
 }

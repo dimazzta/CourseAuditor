@@ -24,45 +24,45 @@ namespace CourseAuditor.Views
     /// </summary>
     public partial class Main : Window, IView
     {
-        public IFrame CurrentFrame { get => throw new NotImplementedException(); set => Content = value; }
+        public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public Main()
         {
             InitializeComponent();
-            Students.PreparingCellForEdit += Students_PreparingCellForEdit;
-            Students.CellEditEnding += Students_CellEditEnding;
+            //Students.PreparingCellForEdit += Students_PreparingCellForEdit;
+            //Students.CellEditEnding += Students_CellEditEnding;
 
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null)
-            {
-                dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
-            }
+            //var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
+            //if (dpd != null)
+            //{
+            //    dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
+            //}
+
         }
+
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
             //Students.Columns[0].IsReadOnly = true;
+            //Students.Columns[0].CanUserSort = true;
         }
 
-        private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
-        {
-            (DataContext as MainVM).BeforeCellChangedHandler(e);
-        }
+        //private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        //{
+        //    (DataContext as MainVM).BeforeCellChangedHandler(e);
+        //}
 
-        private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            (DataContext as MainVM).CellChangedHanlder(e);
-        }
+        //private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //{
+        //    (DataContext as MainVM).CellChangedHanlder(e);
+        //}
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is Group)
-                  (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
-        }
-
-        private void EditCourse_Click(object sender, RoutedEventArgs e)
-        {
-            CurrentFrame = (new EditCourseVM(new EditCourseFrame())).CurrentFrame;
+                (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
+            if (e.NewValue is Module)
+                (DataContext as MainVM).SelectedModule = e.NewValue as Module;
         }
     }
 }

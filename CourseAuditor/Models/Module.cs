@@ -1,16 +1,37 @@
-﻿using System;
+﻿using CourseAuditor.DAL;
+using CourseAuditor.Helpers;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Data.Entity;
 
 namespace CourseAuditor.Models
 {
     public class Module : ObservableObject
     {
-        public Group _Group;
-        public int _Number;
-        public DateTime _DateStart;
-        public DateTime _DateEnd;
+        private Group _Group;
+        private int _Number;
+        private DateTime _DateStart;
+        private DateTime _DateEnd;
 
-        public Group Group
+        [NotMapped]
+        public ICollection<Student> Students
+        {
+            get
+            {
+                using (var _context = new ApplicationContext())
+                {
+                    return _context.Students
+                        .Where(x => (x.Group.ID == _Group.ID) && (x.DateStart >= _DateStart && x.DateStart < _DateEnd))
+                        .Include(t => t.Person)
+                        .ToList();
+                }
+            }
+        }
+
+
+        public virtual Group Group
         {
             get
             {
@@ -59,6 +80,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("DateEnd");
             }
         }
-        
+
+        public override string ToString()
+        {
+            return "Модуль " + Number.ToString();
+        }
     }
 }

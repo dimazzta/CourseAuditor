@@ -25,37 +25,15 @@ namespace CourseAuditor.Views
     public partial class Main : Window, IView
     {
         public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+        private TreeViewItem m_OldSelectNode;
         public Main()
         {
             InitializeComponent();
-            //Students.PreparingCellForEdit += Students_PreparingCellForEdit;
-            //Students.CellEditEnding += Students_CellEditEnding;
-
-            //var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            //if (dpd != null)
-            //{
-            //    dpd.AddValueChanged(Students, ItemsSourceChangedHanlder);
-            //}
-
         }
 
 
-        private void ItemsSourceChangedHanlder(object sender, EventArgs e)
-        {
-            //Students.Columns[0].IsReadOnly = true;
-            //Students.Columns[0].CanUserSort = true;
-        }
 
-        //private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
-        //{
-        //    (DataContext as MainVM).BeforeCellChangedHandler(e);
-        //}
 
-        //private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    (DataContext as MainVM).CellChangedHanlder(e);
-        //}
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -63,6 +41,49 @@ namespace CourseAuditor.Views
                 (DataContext as MainVM).SelectedGroup = e.NewValue as Group;
             if (e.NewValue is Module)
                 (DataContext as MainVM).SelectedModule = e.NewValue as Module;
+        }
+
+        private void TVCourseGroups_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+                if (treeViewItem != null)
+                {
+                    treeViewItem.Focus();
+                    if (treeViewItem.DataContext is Course)
+                    {
+                        ContextMenu CourseMenu = TVCourseGroups.Resources["CourseMenu"] as ContextMenu;
+                        CourseMenu.PlacementTarget = treeViewItem;
+                        CourseMenu.IsOpen = true;
+                    }
+                    else if (treeViewItem.DataContext is Group)
+                    {
+                        ContextMenu GroupMenu = TVCourseGroups.Resources["GroupMenu"] as ContextMenu;
+                        GroupMenu.PlacementTarget = treeViewItem;
+                        GroupMenu.IsOpen = true;
+                    }
+                    else if (treeViewItem.DataContext is Module)
+                    {
+                        ContextMenu ModuleMenu = TVCourseGroups.Resources["ModuleMenu"] as ContextMenu;
+                        ModuleMenu.PlacementTarget = treeViewItem;
+                        ModuleMenu.IsOpen = true;
+                    }
+                    else if (treeViewItem.DataContext is Student)
+                    {
+                        ContextMenu StudentMenu = TVCourseGroups.Resources["StudentMenu"] as ContextMenu;
+                        StudentMenu.PlacementTarget = treeViewItem;
+                        StudentMenu.IsOpen = true;
+                    }
+                }
+            }
+            TreeViewItem VisualUpwardSearch(DependencyObject source)
+            {
+                while (source != null && !(source is TreeViewItem))
+                    source = VisualTreeHelper.GetParent(source);
+
+                return source as TreeViewItem;
+            }
         }
     }
 }

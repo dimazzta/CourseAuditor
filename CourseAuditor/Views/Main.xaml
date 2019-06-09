@@ -18,8 +18,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
+    
     
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -29,11 +32,56 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
+
+
         <!-- Очень просто, указываем ChangePage в в качестве команды VM, который надо показать. -->
         <Button Content="Тестовая кнопка смены страницы" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></Button>
-        <TreeView x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+
+        <TreeView ContextMenuService.IsEnabled="false" x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+
+            <TreeView.Resources>
+                <!--Набор контекстных меню. Команды указываются здесь-->
+                <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
+                    <MenuItem Header="Добавить группу"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Изменить"></MenuItem>
+                    <MenuItem Header="Удалить"></MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="GroupMenu" Name="GroupMenu">
+                    <MenuItem Header="Добавить модуль"></MenuItem>
+                    <MenuItem Header="Добавить студента"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Печать сертификатов"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Изменить"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить"></MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
+                    <MenuItem Header="Печать сертификатов"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Изменить"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить"></MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="StudentMenu" Name="StudentMenu">
+                    <MenuItem Header="Добавить справку"></MenuItem>
+                    <MenuItem Header="Добавить оплату"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Печать сертификатов"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Изменить"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить"></MenuItem>
+                </ContextMenu>
+            </TreeView.Resources>
+
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}" >
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}">
                     <TextBlock Text="{Binding Name}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Modules}">
@@ -41,9 +89,10 @@
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <HierarchicalDataTemplate 
                                     ItemsSource="{Binding Students}">
-                                    <TextBlock Text="{Binding}" />
+                                    <TextBlock Text="{Binding}"/>
                                     <HierarchicalDataTemplate.ItemTemplate>
                                         <DataTemplate>
+    
                                             <TextBlock Text="{Binding}"></TextBlock>
                                         </DataTemplate>
                                     </HierarchicalDataTemplate.ItemTemplate>

@@ -248,10 +248,7 @@ namespace CourseAuditor.ViewModels
         {
             HasChanges = false;
             UpdateJournal(_SelectedModule);
-          
         }
-
-
 
         private void UnsavedChangesPrompt()
         {

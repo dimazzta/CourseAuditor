@@ -87,7 +87,19 @@ namespace CourseAuditor.ViewModels
 
 
         //Логика самого View
-        public ObservableCollection<Course> Courses { get; set; }
+        private ObservableCollection<Course> _Courses;
+        public ObservableCollection<Course> Courses
+        {
+            get
+            {
+                return _Courses;
+            }
+            set
+            {
+                _Courses = value;
+                OnPropertyChanged("Courses");
+            }
+        }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -137,13 +149,24 @@ namespace CourseAuditor.ViewModels
             {
                 Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
             }
-
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
             AppState.I.PropertyChanged += StatePropertyChanged;
 
             CurrentView = view;
             CurrentView.DataContext = this;
             CurrentPageVM = JournalPage;
             CurrentView.Show();
+        }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student || e.ObjectChanged is Module)
+            {
+                using (var _context = new ApplicationContext())
+                {
+                    Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+                }
+            }
         }
 
         private void StatePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -72,7 +72,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\EventsManager.cs" />
     <Compile Include="Helpers\Ext.cs" />
+    <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />

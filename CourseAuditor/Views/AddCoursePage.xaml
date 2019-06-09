@@ -14,18 +14,18 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="337,161,0,0" TextWrapping="Wrap" Text="Название курса" VerticalAlignment="Top" Height="20" Width="120"/>
-        <TextBox x:Name="CourseName" HorizontalAlignment="Left" Height="23" Margin="337,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CourseName}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="337,210,0,0" TextWrapping="Wrap" Text="Цена курса" VerticalAlignment="Top" Height="20" Width="120"/>
-            <TextBox x:Name="CoursePrice" HorizontalAlignment="Left" Height="23" Margin="337,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CoursePrice}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="337,260,0,0" TextWrapping="Wrap" Text="Количество занятий" VerticalAlignment="Top" Height="20" Width="120"/>
-        <TextBox x:Name="CourseLessonsCount" HorizontalAlignment="Left" Height="23" Margin="337,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding CourseLessonsCount}"/>
-        <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Left" Margin="337,319,0,0" VerticalAlignment="Top" Width="120" Height="23" Command="{Binding AddCourseCommand}"/>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="15, 0, 0, 0">
- 
-            
-            
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+            <TextBlock TextWrapping="Wrap" Text="Название курса" Margin="0, 0, 0, 4"/>
+            <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseName, Mode=TwoWay}"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Цена курса" Margin="0, 0, 0, 4"/>
+            <TextBox Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CoursePrice, Mode=TwoWay}"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
+            <TextBox Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseLessonsCount, Mode=TwoWay}"/>
+
+            <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding AddCourseCommand}"/>
         </StackPanel>
-  
+
     </Grid>
 </UserControl>

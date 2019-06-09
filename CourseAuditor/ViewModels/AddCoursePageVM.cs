@@ -14,7 +14,7 @@ namespace CourseAuditor.ViewModels
     {
         public AddCoursePageVM()
         {
-            SelectedCourse = new Course();
+            
         }
 
         private string _CourseName;
@@ -31,12 +31,12 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double _CoursePrice;
-        public string CoursePrice
+        private double? _CoursePrice;
+        public double? CoursePrice
         {
             get
             {
-                return _CoursePrice.ToString();
+                return _CoursePrice;
             }
             set
             {
@@ -45,12 +45,12 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private int _CourseLessonsCount;
-        public string CourseLessonsCount
+        private int? _CourseLessonsCount;
+        public int? CourseLessonsCount
         {
             get
             {
-                return _CourseLessonsCount.ToString();
+                return _CourseLessonsCount;
             }
             set
             {
@@ -59,39 +59,16 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private ObservableCollection<Course> _Courses;
-        public ObservableCollection<Course> Courses
-        {
-            get
-            {
-                return _Courses;
-            }
-            set
-            {
-                _Courses = value;
-                OnPropertyChanged("Courses");
-            }
-        }
 
-        private Course _SelectedCourse;
-        private Course SelectedCourse
-        {
-            get
-            {
-                return _SelectedCourse;
-            }
-            set
-            {
-                _SelectedCourse = value;
-                OnPropertyChanged("SelectedCourse");
-            }
-        }
 
         private void AddCourse()
         {
-            SelectedCourse.Name = _CourseName;
-            SelectedCourse.Price = _CoursePrice;
-            SelectedCourse.LessonsCount = _CourseLessonsCount;
+            var SelectedCourse = new Course
+            {
+                Name = _CourseName,
+                Price = _CoursePrice.Value,
+                LessonsCount = _CourseLessonsCount.Value
+            };
             using (var _context = new ApplicationContext())
             {
                 _context.Courses.Add(SelectedCourse);
@@ -106,6 +83,10 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     AddCourse();
+                },
+                (obj) =>
+                {
+                    return CourseName != null && CourseName != null && CourseLessonsCount != null;
                 }
         ));
     }

@@ -3,11 +3,11 @@
                     xmlns:local="clr-namespace:CourseAuditor.Views">
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="Height" Value="30"></Setter>
-        <Setter Property="Padding" Value="5, 2"></Setter>
+        <Setter Property="Padding" Value="10, 2"></Setter>
     </Style>
 
     <Style x:Key="DefaultTBox" TargetType="{x:Type TextBox}" BasedOn="{x:Null}">
-        <Setter Property="Height" Value="30"></Setter>
+        <Setter Property="Height" Value="25"></Setter>
         <Setter Property="Width" Value="200"></Setter>
     </Style>
 </ResourceDictionary>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CourseAuditor.Models;
+using CourseAuditor.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +18,18 @@ using System.Windows.Shapes;
 namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AddCoursePage.xaml
+    /// Логика взаимодействия для EditCourseFrame.xaml
     /// </summary>
-    public partial class AddCoursePage : UserControl
+    public partial class EditCourseFrame : UserControl , IFrame
     {
-        public AddCoursePage()
+        public EditCourseFrame()
         {
             InitializeComponent();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as EditCourseVM).AddCourse(tbCourseName.Text, tbCoursePrice.Text, tbCourseLessonsCount.Text);
+        }
     }
 }

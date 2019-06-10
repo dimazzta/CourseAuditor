@@ -13,6 +13,5 @@ namespace CourseAuditor.ViewModels
     {
         IPageVM CurrentPageVM { get; set; }
         IView CurrentView { get; set; }
-        ICommand ChangePage { get; }
     }
 }

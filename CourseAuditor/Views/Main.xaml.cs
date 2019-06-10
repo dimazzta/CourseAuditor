@@ -43,6 +43,7 @@ namespace CourseAuditor.Views
                 (DataContext as MainVM).SelectedModule = e.NewValue as Module;
         }
 
+
         private void TVCourseGroups_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
@@ -53,6 +54,7 @@ namespace CourseAuditor.Views
                     treeViewItem.Focus();
                     if (treeViewItem.DataContext is Course)
                     {
+                        AppState.I.SelectedContextCourse = treeViewItem.DataContext as Course;
                         ContextMenu CourseMenu = TVCourseGroups.Resources["CourseMenu"] as ContextMenu;
                         CourseMenu.PlacementTarget = treeViewItem;
                         CourseMenu.IsOpen = true;
@@ -77,13 +79,13 @@ namespace CourseAuditor.Views
                     }
                 }
             }
-            TreeViewItem VisualUpwardSearch(DependencyObject source)
-            {
-                while (source != null && !(source is TreeViewItem))
-                    source = VisualTreeHelper.GetParent(source);
+        }
+        TreeViewItem VisualUpwardSearch(DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
 
-                return source as TreeViewItem;
-            }
+            return source as TreeViewItem;
         }
     }
 }

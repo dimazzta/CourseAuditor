@@ -20,63 +20,10 @@ namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM, IViewVM
     {
-        // Список доступных страниц в данной View
-        private IPageVM _JournalPage;
-        public IPageVM JournalPage
-        {
-            get
-            {
-                if (_JournalPage == null)
-                    _JournalPage = new JournalPageVM();
-                return _JournalPage;
-            }
-            set
-            {
-                _JournalPage = value;
-                OnPropertyChanged("JournalPage");
-            }
-        }
-
-        private IPageVM _AddCourseVM;
-        public IPageVM AddCourseVM
-        {
-            get
-            {
-                if (_AddCourseVM == null)
-                    _AddCourseVM = new AddCoursePageVM();
-                return _AddCourseVM;
-            }
-            set
-            {
-                _AddCourseVM = value;
-                OnPropertyChanged("AddCourseVM");
-            }
-        }
-
-        private IPageVM _EditCourseVM;
-        public IPageVM EditCourseVM
-        {
-            get
-            {
-                if (_EditCourseVM == null)
-                    _EditCourseVM = new EditCoursePageVM();
-                return _EditCourseVM;
-            }
-            set
-            {
-                _EditCourseVM = value;
-                OnPropertyChanged("EditCourseVM");
-            }
-        }
-
-        // Текущая страница
         private IPageVM _CurrentPageVM;
         public IPageVM CurrentPageVM
         {
-            get
-            {
-                return _CurrentPageVM;
-            }
+            get => _CurrentPageVM;
             set
             {
                 _CurrentPageVM = value;
@@ -84,17 +31,34 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-
-        // Команда для смены страницы. Параметр команды - IPageVM, его передаем из xaml 
-        // за счет того что указан DataTemplate. Таким образом реализуется главный принцип
-        // MVVM - VM ничего не знают о V
-        private ICommand _ChangePage;
-        public ICommand ChangePage =>
-            _ChangePage ??
-            (_ChangePage = new RelayCommand(
+        // Команда для смены страницы. Под кажду страницу своя команда. В команде явно создаем новый экземпляр VM.
+        private ICommand _JournalPage;
+        public ICommand JournalPage =>
+            _JournalPage ??
+            (_JournalPage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = (obj as IPageVM);
+                    CurrentPageVM = new JournalPageVM();
+                }
+             ));
+
+        private ICommand _AddCoursePage;
+        public ICommand AddCoursePage =>
+            _AddCoursePage ??
+            (_AddCoursePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddCoursePageVM();
+                }
+             ));
+
+        private ICommand _EditCoursePage;
+        public ICommand EditCoursePage =>
+            _EditCoursePage ??
+            (_EditCoursePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditCoursePageVM(AppState.I.SelectedContextCourse);
                 }
              ));
 
@@ -157,6 +121,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        
+
 
         #region Contructors
         public MainVM(IView view)
@@ -170,7 +136,7 @@ namespace CourseAuditor.ViewModels
 
             CurrentView = view;
             CurrentView.DataContext = this;
-            CurrentPageVM = JournalPage;
+            CurrentPageVM = new JournalPageVM();
             CurrentView.Show();
         }
 

@@ -25,6 +25,7 @@ namespace CourseAuditor.ViewModels
                 Assessments = new ObservableCollection<Assessment>(_context.Assessments);
 
             // Подписка
+            SelectedModule = AppState.I.SelectedModule; 
             AppState.I.PropertyChanged += StatePropertyChanged;
         }
 

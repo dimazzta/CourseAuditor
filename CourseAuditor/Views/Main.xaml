@@ -32,24 +32,28 @@
 
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Добавить">
-                <MenuItem Header="Курс" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"/>
+                <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
                 <MenuItem Header="Группу"/>
                 <MenuItem Header="Студента"/>
                 <MenuItem Header="Модуль"/>
             </MenuItem>
             <MenuItem Header="Изменить">
-                <MenuItem Header="Курс" Command="{Binding ChangePage}" CommandParameter="{Binding EditCourseVM}"/>
+                <MenuItem Header="Курс" Command="{Binding EditCoursePage}"/>
                 <MenuItem Header="Группу"/>
                 <MenuItem Header="Студента"/>
                 <MenuItem Header="Модуль"/>
             </MenuItem>
-            <MenuItem Header="Журнал" Command="{Binding ChangePage}" CommandParameter="{Binding JournalPage}"/>
+            <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
             <MenuItem Header="Сертификат"/>
             <MenuItem Header="Справка"/>
         </Menu>
 
-        <TreeView ContextMenuService.IsEnabled="false" x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
-
+        <TreeView  x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+            <TreeView.ContextMenu>
+                <ContextMenu Name="TreeViewMenu">
+                    <MenuItem Header="Добавить курс" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
             <TreeView.Resources>
                 <!--Набор контекстных меню. Команды указываются здесь-->
                 <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
@@ -111,24 +115,23 @@
                     </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-            
+
         </TreeView>
 
-            <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
+        <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
             <!-- Обязательно указываем все вновь добавленные VM + V в таком формате. Т.е. DataType = наша VM, внутри соответствующий ей V-->
-                <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">
-                        <views:JournalFrame></views:JournalFrame>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
-                        <views:AddCoursePage></views:AddCoursePage>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
-                        <views:EditCoursePage></views:EditCoursePage>
-                    </DataTemplate>
-                </ContentControl.Resources>
-            </ContentControl>
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">
+                    <views:JournalFrame></views:JournalFrame>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
+                    <views:AddCoursePage></views:AddCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
+                    <views:EditCoursePage></views:EditCoursePage>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
         <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
     </Grid>
-    
 </Window>

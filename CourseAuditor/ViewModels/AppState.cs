@@ -50,5 +50,61 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("SelectedModule");
             }
         }
+
+        private Course _SelectedContextCourse;
+        public Course SelectedContextCourse
+        {
+            get
+            {
+                return _SelectedContextCourse;
+            }
+            set
+            {
+                _SelectedContextCourse = value;
+                OnPropertyChanged("SelectedContextCourse");
+            }
+        }
+
+        private Group _SelectedContextGroup;
+        public Group SelectedContextGroup
+        {
+            get
+            {
+                return _SelectedContextGroup;
+            }
+            set
+            {
+                _SelectedContextGroup = value;
+                OnPropertyChanged("SelectedContextGroup");
+            }
+        }
+
+        private Module _SelectedContextModule;
+        public Module SelectedContextModule
+        {
+            get
+            {
+                return _SelectedContextModule;
+            }
+            set
+            {
+                _SelectedContextModule = value;
+                OnPropertyChanged("SelectedContextModule");
+            }
+        }
+
+        private Student _SelectedContextStudent;
+        public Student SelectedContextStudent
+        {
+            get
+            {
+                return _SelectedContextStudent;
+            }
+            set
+            {
+                _SelectedContextStudent = value;
+                OnPropertyChanged("SelectedContextStudent");
+            }
+        }
     }
 }

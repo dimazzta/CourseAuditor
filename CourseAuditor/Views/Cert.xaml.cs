@@ -10,20 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для Certificate.xaml
+    /// Логика взаимодействия для Cert.xaml
     /// </summary>
-    public partial class Certificate : Window,IView
+    public partial class Cert : Page
     {
-        public Certificate()
+        public Cert()
         {
             InitializeComponent();
         }
-
-        public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

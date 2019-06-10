@@ -90,7 +90,7 @@ namespace CourseAuditor.Views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new CertificateVM(new Certificate());
+           // new CertificateVM(new Certificate());
         }
     }
 }

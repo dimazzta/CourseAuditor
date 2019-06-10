@@ -13,20 +13,19 @@ namespace CourseAuditor.Models
         private Group _Group;
         private int _Number;
         private DateTime _DateStart;
-        private DateTime _DateEnd;
+        private DateTime? _DateEnd;
+        private ICollection<Student> _Students;
 
-        [NotMapped]
-        public ICollection<Student> Students
+        public virtual ICollection<Student> Students
         {
             get
             {
-                using (var _context = new ApplicationContext())
-                {
-                    return _context.Students
-                        .Where(x => (x.Group.ID == _Group.ID) && (x.DateStart >= _DateStart && x.DateStart < _DateEnd))
-                        .Include(t => t.Person)
-                        .ToList();
-                }
+                return _Students;
+            }
+            set
+            {
+                _Students = value;
+                OnPropertyChanged("Students");
             }
         }
 
@@ -68,7 +67,7 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("DateStart");
             }
         }
-        public DateTime DateEnd
+        public DateTime? DateEnd
         {
             get
             {

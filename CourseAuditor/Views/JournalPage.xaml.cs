@@ -45,12 +45,19 @@ namespace CourseAuditor.Views
                 Students.Columns[0].IsReadOnly = true;
                 Students.Columns[0].CanUserSort = true;
             }
-                
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
         {
-            (DataContext as JournalPageVM).BeforeCellChangedHandler(e);
+            var block = (e.Row.Item as DataRowView).Row[e.Column.DisplayIndex] is Journal;
+            if (block)
+            {
+                (DataContext as JournalPageVM).BeforeCellChangedHandler(e);
+            }
+            else
+            {
+                Students.CancelEdit();
+            }
         }
 
         private void Students_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

@@ -139,7 +139,7 @@ namespace CourseAuditor.ViewModels
             using (var _context = new ApplicationContext())
             {
                 students = _context.Students
-                    .Where(x => x.Group.ID == module.Group.ID && x.DateStart >= module.DateStart && x.DateStart < module.DateEnd)
+                    .Where(x => x.Module.ID == module.ID)
                     .Include(x => x.Journals
                     .Select(t => t.Assessment))
                     .Include(x => x.Person)
@@ -148,18 +148,17 @@ namespace CourseAuditor.ViewModels
             List<DateTime> columns = students[0].Journals.Select(x => x.Date).OrderBy(x => x.Date).ToList();
             foreach (var column in columns)
             {
-                table.Columns.Add(column.ToString("dd MMM HH:mm"), typeof(Journal));
+                table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
             }
 
             foreach (var student in students)
             {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).OrderBy(x => x.Date).ToList();
+                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd ?? DateTime.Now.AddYears(100))).OrderBy(x => x.Date).ToList();
                 
                 DataRow row = table.NewRow();
                 row[0] = student;
-                int i = 1;
                 foreach (var j in journals)
-                    row[i++] = j;
+                    row[j.Date.ToString("dd MMM")] = j;
                 table.Rows.Add(row);
             }
             Table = table;
@@ -273,7 +272,7 @@ namespace CourseAuditor.ViewModels
         public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)
         {
             int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
+            if (selectedColumn != 0 && (e.Row.Item as DataRowView).Row[selectedColumn] is Journal)
             {
                 ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment = SelectedAssessment;
                 HasChanges = true;
@@ -284,7 +283,7 @@ namespace CourseAuditor.ViewModels
         public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
         {
             int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
+            if (selectedColumn != 0 && (e.Row.Item as DataRowView).Row[selectedColumn] is Journal)
             {
                 SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
             }

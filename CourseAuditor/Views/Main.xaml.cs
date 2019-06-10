@@ -25,15 +25,11 @@ namespace CourseAuditor.Views
     public partial class Main : Window, IView
     {
         public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        private TreeViewItem m_OldSelectNode;
+
         public Main()
         {
             InitializeComponent();
         }
-
-
-
-
 
         private void TVCourseGroups_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

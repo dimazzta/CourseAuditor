@@ -62,6 +62,17 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
+
+        private ICommand _DeleteCourse;
+        public ICommand DeleteCourse =>
+            _DeleteCourse ??
+            (_DeleteCourse = new RelayCommand(
+                (obj) =>
+                {
+                    EditCoursePageVM.DeleteCourse(AppState.I.SelectedContextCourse);
+                }
+                ));
+
         //UI View
         public IView CurrentView { get; set; }
 
@@ -129,7 +140,11 @@ namespace CourseAuditor.ViewModels
         {
             using(var _context = new ApplicationContext())
             {
-                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+                Courses = new ObservableCollection<Course>(_context.Courses
+                                                           .Include(x => x.Groups
+                                                           .Select(t => t.Modules
+                                                           .Select(m => m.Students
+                                                           .Select(q => q.Person)))));
             }
             EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
             AppState.I.PropertyChanged += StatePropertyChanged;
@@ -146,7 +161,11 @@ namespace CourseAuditor.ViewModels
             {
                 using (var _context = new ApplicationContext())
                 {
-                    Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+                    Courses = new ObservableCollection<Course>(_context.Courses
+                                                           .Include(x => x.Groups
+                                                           .Select(t => t.Modules
+                                                           .Select(m => m.Students
+                                                           .Select(q => q.Person)))));
                 }
             }
         }

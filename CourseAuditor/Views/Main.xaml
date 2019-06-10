@@ -15,8 +15,15 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary>
+                    <viewmodels:EditCoursePageVM x:Key="editCoursePageVM">
+
+                    </viewmodels:EditCoursePageVM>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+      
         </ResourceDictionary>
+
     </Window.Resources>
 
     <Grid>
@@ -51,7 +58,7 @@
         <TreeView  x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ContextMenu>
                 <ContextMenu Name="TreeViewMenu">
-                    <MenuItem Header="Добавить курс" Command="{Binding ChangePage}" CommandParameter="{Binding AddCourseVM}"></MenuItem>
+                    <MenuItem Header="Добавить курс" Command="{Binding AddCoursePage}"></MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
             <TreeView.Resources>
@@ -59,8 +66,9 @@
                 <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
                     <MenuItem Header="Добавить группу"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить"></MenuItem>
-                    <MenuItem Header="Удалить"></MenuItem>
+                    <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditCoursePage}"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCourse}">
+                    </MenuItem>
                 </ContextMenu>
 
                 <ContextMenu x:Key="GroupMenu" Name="GroupMenu">

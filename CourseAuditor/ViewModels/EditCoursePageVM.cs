@@ -14,6 +14,7 @@ namespace CourseAuditor.ViewModels
 {
     public class EditCoursePageVM : BaseVM, IPageVM
     {
+        public EditCoursePageVM() { }
         public EditCoursePageVM(Course SelectedCourse = null)
         {
             using (var _context = new ApplicationContext())
@@ -129,11 +130,11 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private void DeleteCourse()
+        public static void DeleteCourse(Course SelectedCourse)
         {
             if(SelectedCourse.Groups.Count != 0)
             {
-                var f = MessageBox.Show("Вы уверены?","Удаление курса",MessageBoxButton.YesNo);
+                var f = MessageBox.Show("Вы уверены?", "Удаление курса", MessageBoxButton.YesNo);
                 if (f == MessageBoxResult.No)
                 {
                     return;
@@ -145,6 +146,7 @@ namespace CourseAuditor.ViewModels
                 _context.Entry(deleted).State = EntityState.Deleted;
                 _context.SaveChanges();
             }
+            AppState.I.SelectedContextCourse = null;
             EventsManager.RaiseObjectChangedEvent(SelectedCourse);
         }
 
@@ -182,11 +184,11 @@ namespace CourseAuditor.ViewModels
             (_DeleteCourseCommand = new RelayCommand(
                 (obj) =>
                 {
-                    DeleteCourse();
+                    EditCoursePageVM.DeleteCourse(SelectedCourse);
                 },
                 (obj) =>
                 {
-                    return CourseName != null && CoursePrice != 0 && CourseLessonsCount != 0;
+                    return true;
                 }
         ));
     }

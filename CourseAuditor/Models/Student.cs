@@ -12,7 +12,7 @@ namespace CourseAuditor.Models
         private Person _Person;
         private DateTime _DateStart;
         private DateTime? _DateEnd;
-        private Group _Group;
+        private Module _Module;
         private ICollection<Journal> _Journals;
         private ICollection<Return> _Returns;
         private ICollection<Payment> _Payments;
@@ -57,16 +57,16 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual Group Group
+        public virtual Module Module
         {
             get
             {
-                return _Group;
+                return _Module;
             }
             set
             {
-                _Group = value;
-                OnPropertyChanged("Group");
+                _Module = value;
+                OnPropertyChanged("Module");
             }
         }
 

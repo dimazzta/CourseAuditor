@@ -36,7 +36,7 @@ namespace CourseAuditor.ViewModels
         {
             get
             {
-                return _CoursePrice;
+                return _CoursePrice ?? (_CoursePrice = Constants.CoursePrice);
             }
             set
             {
@@ -50,7 +50,7 @@ namespace CourseAuditor.ViewModels
         {
             get
             {
-                return _CourseLessonsCount;
+                return _CourseLessonsCount ?? (_CourseLessonsCount = Constants.LessonsCount);
             }
             set
             {

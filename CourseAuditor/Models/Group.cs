@@ -13,7 +13,6 @@ namespace CourseAuditor.Models
 
         private Course _Course;
         private string _Title;
-        private ICollection<Student> _Students;
         private ICollection<Module> _Modules;
 
 
@@ -39,18 +38,7 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual ICollection<Student> Students
-        {
-            get
-            {
-                return _Students;
-            }
-            set
-            {
-                _Students = value;
-                OnPropertyChanged("Students");
-            }
-        }
+
 
         public virtual Course Course
         {

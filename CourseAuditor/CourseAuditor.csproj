@@ -77,6 +77,7 @@
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
+    <Compile Include="ViewModels\CertificateVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
@@ -93,6 +94,9 @@
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Certificate.xaml.cs">
+      <DependentUpon>Certificate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -114,6 +118,10 @@
     </Compile>
     <Compile Include="Helpers\RelayCommand.cs" />
     <Page Include="Views\AddCoursePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Certificate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

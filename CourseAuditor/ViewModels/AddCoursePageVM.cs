@@ -12,10 +12,6 @@ namespace CourseAuditor.ViewModels
 {
     public class AddCoursePageVM : BaseVM, IPageVM
     {
-        public AddCoursePageVM()
-        {
-            
-        }
 
         private string _CourseName;
         public string CourseName

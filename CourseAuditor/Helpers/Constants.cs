@@ -10,5 +10,6 @@ namespace CourseAuditor.Helpers
     {
         public static int LessonsCount => 12;
         public static double CoursePrice => 6500;
+        public static string GroupText => "Группа";
     }
 }

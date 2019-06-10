@@ -52,6 +52,17 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
+
+        private ICommand _AddGroupPage;
+        public ICommand AddGroupPage =>
+            _AddGroupPage ??
+            (_AddGroupPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddGroupPageVM(AppState.I.SelectedContextCourse);
+                }
+             ));
+
         private ICommand _EditCoursePage;
         public ICommand EditCoursePage =>
             _EditCoursePage ??

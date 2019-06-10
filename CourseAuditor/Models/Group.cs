@@ -15,7 +15,6 @@ namespace CourseAuditor.Models
         private string _Title;
         private ICollection<Module> _Modules;
 
-
         [NotMapped]
         public Module LastModule
         {
@@ -58,7 +57,7 @@ namespace CourseAuditor.Models
         {
             get
             {
-                return "Группа " + _Title;
+                return  _Title;
             }
             set
             {

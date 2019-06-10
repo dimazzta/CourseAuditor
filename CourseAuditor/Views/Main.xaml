@@ -40,7 +40,7 @@
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Добавить">
                 <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
-                <MenuItem Header="Группу"/>
+                <MenuItem Header="Группу" Command="{Binding AddGroupPage}"/>
                 <MenuItem Header="Студента"/>
                 <MenuItem Header="Модуль"/>
             </MenuItem>
@@ -64,7 +64,7 @@
             <TreeView.Resources>
                 <!--Набор контекстных меню. Команды указываются здесь-->
                 <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
-                    <MenuItem Header="Добавить группу"></MenuItem>
+                    <MenuItem Header="Добавить группу" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddGroupPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditCoursePage}"></MenuItem>
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCourse}">
@@ -137,6 +137,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
                     <views:EditCoursePage></views:EditCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddGroupPageVM}">
+                    <views:AddGroupPage></views:AddGroupPage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

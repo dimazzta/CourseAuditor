@@ -153,7 +153,7 @@ namespace CourseAuditor.ViewModels
 
             foreach (var student in students)
             {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd ?? DateTime.Now.AddYears(100))).OrderBy(x => x.Date).ToList();
+                List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
                 
                 DataRow row = table.NewRow();
                 row[0] = student;
@@ -175,7 +175,7 @@ namespace CourseAuditor.ViewModels
                 if (result.Value)
                 {
                     currentDate = dialog.PickedDate;
-                    var columnName = currentDate.ToString("dd MMM HH:mm");
+                    var columnName = currentDate.ToString("dd MMM");
                     try
                     {
                         Table.Columns.Add(columnName, typeof(Journal));

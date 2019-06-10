@@ -79,6 +79,7 @@
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
+    <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />

@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\Dialogs\IDialogRequestClose.cs" />
     <Compile Include="ViewModels\Dialogs\IDialogService.cs" />
     <Compile Include="ViewModels\DateTimeDialogVM.cs" />
+    <Compile Include="ViewModels\EditGroupPageVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
     <Compile Include="ViewModels\IViewVM.cs" />
     <Compile Include="ViewModels\JournalPageVM.cs" />
@@ -105,6 +106,9 @@
     </Compile>
     <Compile Include="Views\EditCoursePage.xaml.cs">
       <DependentUpon>EditCoursePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditGroupPage.xaml.cs">
+      <DependentUpon>EditGroupPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IPage.cs" />
     <Compile Include="Views\IView.cs" />
@@ -132,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditCoursePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditGroupPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

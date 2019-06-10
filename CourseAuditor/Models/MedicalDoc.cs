@@ -10,6 +10,8 @@ namespace CourseAuditor.Models
 
     public class MedicalDoc : ObservableObject
     {
+        [ForeignKey("Person")]
+        public int Person_ID { get; set; }
         private Person _Person;
         private DateTime _DateStart;
         private DateTime _DateEnd;

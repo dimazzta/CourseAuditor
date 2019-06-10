@@ -9,6 +9,13 @@ namespace CourseAuditor.Models
 {
     public class Student : ObservableObject
     {
+
+        [ForeignKey("Person")]
+        public int Person_ID { get; set; }
+
+        [ForeignKey("Module")]
+        public int Module_ID { get; set; }
+
         private Person _Person;
         private DateTime _DateStart;
         private DateTime? _DateEnd;

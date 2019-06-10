@@ -23,7 +23,7 @@ namespace CourseAuditor.ViewModels
             }
             if (SelectedCourse == null)
             {
-                this.SelectedCourse = Courses.First();
+                this.SelectedCourse = Courses.FirstOrDefault();
             }
             else
             {
@@ -36,15 +36,17 @@ namespace CourseAuditor.ViewModels
         {
             if(e.ObjectChanged is Course)
             {
-                int id = SelectedCourse.ID;
+                
+                int? id = SelectedCourse?.ID;
                 using (var _context = new ApplicationContext())
                 {
                     Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups));
                 }
-                if (!Courses.Any(x => x.ID == id))
-                    SelectedCourse = Courses.First();
-                else
-                    SelectedCourse = Courses.First(x => x.ID == id);
+                if (id != null)
+                    if (!Courses.Any(x => x.ID == id))
+                        SelectedCourse = Courses.FirstOrDefault();
+                    else
+                        SelectedCourse = Courses.First(x => x.ID == id);
                     
             }
         }
@@ -142,8 +144,8 @@ namespace CourseAuditor.ViewModels
             }
             using (var _context = new ApplicationContext())
             {
-                var deleted = _context.Courses.First(x=>x.ID==SelectedCourse.ID);
-                _context.Entry(deleted).State = EntityState.Deleted;
+                var deleted = _context.Courses.First(x => x.ID == SelectedCourse.ID);
+                _context.Courses.Remove(deleted);
                 _context.SaveChanges();
             }
             AppState.I.SelectedContextCourse = null;
@@ -174,7 +176,7 @@ namespace CourseAuditor.ViewModels
                 },
                 (obj) =>
                 {
-                    return CourseName != null && CoursePrice != 0 && CourseLessonsCount != 0;
+                    return true;
                 }
         ));
 
@@ -184,7 +186,7 @@ namespace CourseAuditor.ViewModels
             (_DeleteCourseCommand = new RelayCommand(
                 (obj) =>
                 {
-                    EditCoursePageVM.DeleteCourse(SelectedCourse);
+                    DeleteCourse(SelectedCourse);
                 },
                 (obj) =>
                 {

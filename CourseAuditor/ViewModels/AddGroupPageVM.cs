@@ -27,6 +27,7 @@ namespace CourseAuditor.ViewModels
             {
                 SelectedCourse = Courses.FirstOrDefault();
             }
+
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
                 if (e.ObjectChanged is Course)
@@ -34,6 +35,10 @@ namespace CourseAuditor.ViewModels
                     using (var _context = new ApplicationContext())
                     {
                         Courses = new ObservableCollection<Course>(_context.Courses);
+                    }
+                    if (SelectedCourse == null)
+                    {
+                        SelectedCourse = Courses.FirstOrDefault();
                     }
                 }
             };

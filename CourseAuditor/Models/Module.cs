@@ -10,6 +10,9 @@ namespace CourseAuditor.Models
 {
     public class Module : ObservableObject
     {
+        [ForeignKey("Group")]
+        public int Group_ID { get; set; }
+
         private Group _Group;
         private int _Number;
         private DateTime _DateStart;

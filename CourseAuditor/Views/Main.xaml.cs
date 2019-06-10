@@ -57,18 +57,21 @@ namespace CourseAuditor.Views
                     }
                     else if (treeViewItem.DataContext is Group)
                     {
+                        AppState.I.SelectedContextGroup = treeViewItem.DataContext as Group;
                         ContextMenu GroupMenu = TVCourseGroups.Resources["GroupMenu"] as ContextMenu;
                         GroupMenu.PlacementTarget = treeViewItem;
                         GroupMenu.IsOpen = true;
                     }
                     else if (treeViewItem.DataContext is Module)
                     {
+                        AppState.I.SelectedContextModule = treeViewItem.DataContext as Module;
                         ContextMenu ModuleMenu = TVCourseGroups.Resources["ModuleMenu"] as ContextMenu;
                         ModuleMenu.PlacementTarget = treeViewItem;
                         ModuleMenu.IsOpen = true;
                     }
                     else if (treeViewItem.DataContext is Student)
                     {
+                        AppState.I.SelectedContextStudent = treeViewItem.DataContext as Student;
                         ContextMenu StudentMenu = TVCourseGroups.Resources["StudentMenu"] as ContextMenu;
                         StudentMenu.PlacementTarget = treeViewItem;
                         StudentMenu.IsOpen = true;

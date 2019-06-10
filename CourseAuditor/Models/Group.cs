@@ -10,7 +10,8 @@ namespace CourseAuditor.Models
 {
     public class Group : ObservableObject, INotifyPropertyChanged
     {
-
+        [ForeignKey("Course")]
+        public int Course_ID { get; set; }
         private Course _Course;
         private string _Title;
         private ICollection<Module> _Modules;
@@ -38,7 +39,7 @@ namespace CourseAuditor.Models
         }
 
 
-
+        
         public virtual Course Course
         {
             get
@@ -65,7 +66,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Title");
             }
         }
+        public override string ToString()
+        {
+            return $"ID - {ID} Название: {Title}";
+        }
 
-        
     }
 }

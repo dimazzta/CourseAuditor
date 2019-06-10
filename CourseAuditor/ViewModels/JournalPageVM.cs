@@ -105,7 +105,7 @@ namespace CourseAuditor.ViewModels
                 {
                     UnsavedChangesPrompt();
                     _SelectedModule = value;
-                    Students = new ObservableCollection<Student>(value.Students);
+                    Students = value == null ?  new ObservableCollection<Student>() : new ObservableCollection<Student>(value.Students);
                     UpdateJournal(_SelectedModule);
                     OnPropertyChanged("SelectedModule");
                 }
@@ -131,37 +131,43 @@ namespace CourseAuditor.ViewModels
         #region Methods
         private void UpdateJournal(Module module)
         {
-
-            DataTable table = new DataTable();
-            table.Columns.Add("Студент", typeof(Student));
-
-            List<Student> students;
-            using (var _context = new ApplicationContext())
+            if (module != null)
             {
-                students = _context.Students
-                    .Where(x => x.Module.ID == module.ID)
-                    .Include(x => x.Journals
-                    .Select(t => t.Assessment))
-                    .Include(x => x.Person)
-                    .ToList();
-            }
-            List<DateTime> columns = students[0].Journals.Select(x => x.Date).OrderBy(x => x.Date).ToList();
-            foreach (var column in columns)
-            {
-                table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
-            }
+                DataTable table = new DataTable();
+                table.Columns.Add("Студент", typeof(Student));
 
-            foreach (var student in students)
-            {
-                List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
-                
-                DataRow row = table.NewRow();
-                row[0] = student;
-                foreach (var j in journals)
-                    row[j.Date.ToString("dd MMM")] = j;
-                table.Rows.Add(row);
+                List<Student> students;
+                using (var _context = new ApplicationContext())
+                {
+                    students = _context.Students
+                        .Where(x => x.Module.ID == module.ID)
+                        .Include(x => x.Journals
+                        .Select(t => t.Assessment))
+                        .Include(x => x.Person)
+                        .ToList();
+                }
+                List<DateTime> columns = students[0].Journals.Select(x => x.Date).OrderBy(x => x.Date).ToList();
+                foreach (var column in columns)
+                {
+                    table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
+                }
+
+                foreach (var student in students)
+                {
+                    List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
+
+                    DataRow row = table.NewRow();
+                    row[0] = student;
+                    foreach (var j in journals)
+                        row[j.Date.ToString("dd MMM")] = j;
+                    table.Rows.Add(row);
+                }
+                Table = table;
             }
-            Table = table;
+            else
+            {
+                Table = new DataTable();
+            }
         }
 
         private void AddNewClass()

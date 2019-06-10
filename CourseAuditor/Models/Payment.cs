@@ -9,6 +9,9 @@ namespace CourseAuditor.Models
 {
     public class Payment : ObservableObject
     {
+        [ForeignKey("Student")]
+        public int Student_ID { get; set; }
+
         private Student _Student;
         private double _Sum;
         private DateTime _Date;

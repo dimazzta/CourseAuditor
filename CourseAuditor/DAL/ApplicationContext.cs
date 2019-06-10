@@ -33,7 +33,11 @@ namespace CourseAuditor.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
+            //modelBuilder.Entity<Group>()
+            //    .HasRequired(x => x.Course)
+            //    .WithMany(x => x.Groups)
+            //    .HasForeignKey(x => x.Course_ID)
+            //    .WillCascadeOnDelete(true);
         }
     }
 }

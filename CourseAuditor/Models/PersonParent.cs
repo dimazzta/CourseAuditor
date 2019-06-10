@@ -9,6 +9,12 @@ namespace CourseAuditor.Models
 {
     public class PersonParent : ObservableObject
     {
+        [ForeignKey("Person")]
+        public int Person_ID { get; set; }
+        [ForeignKey("Parent")]
+        public int Parent_ID { get; set; }
+
+
         private Person _Person;
         private Parent _Parent;
 

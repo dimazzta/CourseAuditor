@@ -73,6 +73,15 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
+        private ICommand _EditGroupPage;
+        public ICommand EditGroupPage =>
+            _EditGroupPage ??
+            (_EditGroupPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditGroupPageVM(AppState.I.SelectedContextGroup);
+                }
+             ));
 
         private ICommand _DeleteCourse;
         public ICommand DeleteCourse =>

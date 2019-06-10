@@ -63,6 +63,16 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
+        private ICommand _AddModulePage;
+        public ICommand AddModulePage =>
+            _AddModulePage ??
+            (_AddModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddModulePageVM(AppState.I.SelectedContextGroup);
+                }
+             ));
+
         private ICommand _EditCoursePage;
         public ICommand EditCoursePage =>
             _EditCoursePage ??
@@ -90,6 +100,16 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     EditCoursePageVM.DeleteCourse(AppState.I.SelectedContextCourse);
+                }
+                ));
+
+        private ICommand _DeleteGroup;
+        public ICommand DeleteGroup =>
+            _DeleteGroup ??
+            (_DeleteGroup = new RelayCommand(
+                (obj) =>
+                {
+                    EditGroupPageVM.DeleteGroup(AppState.I.SelectedContextGroup);
                 }
                 ));
 

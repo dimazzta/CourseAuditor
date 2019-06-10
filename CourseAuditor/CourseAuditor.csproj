@@ -77,9 +77,11 @@
     <Compile Include="Helpers\EventsManager.cs" />
     <Compile Include="Helpers\Ext.cs" />
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
+    <Compile Include="Helpers\StudentPickerConverter.cs" />
     <Compile Include="Models\Asessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
+    <Compile Include="ViewModels\AddModulePageVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
@@ -100,6 +102,9 @@
     </Compile>
     <Compile Include="Views\AddGroupPage.xaml.cs">
       <DependentUpon>AddGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddModulePage.xaml.cs">
+      <DependentUpon>AddModulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -128,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddModulePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

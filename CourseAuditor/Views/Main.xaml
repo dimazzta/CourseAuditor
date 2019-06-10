@@ -41,14 +41,14 @@
             <MenuItem Header="Добавить">
                 <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
                 <MenuItem Header="Группу" Command="{Binding AddGroupPage}"/>
+                <MenuItem Header="Модуль" Command="{Binding AddModulePage}"/>
                 <MenuItem Header="Студента"/>
-                <MenuItem Header="Модуль"/>
             </MenuItem>
             <MenuItem Header="Изменить">
                 <MenuItem Header="Курс" Command="{Binding EditCoursePage}"/>
                 <MenuItem Header="Группу" Command="{Binding EditGroupPage}"/>
-                <MenuItem Header="Студента"/>
                 <MenuItem Header="Модуль"/>
+                <MenuItem Header="Студента"/>
             </MenuItem>
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
             <MenuItem Header="Сертификат"/>
@@ -72,14 +72,13 @@
                 </ContextMenu>
 
                 <ContextMenu x:Key="GroupMenu" Name="GroupMenu">
-                    <MenuItem Header="Добавить модуль"></MenuItem>
-                    <MenuItem Header="Добавить студента"></MenuItem>
+                    <MenuItem Header="Добавить модуль" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditGroupPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Удалить"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteGroup}"></MenuItem>
                 </ContextMenu>
 
                 <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
@@ -143,6 +142,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:EditGroupPageVM}">
                     <views:EditGroupPage></views:EditGroupPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddModulePageVM}">
+                    <views:AddModulePage></views:AddModulePage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

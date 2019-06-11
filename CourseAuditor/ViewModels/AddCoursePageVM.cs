@@ -62,8 +62,8 @@ namespace CourseAuditor.ViewModels
             var SelectedCourse = new Course
             {
                 Name = _CourseName,
-                Price = _CoursePrice.Value,
-                LessonsCount = _CourseLessonsCount.Value
+                LessonPrice = _CoursePrice.Value,
+                LessonCount = _CourseLessonsCount.Value
             };
             using (var _context = new ApplicationContext())
             {

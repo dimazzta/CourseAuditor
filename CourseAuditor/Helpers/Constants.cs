@@ -12,5 +12,8 @@ namespace CourseAuditor.Helpers
         public static double CoursePrice => 6500;
         public static string GroupText => "Группа";
         public static int DefaultModuleLengthMonth => 3;
+        public static int NotRespectfulReason => 1;
+        public static int RespectfulReason => 2;
+        public static int Attendance => 0;
     }
 }

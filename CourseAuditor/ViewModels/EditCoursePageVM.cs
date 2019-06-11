@@ -129,8 +129,8 @@ namespace CourseAuditor.ViewModels
             if(SelectedCourse != null)
             {
                 CourseName = SelectedCourse.Name;
-                CoursePrice = SelectedCourse.Price;
-                CourseLessonsCount = SelectedCourse.LessonsCount;
+                CoursePrice = SelectedCourse.LessonPrice;
+                CourseLessonsCount = SelectedCourse.LessonCount;
             }
         }
 
@@ -157,8 +157,8 @@ namespace CourseAuditor.ViewModels
         private void EditCourse()
         {
             SelectedCourse.Name = CourseName;
-            SelectedCourse.Price = CoursePrice;
-            SelectedCourse.LessonsCount = CourseLessonsCount;
+            SelectedCourse.LessonPrice = CoursePrice;
+            SelectedCourse.LessonCount = CourseLessonsCount;
             using (var _context = new ApplicationContext())
             {
                 var course = _context.Courses.First(x => x.ID == SelectedCourse.ID);

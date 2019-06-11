@@ -78,7 +78,7 @@
     <Compile Include="Helpers\Ext.cs" />
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Helpers\StudentPickerConverter.cs" />
-    <Compile Include="Models\Asessment.cs" />
+    <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />

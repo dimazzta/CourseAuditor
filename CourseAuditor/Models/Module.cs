@@ -18,6 +18,8 @@ namespace CourseAuditor.Models
         private DateTime _DateStart;
         private DateTime? _DateEnd;
         private ICollection<Student> _Students;
+        private double _LessonPrice;
+        private int _LessonCount;
 
         public virtual ICollection<Student> Students
         {
@@ -80,6 +82,33 @@ namespace CourseAuditor.Models
             {
                 _DateEnd = value;
                 OnPropertyChanged("DateEnd");
+            }
+        }
+
+        public double LessonPrice
+        {
+            get
+            {
+                return _LessonPrice;
+            }
+            set
+            {
+                _LessonPrice = value;
+                OnPropertyChanged("LessonPrice");
+            }
+        }
+
+
+        public int LessonCount
+        {
+            get
+            {
+                return _LessonCount;
+            }
+            set
+            {
+                _LessonCount = value;
+                OnPropertyChanged("LessonCount");
             }
         }
 

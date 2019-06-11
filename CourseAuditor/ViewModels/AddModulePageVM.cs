@@ -8,6 +8,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
@@ -15,14 +16,18 @@ namespace CourseAuditor.ViewModels
     {
         public AddModulePageVM(Group selectedGroup = null)
         {
-            Students = new ObservableCollection<CheckedListItem<Student>>();
+            Persons = new ObservableCollection<CheckedListItem<Person>>();
             using (var _context = new ApplicationContext())
             {
                 Groups = new ObservableCollection<Group>(_context.Groups.Include(x => x.Modules));
-                var students = _context.Students.Include(x => x.Person).Include(x => x.Module.Group).ToList();
-                foreach(var student in students)
+                var persons = _context.Students
+                                .Include(x => x.Person)
+                                .Include(x => x.Module.Group)
+                                .Select(x => x.Person)
+                                .Distinct();
+                foreach(var person in persons)
                 {
-                    Students.Add(new CheckedListItem<Student>(student));
+                    Persons.Add(new CheckedListItem<Person>(person));
                 }
             }
             if (selectedGroup != null)
@@ -38,11 +43,21 @@ namespace CourseAuditor.ViewModels
 
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if (e.ObjectChanged is Group)
+                if (e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Course || e.ObjectChanged is Student)
                 {
                     using (var _context = new ApplicationContext())
                     {
-                        Groups = new ObservableCollection<Group>(_context.Groups);
+                        Groups = new ObservableCollection<Group>(_context.Groups.Include(x => x.Modules));
+                        Persons.Clear();
+                        var persons = _context.Students
+                                .Include(x => x.Person)
+                                .Include(x => x.Module.Group)
+                                .Select(x => x.Person)
+                                .Distinct();
+                        foreach (var person in persons)
+                        {
+                            Persons.Add(new CheckedListItem<Person>(person));
+                        }
                     }
                     if (SelectedGroup == null)
                     {
@@ -52,17 +67,17 @@ namespace CourseAuditor.ViewModels
             };
         }
 
-        private ObservableCollection<CheckedListItem<Student>> _Students;
-        public ObservableCollection<CheckedListItem<Student>> Students
+        private ObservableCollection<CheckedListItem<Person>> _Persons;
+        public ObservableCollection<CheckedListItem<Person>> Persons
         {
             get
             {
-                return _Students;
+                return _Persons;
             }
             set
             {
-                _Students = value;
-                OnPropertyChanged("Students");
+                _Persons = value;
+                OnPropertyChanged("Persons");
             }
         }
 
@@ -151,5 +166,43 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private void AddModule()
+        {
+            using (var _context = new ApplicationContext())
+            {
+                var module = new Module()
+                {
+                    DateStart = DateStart,
+                    DateEnd = DateEnd,
+                    Group_ID = SelectedGroup.ID,
+                    Number = ModuleNumber
+                };
+                var added = _context.Modules.Add(module);
+                _context.SaveChanges();
+                foreach(var person in Persons.Where(x => x.IsChecked))
+                {
+                    Student student = new Student()
+                    {
+                        DateStart = DateStart,
+                        Person_ID = person.Item.ID,
+                        Module_ID = added.ID
+                    };
+                    _context.Students.Add(student);
+                    _context.Entry(student).State = EntityState.Added;
+                }
+                _context.SaveChanges();
+                EventsManager.RaiseObjectChangedEvent(module);
+            }
+        }
+
+        private ICommand _AddModuleCommand;
+        public ICommand AddModuleCommand =>
+            _AddModuleCommand ??
+            (_AddModuleCommand = new RelayCommand(
+                (obj) =>
+                {
+                    AddModule();
+                }
+                ));
     }
 }

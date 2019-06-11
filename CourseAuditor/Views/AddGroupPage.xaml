@@ -14,14 +14,16 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
-            <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-            <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
-            
-            <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
-            <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding GroupName, Mode=TwoWay}"/>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+                <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
+                <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
 
-            <Button Content="Добавить группу" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddGroupCommand}"/>
-        </StackPanel>
+                <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
+                <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding GroupName, Mode=TwoWay}"/>
+
+                <Button Content="Добавить группу" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddGroupCommand}"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

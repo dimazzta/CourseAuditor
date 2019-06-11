@@ -15,32 +15,35 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
-            <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
-            <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+                <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
+                <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>
 
-            <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
-            <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber}"/>
+                <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
+                <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber}"/>
 
-            <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
-            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
-                                               Mode=TwoWay}"></DatePicker>
+                <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
+                <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
+                                            Mode=TwoWay}"></DatePicker>
 
-            <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
-            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
-                                               Mode=TwoWay}"></DatePicker>
+                <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
+                <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
+                                            Mode=TwoWay}"></DatePicker>
 
-            <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
-            <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
-                        </CheckBox>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
+                <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="200">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
+                            </CheckBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-            <Button Content="Добавить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddGroupCommand}"/>
-        </StackPanel>
+                <Button Content="Добавить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddModuleCommand}"/>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

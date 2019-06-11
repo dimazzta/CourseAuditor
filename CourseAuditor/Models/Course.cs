@@ -53,7 +53,7 @@ namespace CourseAuditor.Models
             }
         }
 
-        
+        [ForeignKey("Course_ID")]
         public virtual ICollection<Group> Groups
         {
             get {

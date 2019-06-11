@@ -131,42 +131,47 @@ namespace CourseAuditor.ViewModels
         #region Methods
         private void UpdateJournal(Module module)
         {
+            Table = new DataTable();
             if (module != null)
             {
-                DataTable table = new DataTable();
-                table.Columns.Add("Студент", typeof(Student));
-
-                List<Student> students;
-                using (var _context = new ApplicationContext())
+                if (module.Students.Count > 0)
                 {
-                    students = _context.Students
-                        .Where(x => x.Module.ID == module.ID)
-                        .Include(x => x.Journals
-                        .Select(t => t.Assessment))
-                        .Include(x => x.Person)
-                        .ToList();
-                }
-                List<DateTime> columns = students[0].Journals.Select(x => x.Date).OrderBy(x => x.Date).ToList();
-                foreach (var column in columns)
-                {
-                    table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
-                }
+                    DataTable table = new DataTable();
+                    table.Columns.Add("Студент", typeof(Student));
 
-                foreach (var student in students)
-                {
-                    List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
+                    List<Student> students;
+                    using (var _context = new ApplicationContext())
+                    {
+                        students = _context.Students
+                            .Where(x => x.Module.ID == module.ID)
+                            .Include(x => x.Journals
+                            .Select(t => t.Assessment))
+                            .Include(x => x.Person)
+                            .ToList();
+                    }
+                    List<DateTime> columns = students
+                                        .First(x => x.Journals.Count == students
+                                        .Max(t => t.Journals.Count)).Journals
+                                        .Select(x => x.Date)
+                                        .OrderBy(x => x.Date)
+                                        .ToList();
+                    foreach (var column in columns)
+                    {
+                        table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
+                    }
 
-                    DataRow row = table.NewRow();
-                    row[0] = student;
-                    foreach (var j in journals)
-                        row[j.Date.ToString("dd MMM")] = j;
-                    table.Rows.Add(row);
+                    foreach (var student in students)
+                    {
+                        List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
+
+                        DataRow row = table.NewRow();
+                        row[0] = student;
+                        foreach (var j in journals)
+                            row[j.Date.ToString("dd MMM")] = j;
+                        table.Rows.Add(row);
+                    }
+                    Table = table;
                 }
-                Table = table;
-            }
-            else
-            {
-                Table = new DataTable();
             }
         }
 

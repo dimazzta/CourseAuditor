@@ -19,7 +19,7 @@ namespace CourseAuditor.ViewModels
             Persons = new ObservableCollection<CheckedListItem<Person>>();
             using (var _context = new ApplicationContext())
             {
-                Groups = new ObservableCollection<Group>(_context.Groups.Include(x => x.Modules));
+                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                 var persons = _context.Students
                                 .Include(x => x.Person)
                                 .Include(x => x.Module.Group)
@@ -30,13 +30,15 @@ namespace CourseAuditor.ViewModels
                     Persons.Add(new CheckedListItem<Person>(person));
                 }
             }
+
             if (selectedGroup != null)
             {
                 SelectedGroup = selectedGroup;
+                SelectedCourse = selectedGroup.Course;
             }
             else
             {
-                SelectedGroup = Groups.FirstOrDefault();
+                SelectedCourse = Courses.FirstOrDefault();
             }
 
             CalculateDateBounds();
@@ -45,26 +47,112 @@ namespace CourseAuditor.ViewModels
             {
                 if (e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Course || e.ObjectChanged is Student)
                 {
+                    int? id = SelectedGroup?.ID;
                     using (var _context = new ApplicationContext())
                     {
-                        Groups = new ObservableCollection<Group>(_context.Groups.Include(x => x.Modules));
                         Persons.Clear();
+                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                         var persons = _context.Students
-                                .Include(x => x.Person)
-                                .Include(x => x.Module.Group)
-                                .Select(x => x.Person)
-                                .Distinct();
+                                        .Include(x => x.Person)
+                                        .Include(x => x.Module.Group.Course)
+                                        .Select(x => x.Person)
+                                        .Distinct();
                         foreach (var person in persons)
                         {
                             Persons.Add(new CheckedListItem<Person>(person));
                         }
-                    }
-                    if (SelectedGroup == null)
-                    {
-                        SelectedGroup = Groups.FirstOrDefault();
+                        if (id != null)
+                        {
+                            SelectedGroup = _context.Groups.FirstOrDefault(x => x.ID == id);
+                            SelectedCourse = SelectedGroup?.Course;
+                            if (SelectedCourse != null)
+                                Groups = new ObservableCollection<Group>(SelectedCourse.Groups);
+                            else
+                                SelectedCourse = Courses.FirstOrDefault();
+                        }
+                        else
+                        {
+                            SelectedCourse = Courses.FirstOrDefault();
+                        }
                     }
                 }
             };
+        }
+
+        private Course _SelectedCourse;
+        public Course SelectedCourse
+        {
+            get
+            {
+                return _SelectedCourse;
+            }
+            set
+            {
+                _SelectedCourse = value;
+                if (_SelectedCourse != null)
+                {
+                    Groups = new ObservableCollection<Group>(_SelectedCourse.Groups);
+                    if (SelectedGroup == null)
+                        SelectedGroup = Groups?.FirstOrDefault();
+                }
+                else
+                {
+                    Groups = new ObservableCollection<Group>();
+                }
+                OnPropertyChanged("SelectedCourse");
+            }
+        }
+
+        private ObservableCollection<Course> _Courses;
+        public ObservableCollection<Course> Courses
+        {
+            get
+            {
+                return _Courses;
+            }
+            set
+            {
+                _Courses = value;
+                OnPropertyChanged("Courses");
+            }
+        }
+
+
+        private ObservableCollection<Group> _Groups;
+        public ObservableCollection<Group> Groups
+        {
+            get
+            {
+                return _Groups;
+            }
+            set
+            {
+                _Groups = value;
+                OnPropertyChanged("Groups");
+            }
+        }
+
+        private Group _SelectedGroup;
+        public Group SelectedGroup
+        {
+            get
+            {
+                return _SelectedGroup;
+            }
+            set
+            {
+                _SelectedGroup = value;
+                OnPropertyChanged("SelectedGroup");
+                if (_SelectedGroup != null)
+                {
+                    if (_SelectedGroup.Modules.Count > 0)
+                    {
+                        ModuleNumber = _SelectedGroup.Modules.OrderBy(x => x.Number).Select(x => x.Number).Last() + 1;
+                    }
+                    else ModuleNumber = 1;
+                }
+
+            }
         }
 
         private ObservableCollection<CheckedListItem<Person>> _Persons;
@@ -129,42 +217,7 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private ObservableCollection<Group> _Groups;
-        public ObservableCollection<Group> Groups
-        {
-            get
-            {
-                return _Groups;
-            }
-            set
-            {
-                _Groups = value;
-                OnPropertyChanged("Groups");
-            }
-        }
-
-        private Group _SelectedGroup;
-        public Group SelectedGroup
-        {
-            get
-            {
-                return _SelectedGroup;
-            }
-            set
-            {
-                _SelectedGroup = value;
-                OnPropertyChanged("SelectedGroup");
-                if (_SelectedGroup != null)
-                {
-                    if (_SelectedGroup.Modules.Count > 0)
-                    {
-                        ModuleNumber = _SelectedGroup.Modules.OrderBy(x => x.Number).Select(x => x.Number).Last() + 1;
-                    }
-                    else ModuleNumber = 1;
-                }
-                
-            }
-        }
+        
 
         private void AddModule()
         {

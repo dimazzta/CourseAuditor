@@ -115,6 +115,9 @@
     <Compile Include="Views\EditGroupPage.xaml.cs">
       <DependentUpon>EditGroupPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditModulePage.xaml.cs">
+      <DependentUpon>EditModulePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IPage.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\JournalPage.xaml.cs">
@@ -149,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditModulePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

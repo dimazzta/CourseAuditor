@@ -23,6 +23,7 @@ namespace CourseAuditor.Models
         private ICollection<Journal> _Journals;
         private ICollection<Return> _Returns;
         private ICollection<Payment> _Payments;
+        private double _Balance;
         
 
         public virtual Person Person
@@ -113,6 +114,19 @@ namespace CourseAuditor.Models
             {
                 _Payments = value;
                 OnPropertyChanged("Payments");
+            }
+        }
+
+        public double Balance
+        {
+            get
+            {
+                return _Balance;
+            }
+            set
+            {
+                _Balance = value;
+                OnPropertyChanged("Balance");
             }
         }
 

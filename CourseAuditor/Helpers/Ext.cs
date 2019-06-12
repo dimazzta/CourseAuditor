@@ -12,5 +12,6 @@ namespace CourseAuditor.Helpers
         {
             return dateToCheck >= startDate && dateToCheck < endDate;
         }
+
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="ViewModels\Dialogs\IDialogService.cs" />
     <Compile Include="ViewModels\DateTimeDialogVM.cs" />
     <Compile Include="ViewModels\EditGroupPageVM.cs" />
+    <Compile Include="ViewModels\EditModulePageVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
     <Compile Include="ViewModels\IViewVM.cs" />
     <Compile Include="ViewModels\JournalPageVM.cs" />

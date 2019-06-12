@@ -88,16 +88,19 @@ namespace CourseAuditor.ViewModels
 
         private void AddGroup()
         {
-            using (var _context = new ApplicationContext())
+            if (SelectedCourse != null)
             {
-                var group = new Group()
+                using (var _context = new ApplicationContext())
                 {
-                    Title = GroupName,
-                    Course = _context.Courses.First(x => x.ID == SelectedCourse.ID)
-                };
-                _context.Groups.Add(group);
-                _context.SaveChanges();
-                EventsManager.RaiseObjectChangedEvent(group);
+                    var group = new Group()
+                    {
+                        Title = GroupName,
+                        Course = _context.Courses.First(x => x.ID == SelectedCourse.ID)
+                    };
+                    _context.Groups.Add(group);
+                    _context.SaveChanges();
+                    EventsManager.RaiseObjectChangedEvent(group);
+                }
             }
         }
 

@@ -47,7 +47,7 @@
             <MenuItem Header="Изменить">
                 <MenuItem Header="Курс" Command="{Binding EditCoursePage}"/>
                 <MenuItem Header="Группу" Command="{Binding EditGroupPage}"/>
-                <MenuItem Header="Модуль"/>
+                <MenuItem Header="Модуль" Command="{Binding EditModulePage}"/>
                 <MenuItem Header="Студента"/>
             </MenuItem>
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
@@ -84,7 +84,7 @@
                 <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить"></MenuItem>
+                    <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Удалить"></MenuItem>
                 </ContextMenu>
@@ -145,6 +145,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AddModulePageVM}">
                     <views:AddModulePage></views:AddModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditModulePageVM}">
+                    <views:EditModulePage></views:EditModulePage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

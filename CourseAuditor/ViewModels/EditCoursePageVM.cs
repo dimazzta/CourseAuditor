@@ -136,36 +136,48 @@ namespace CourseAuditor.ViewModels
 
         public static void DeleteCourse(Course SelectedCourse)
         {
-            if(SelectedCourse.Groups.Count != 0)
+            if (SelectedCourse != null)
             {
-                var f = MessageBox.Show("Вы уверены?", "Удаление курса", MessageBoxButton.YesNo);
-                if (f == MessageBoxResult.No)
+                if (SelectedCourse.Groups.Count != 0)
                 {
-                    return;
+                    var f = MessageBox.Show("Вы уверены?", "Удаление курса", MessageBoxButton.YesNo);
+                    if (f == MessageBoxResult.No)
+                    {
+                        return;
+                    }
                 }
+                using (var _context = new ApplicationContext())
+                {
+                    var deleted = _context.Courses.First(x => x.ID == SelectedCourse.ID);
+                    if (deleted != null)
+                    {
+                        _context.Courses.Remove(deleted);
+                        _context.SaveChanges();
+                    }
+                }
+                AppState.I.SelectedContextCourse = null;
+                EventsManager.RaiseObjectChangedEvent(SelectedCourse);
             }
-            using (var _context = new ApplicationContext())
-            {
-                var deleted = _context.Courses.First(x => x.ID == SelectedCourse.ID);
-                _context.Courses.Remove(deleted);
-                _context.SaveChanges();
-            }
-            AppState.I.SelectedContextCourse = null;
-            EventsManager.RaiseObjectChangedEvent(SelectedCourse);
         }
 
         private void EditCourse()
         {
-            SelectedCourse.Name = CourseName;
-            SelectedCourse.LessonPrice = CoursePrice;
-            SelectedCourse.LessonCount = CourseLessonsCount;
-            using (var _context = new ApplicationContext())
+            if (SelectedCourse != null)
             {
-                var course = _context.Courses.First(x => x.ID == SelectedCourse.ID);
-                _context.Entry(course).CurrentValues.SetValues(SelectedCourse);
-                _context.SaveChanges();
+                SelectedCourse.Name = CourseName;
+                SelectedCourse.LessonPrice = CoursePrice;
+                SelectedCourse.LessonCount = CourseLessonsCount;
+                using (var _context = new ApplicationContext())
+                {
+                    var course = _context.Courses.FirstOrDefault(x => x.ID == SelectedCourse.ID);
+                    if (course != null)
+                    {
+                        _context.Entry(course).CurrentValues.SetValues(SelectedCourse);
+                        _context.SaveChanges();
+                    }
+                }
+                EventsManager.RaiseObjectChangedEvent(SelectedCourse);
             }
-            EventsManager.RaiseObjectChangedEvent(SelectedCourse);
         }
 
         private RelayCommand _EditCourseCommand;

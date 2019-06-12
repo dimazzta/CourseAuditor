@@ -148,34 +148,46 @@ namespace CourseAuditor.ViewModels
 
         public static void DeleteGroup(Group SelectedGroup)
         {
-            if (SelectedGroup.Modules.Count != 0)
+            if (SelectedGroup != null)
             {
-                var f = MessageBox.Show("Группа не пуста. Вы уверены, что хотите удалить ее?", "Группа не пуста", MessageBoxButton.YesNo);
-                if (f == MessageBoxResult.No)
+                if (SelectedGroup.Modules.Count != 0)
                 {
-                    return;
+                    var f = MessageBox.Show("Группа не пуста. Вы уверены, что хотите удалить ее?", "Группа не пуста", MessageBoxButton.YesNo);
+                    if (f == MessageBoxResult.No)
+                    {
+                        return;
+                    }
                 }
+                using (var _context = new ApplicationContext())
+                {
+                    var deleted = _context.Groups.First(x => x.ID == SelectedGroup.ID);
+                    if (deleted != null)
+                    {
+                        _context.Groups.Remove(deleted);
+                        _context.SaveChanges();
+                    }
+                }
+                AppState.I.SelectedContextGroup = null;
+                EventsManager.RaiseObjectChangedEvent(SelectedGroup);
             }
-            using (var _context = new ApplicationContext())
-            {
-                var deleted = _context.Groups.First(x => x.ID == SelectedGroup.ID);
-                _context.Groups.Remove(deleted);
-                _context.SaveChanges();
-            }
-            AppState.I.SelectedContextGroup = null;
-            EventsManager.RaiseObjectChangedEvent(SelectedGroup);
         }
+            
 
         private void UpdateGroup()
         {
-            using (var _context = new ApplicationContext())
+            if (SelectedGroup != null)
             {
-                var group = _context.Groups.First(x => x.ID == SelectedGroup.ID);
-                group.Title = GroupName;
-                group.Course = _context.Courses.First(x => x.ID == SelectedCourse.ID);
-                _context.SaveChanges();
+                using (var _context = new ApplicationContext())
+                {
+                    var group = _context.Groups.FirstOrDefault(x => x.ID == SelectedGroup.ID);
+                    if (group != null)
+                    {
+                        group.Title = GroupName;
+                        _context.SaveChanges();
+                    }
+                }
+                EventsManager.RaiseObjectChangedEvent(SelectedGroup);
             }
-            EventsManager.RaiseObjectChangedEvent(SelectedGroup);
         }
 
         private RelayCommand _EditGroupCommand;

@@ -16,7 +16,46 @@
     </UserControl.Resources>
     <Grid>
         <ScrollViewer>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+            <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 40, 20">
+                    <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
+                    <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
+
+                    <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
+                    <ComboBox Margin="0, 0, 0, 20" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>
+
+                    <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber}"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonCount}"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonPrice}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
+                    <DatePicker Width="200" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
+                                            Mode=TwoWay}"></DatePicker>
+
+                    <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
+                    <DatePicker Width="200" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
+                                            Mode=TwoWay}"></DatePicker>
+
+                    <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
+                    <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
+                                </CheckBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Content="Добавить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddModuleCommand}"/>
+                </StackPanel>
+                
+            </StackPanel>
+            <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 20">
                 <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
                 <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
                 
@@ -26,6 +65,13 @@
                 <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
                 <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber}"/>
 
+                <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
+                <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonCount}"/>
+
+                <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
+                <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonPrice}"/>
+                
+                
                 <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
                 <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
                                             Mode=TwoWay}"></DatePicker>
@@ -46,7 +92,7 @@
 
                 <Button Content="Добавить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddModuleCommand}"/>
 
-            </StackPanel>
+            </StackPanel>-->
         </ScrollViewer>
     </Grid>
 </UserControl>

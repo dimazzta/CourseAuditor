@@ -20,11 +20,7 @@ namespace CourseAuditor.ViewModels
             using (var _context = new ApplicationContext())
             {
                 Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-                var persons = _context.Students
-                                .Include(x => x.Person)
-                                .Include(x => x.Module.Group)
-                                .Select(x => x.Person)
-                                .Distinct();
+                var persons = _context.Persons.OrderBy(x => x.SecondName).ToList();
                 foreach(var person in persons)
                 {
                     Persons.Add(new CheckedListItem<Person>(person));
@@ -65,9 +61,7 @@ namespace CourseAuditor.ViewModels
                         {
                             SelectedGroup = _context.Groups.FirstOrDefault(x => x.ID == id);
                             SelectedCourse = SelectedGroup?.Course;
-                            if (SelectedCourse != null)
-                                Groups = new ObservableCollection<Group>(SelectedCourse.Groups);
-                            else
+                            if (SelectedCourse == null)
                                 SelectedCourse = Courses.FirstOrDefault();
                         }
                         else
@@ -78,6 +72,7 @@ namespace CourseAuditor.ViewModels
                 }
             };
         }
+
 
         private Course _SelectedCourse;
         public Course SelectedCourse
@@ -94,6 +89,8 @@ namespace CourseAuditor.ViewModels
                     Groups = new ObservableCollection<Group>(_SelectedCourse.Groups);
                     if (SelectedGroup == null)
                         SelectedGroup = Groups?.FirstOrDefault();
+                    _LessonCount = _SelectedCourse.LessonCount;
+                    _LessonPrice = _SelectedCourse.LessonPrice;
                 }
                 else
                 {
@@ -217,35 +214,67 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        
+        private int _LessonCount;
+        public int LessonCount
+        {
+            get
+            {
+                return _LessonCount;
+            }
+            set
+            {
+                _LessonCount = value;
+                OnPropertyChanged("LessonCount");
+            }
+        }
+
+        private double _LessonPrice;
+        public double LessonPrice
+        {
+            get
+            {
+                return _LessonPrice;
+            }
+            set
+            {
+                _LessonPrice = value;
+                OnPropertyChanged("LessonPrice");
+            }
+        }
 
         private void AddModule()
         {
-            using (var _context = new ApplicationContext())
+            if (SelectedGroup != null)
             {
-                var module = new Module()
+                using (var _context = new ApplicationContext())
                 {
-                    DateStart = DateStart,
-                    DateEnd = DateEnd,
-                    Group_ID = SelectedGroup.ID,
-                    Number = ModuleNumber
-                };
-                var added = _context.Modules.Add(module);
-                _context.SaveChanges();
-                foreach(var person in Persons.Where(x => x.IsChecked))
-                {
-                    Student student = new Student()
+                    var module = new Module()
                     {
                         DateStart = DateStart,
-                        Person_ID = person.Item.ID,
-                        Module_ID = added.ID
+                        DateEnd = DateEnd,
+                        Group_ID = SelectedGroup.ID,
+                        Number = ModuleNumber,
+                        LessonCount = LessonCount,
+                        LessonPrice = LessonPrice
                     };
-                    _context.Students.Add(student);
-                    _context.Entry(student).State = EntityState.Added;
+                    var added = _context.Modules.Add(module);
+                    _context.SaveChanges();
+                    foreach (var person in Persons.Where(x => x.IsChecked))
+                    {
+                        Student student = new Student()
+                        {
+                            DateStart = DateStart,
+                            Person_ID = person.Item.ID,
+                            Module_ID = added.ID
+                        };
+                        _context.Students.Add(student);
+                        _context.Entry(student).State = EntityState.Added;
+                    }
+                    _context.SaveChanges();
+                    EventsManager.RaiseObjectChangedEvent(module);
                 }
-                _context.SaveChanges();
-                EventsManager.RaiseObjectChangedEvent(module);
             }
+            
         }
 
         private ICommand _AddModuleCommand;

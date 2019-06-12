@@ -51,7 +51,7 @@
                 <MenuItem Header="Студента"/>
             </MenuItem>
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
-            <MenuItem Header="Сертификат"/>
+            <MenuItem Header="Сертификат" Click="MenuItem_Click" />
             <MenuItem Header="Справка"/>
         </Menu>
 

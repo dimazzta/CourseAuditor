@@ -17,7 +17,10 @@ namespace CourseAuditor.ViewModels
         public EditModulePageVM(Module selectedModule = null)
         {
             Persons = new ObservableCollection<CheckedListItem<Person>>();
-            LoadData(selectedModule);
+            using (var _context = new ApplicationContext())
+            {
+                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+            }
 
             if (selectedModule != null)
             {
@@ -32,12 +35,12 @@ namespace CourseAuditor.ViewModels
 
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if (e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Course || e.ObjectChanged is Student)
+                if (e.ObjectChanged is Module)
                 {
                     int? id = SelectedModule?.ID;
-                    LoadData(SelectedModule);
                     using (var _context = new ApplicationContext())
                     {
+                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                         if (id != null)
                         {
                             SelectedModule = _context.Modules.FirstOrDefault(x => x.ID == id);
@@ -54,28 +57,30 @@ namespace CourseAuditor.ViewModels
                         }
                     }
                 }
+                else { 
+}
             };
         }
 
-        private void LoadData(Module selectedModule)
+        private void LoadPersons(Module selectedModule)
         {
             using (var _context = new ApplicationContext())
             {
                 Persons.Clear();
-                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                 if (selectedModule != null)
                 {
+                    
                     List<Person> selectedPersons = new List<Person>();
                     List<Person> unselectedPersons = new List<Person>();
                     selectedPersons = _context.Modules
                         .First(x => x.ID == selectedModule.ID).Students
                         .Select(x => x.Person)
-                        .OrderBy(x => x.FullName)
+                        .OrderBy(x => x.SecondName)
                         .ToList();
-                    unselectedPersons = _context.Modules
-                        .First(x => x.ID != selectedModule.ID).Students
-                        .Select(x => x.Person)
-                        .OrderBy(x => x.FullName)
+
+                    var temp = _context.Persons.ToList();
+                    unselectedPersons = temp.Where(x => !selectedPersons.Any(y => x.ID == y.ID))
+                        .OrderBy(x => x.SecondName)
                         .ToList();
 
                     foreach (var person in selectedPersons)
@@ -206,6 +211,7 @@ namespace CourseAuditor.ViewModels
                     ModuleNumber = _SelectedModule.Number;
                     LessonCount = _SelectedModule.LessonCount;
                     LessonPrice = _SelectedModule.LessonPrice;
+                    LoadPersons(_SelectedModule);
                 }
                 OnPropertyChanged("SelectedModule");
             }
@@ -304,7 +310,7 @@ namespace CourseAuditor.ViewModels
             {
                 using (var _context = new ApplicationContext())
                 {
-                    var module = _context.Modules.Include(x => x.Students).FirstOrDefault(x => x.ID == SelectedGroup.ID);
+                    var module = _context.Modules.Include(x => x.Students).FirstOrDefault(x => x.ID == SelectedModule.ID);
                     if (module != null)
                     {
                         module.Number = ModuleNumber;
@@ -313,15 +319,24 @@ namespace CourseAuditor.ViewModels
                         module.DateStart = DateStart;
                         module.DateEnd = DateEnd;
 
-                        foreach(var stud in module.Students)
-                        {
-                            _context.Students.Remove(stud);
-                        }
 
+                        _context.Students.RemoveRange(module.Students);
+                  
+                        foreach (var person in Persons.Where(x => x.IsChecked))
+                        {
+                            Student student = new Student()
+                            {
+                                DateStart = DateStart,
+                                Person_ID = person.Item.ID,
+                                Module_ID = SelectedModule.ID
+                            };
+                            _context.Students.Add(student);
+                            _context.Entry(student).State = EntityState.Added;
+                        }
                         _context.SaveChanges();
                     }
                 }
-                EventsManager.RaiseObjectChangedEvent(SelectedGroup);
+                EventsManager.RaiseObjectChangedEvent(SelectedModule);
             }
         }
             
@@ -331,7 +346,7 @@ namespace CourseAuditor.ViewModels
             (_UpdateModuleCommand = new RelayCommand(
                 (obj) =>
                 {
-                   
+                    UpdateModule();
                 }
                 ));
 

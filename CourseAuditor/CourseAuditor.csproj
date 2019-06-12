@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\JournalPageVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\PaymentVM.cs" />
+    <Compile Include="ViewModels\ReturnPaymentVM.cs" />
     <Compile Include="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
     </Compile>
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Views\AddModulePage.xaml.cs">
       <DependentUpon>AddModulePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddReturnPay.xaml.cs">
+      <DependentUpon>AddReturnPay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -141,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddModulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddReturnPay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

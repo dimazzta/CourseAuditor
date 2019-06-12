@@ -122,6 +122,16 @@ namespace CourseAuditor.ViewModels
                     new PaymentVM(new PaymentWindow(),AppState.I.SelectedContextStudent);
                 }
              ));
+        //TODO исп
+        private ICommand _AddReturnPay;
+        public ICommand AddReturnPay =>
+            _AddReturnPay ??
+            (_AddReturnPay = new RelayCommand(
+                (obj) =>
+                {
+                    new ReturnPaymentVM(new AddReturnPay(), AppState.I.SelectedContextStudent);
+                }
+             ));
 
         //UI View
         public IView CurrentView { get; set; }

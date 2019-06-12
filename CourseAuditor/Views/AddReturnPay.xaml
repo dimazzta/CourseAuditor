@@ -8,7 +8,10 @@
         Title="AddReturnPay" Height="450" Width="800">
     <Grid>
         <Button Content="Добавить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="35,243,0,0" Command="{Binding AddReturnCommand}"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Sum, Mode=TwoWay}"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Balance, Mode=TwoWay}"/>
+        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="60,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Sum, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="35,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Text="{Binding InfBalance, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="35,22,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"  Width="176" Text="{Binding InfStudent}"/>
+        <!--<TextBox HorizontalAlignment="Left" Height="23" Margin="35,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Balance, Mode=TwoWay}"/>-->
     </Grid>
 </Window>

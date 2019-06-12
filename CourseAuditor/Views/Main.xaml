@@ -93,6 +93,8 @@
                     <MenuItem Header="Добавить справку"></MenuItem>
                     <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
                     <Separator Padding="0"></Separator>
+                    <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
+                    <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить"></MenuItem>

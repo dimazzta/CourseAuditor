@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
 using CourseAuditor.Views;
@@ -21,6 +22,8 @@ namespace CourseAuditor.ViewModels
             CurrentView.DataContext = this;
             Balance = SelectedStudent.Balance;
             Sum = 0;
+            InfBalance = "Баланс: " + Balance;
+            InfStudent = GetInfStud();
             CurrentView.Show();
         }
         private IPageVM _CurrentPageVM;
@@ -82,6 +85,20 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private string _InfStudent;
+        public string InfStudent
+        {
+            get
+            {
+                return _InfStudent;
+            }
+            set
+            {
+                _InfStudent = value;
+                OnPropertyChanged("InfStudent");
+            }
+        }
+
         private double _Balance;
         public double Balance
         {
@@ -96,19 +113,57 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private RelayCommand _AddReturntCommand;
-        public RelayCommand AddReturntCommand =>
-            _AddReturntCommand ??
-            (_AddReturntCommand = new RelayCommand(
+        private string _InfBalance;
+        public string InfBalance
+        {
+            get
+            {
+                return _InfBalance;
+            }
+            set
+            {
+                _InfBalance = value;
+                OnPropertyChanged("InfBalance");
+            }
+        }
+        private string GetInfStud()
+        {
+          return  $"{SelectedStudent.Person.FullName} " +
+                 $"Курс {SelectedStudent.Module.Group.Course.Name} " +
+                 $"Группа {SelectedStudent.Module.Group.Title} " +
+                 $"Модуль {SelectedStudent.Module.Number}";
+        }
+
+        private RelayCommand _AddReturnCommand;
+        public RelayCommand AddReturnCommand =>
+            _AddReturnCommand ??
+            (_AddReturnCommand = new RelayCommand(
                 (obj) =>
                 {
-                    //AddPayment();
+                    AddReturn();
                 },
                 (obj) =>
                 {
                     return true;
                 }
         ));
+
+        private void AddReturn()
+        {
+            
+            using (var _context = new ApplicationContext())
+            {
+                SelectedStudent.Balance -=Sum;
+                var @return = new Return();
+                @return.Student_ID = SelectedStudent.ID;
+                @return.Sum = Sum;
+                @return.Date = DateTime.Now;
+                _context.Returns.Add(@return);
+                var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
+                _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
+                _context.SaveChanges();
+            }
+        }
 
 
     }

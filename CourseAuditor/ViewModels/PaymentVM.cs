@@ -68,8 +68,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double? _Sum;
-        public double? Sum
+        private double _Sum;
+        public double Sum
         {
             get
             {
@@ -82,8 +82,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double? _Discount;
-        public double? Discount
+        private double _Discount;
+        public double Discount
         {
             get
             {
@@ -134,12 +134,12 @@ namespace CourseAuditor.ViewModels
 
         private void AddPayment()
         {
-            SelectedStudent.Balance = Sum.Value * Discount.Value;
+            SelectedStudent.Balance = Sum * (1 - Discount * 0.01);
             using (var _context = new ApplicationContext())
             {
                 var payment = new Payment();
-                payment.Discount = Discount.Value;
-                payment.Sum = Sum.Value;
+                payment.Discount = Discount;
+                payment.Sum = Sum;
                 payment.Student_ID = SelectedStudent.ID;
                 payment.Date = DateTime.Now;
                 _context.Payments.Add(payment);

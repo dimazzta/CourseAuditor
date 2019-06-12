@@ -10,7 +10,7 @@
         <Button Content="Добавить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="35,243,0,0" Command="{Binding AddPaymentCommand}"/>
         <TextBlock HorizontalAlignment="Left" Margin="35,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding StudentInfo}"/>
         <TextBlock HorizontalAlignment="Left" Margin="35,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding BalanceInfo}"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" DataContext="{Binding Sum, Mode=TwoWay}"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" DataContext="{Binding Discount, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Sum, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Discount, Mode=TwoWay}"/>
     </Grid>
 </Window>

@@ -81,6 +81,7 @@
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
+    <Compile Include="ViewModels\AddMedicalDocVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="Views\AddGroupPage.xaml.cs">
       <DependentUpon>AddGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddMedicalDocWindow.xaml.cs">
+      <DependentUpon>AddMedicalDocWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddModulePage.xaml.cs">
       <DependentUpon>AddModulePage.xaml</DependentUpon>
@@ -137,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddMedicalDocWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

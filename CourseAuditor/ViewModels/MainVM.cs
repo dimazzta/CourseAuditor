@@ -123,6 +123,16 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
+        private ICommand _AddMedicalDocWindow;
+        public ICommand AddMedicalDocWindow =>
+            _AddMedicalDocWindow ??
+            (_AddMedicalDocWindow = new RelayCommand(
+                (obj) =>
+                {
+                    new AddMedicalDocVM(new AddMedicalDocWindow(), AppState.I.SelectedContextStudent);
+                }
+             ));
+
         //UI View
         public IView CurrentView { get; set; }
 

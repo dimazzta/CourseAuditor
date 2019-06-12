@@ -21,11 +21,15 @@ namespace CourseAuditor.ViewModels
     {
         public JournalPageVM()
         {
+            SelectedModule = AppState.I.SelectedModule;
             using (var _context = new ApplicationContext())
+            {
                 Assessments = new ObservableCollection<Assessment>(_context.Assessments);
+            }
+                
 
             // Подписка
-            SelectedModule = AppState.I.SelectedModule; 
+            
             AppState.I.PropertyChanged += StatePropertyChanged;
         }
 
@@ -142,22 +146,32 @@ namespace CourseAuditor.ViewModels
                     List<Student> students;
                     using (var _context = new ApplicationContext())
                     {
-                        students = _context.Students
+                            students = _context.Students
                             .Where(x => x.Module.ID == module.ID)
                             .Include(x => x.Journals
                             .Select(t => t.Assessment))
                             .Include(x => x.Person)
                             .ToList();
                     }
+                                            
                     List<DateTime> columns = students
                                         .First(x => x.Journals.Count == students
                                         .Max(t => t.Journals.Count)).Journals
                                         .Select(x => x.Date)
                                         .OrderBy(x => x.Date)
                                         .ToList();
+
+
                     foreach (var column in columns)
                     {
-                        table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
+                        try
+                        {
+                            table.Columns.Add(column.ToString("dd MMM"), typeof(Journal));
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
 
                     foreach (var student in students)

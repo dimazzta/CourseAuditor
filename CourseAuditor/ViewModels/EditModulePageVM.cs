@@ -9,56 +9,36 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
-    public class EditModulePageVM : BaseVM, IPageVM
+    public class EditModulePageVM : BaseVM, IPageVM, IEditPageVM
     {
-        public EditModulePageVM(Module selectedModule = null)
+        public EditModulePageVM(ICommand goBack, Module selectedModule = null)
         {
+            GoBack = goBack;
             Persons = new ObservableCollection<CheckedListItem<Person>>();
-            using (var _context = new ApplicationContext())
-            {
-                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-            }
-
             if (selectedModule != null)
             {
                 SelectedModule = selectedModule;
-                SelectedGroup = selectedModule.Group;
+                SelectedGroup = SelectedModule.Group;
                 SelectedCourse = SelectedGroup.Course;
-            }
-            else
-            {
-                SelectedCourse = Courses.FirstOrDefault();
             }
 
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if (e.ObjectChanged is Module)
+                if ((e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Module) && e.Type == ChangeType.Deleted)
                 {
-                    int? id = SelectedModule?.ID;
-                    using (var _context = new ApplicationContext())
+                    if (e.ObjectChanged is Course && (e.ObjectChanged as Course).ID == SelectedCourse?.ID
+                        || e.ObjectChanged is Group &&  (e.ObjectChanged as Group).ID == SelectedGroup?.ID
+                        || e.ObjectChanged is Module &&  (e.ObjectChanged as Module).ID == SelectedModule?.ID
+                        || SelectedModule == null)
                     {
-                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-                        if (id != null)
-                        {
-                            SelectedModule = _context.Modules.FirstOrDefault(x => x.ID == id);
-                            SelectedGroup = SelectedModule?.Group;
-                            SelectedCourse = SelectedGroup?.Course;
-                            if (SelectedCourse == null)
-                            {
-                                SelectedCourse = Courses.FirstOrDefault();
-                            }
-                        }
-                        else
-                        {
-                            SelectedCourse = Courses.FirstOrDefault();
-                        }
+                        object o = new object();
+                        GoBack.Execute(o);
                     }
                 }
-                else { 
-}
             };
         }
 
@@ -73,7 +53,7 @@ namespace CourseAuditor.ViewModels
                     List<Person> selectedPersons = new List<Person>();
                     List<Person> unselectedPersons = new List<Person>();
                     selectedPersons = _context.Modules
-                        .First(x => x.ID == selectedModule.ID).Students
+                        .FirstOrDefault(x => x.ID == selectedModule.ID).Students?
                         .Select(x => x.Person)
                         .OrderBy(x => x.SecondName)
                         .ToList();
@@ -104,19 +84,7 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private ObservableCollection<Course> _Courses;
-        public ObservableCollection<Course> Courses
-        {
-            get
-            {
-                return _Courses;
-            }
-            set
-            {
-                _Courses = value;
-                OnPropertyChanged("Courses");
-            }
-        }
+    
 
         private Course _SelectedCourse;
         public Course SelectedCourse
@@ -128,33 +96,10 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedCourse = value;
-                if (_SelectedCourse != null)
-                {
-                    Groups = new ObservableCollection<Group>(_SelectedCourse.Groups);
-                    if (SelectedGroup == null)
-                        SelectedGroup = Groups?.FirstOrDefault();
-                }
-                else
-                {
-                    Groups = new ObservableCollection<Group>();
-                }
                 OnPropertyChanged("SelectedCourse");
             }
         }
 
-        private ObservableCollection<Group> _Groups;
-        public ObservableCollection<Group> Groups
-        {
-            get
-            {
-                return _Groups;
-            }
-            set
-            {
-                _Groups = value;
-                OnPropertyChanged("Groups");
-            }
-        }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -166,33 +111,10 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                if (_SelectedGroup != null)
-                {
-                    Modules = new ObservableCollection<Module>(_SelectedGroup.Modules);
-                    if (SelectedModule == null)
-                        SelectedModule = _SelectedGroup.LastModule;
-                }
-                else
-                {
-                    SelectedModule = null;
-                }
                 OnPropertyChanged("SelectedGroup");
             }
         }
 
-        private ObservableCollection<Module> _Modules;
-        public ObservableCollection<Module> Modules
-        {
-            get
-            {
-                return _Modules;
-            }
-            set
-            {
-                _Modules = value;
-                OnPropertyChanged("Modules");
-            }
-        }
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -204,20 +126,10 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedModule = value;
-                if (_SelectedModule != null)
-                {
-                    DateStart = _SelectedModule.DateStart;
-                    DateEnd = _SelectedModule.DateEnd;
-                    ModuleNumber = _SelectedModule.Number;
-                    LessonCount = _SelectedModule.LessonCount;
-                    LessonPrice = _SelectedModule.LessonPrice;
-                    LoadPersons(_SelectedModule);
-                }
+                LoadPersons(_SelectedModule);
                 OnPropertyChanged("SelectedModule");
             }
         }
-
-      
 
         private ObservableCollection<CheckedListItem<Person>> _Persons;
         public ObservableCollection<CheckedListItem<Person>> Persons
@@ -233,113 +145,75 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private DateTime _DateStart;
-        public DateTime DateStart
-        {
-            get
-            {
-                return _DateStart;
-            }
-            set
-            {
-                _DateStart = value;
-                OnPropertyChanged("DateStart");
-            }
-        }
-
-        private DateTime? _DateEnd;
-        public DateTime? DateEnd
-        {
-            get
-            {
-                return _DateEnd;
-            }
-            set
-            {
-                _DateEnd = value;
-                OnPropertyChanged("DateEnd");
-            }
-        }
-
-        private int _ModuleNumber;
-        public int ModuleNumber
-        {
-            get
-            {
-                return _ModuleNumber;
-            }
-            set
-            {
-                _ModuleNumber = value;
-                OnPropertyChanged("ModuleNumber");
-            }
-        }
-
-        private int _LessonCount;
-        public int LessonCount
-        {
-            get
-            {
-                return _LessonCount;
-            }
-            set
-            {
-                _LessonCount = value;
-                OnPropertyChanged("LessonCount");
-            }
-        }
-
-        private double _LessonPrice;
-        public double LessonPrice
-        {
-            get
-            {
-                return _LessonPrice;
-            }
-            set
-            {
-                _LessonPrice = value;
-                OnPropertyChanged("LessonPrice");
-            }
-        }
-
-      
         private void UpdateModule()
         {
             if (SelectedModule != null)
             {
                 using (var _context = new ApplicationContext())
                 {
-                    var module = _context.Modules.Include(x => x.Students).FirstOrDefault(x => x.ID == SelectedModule.ID);
+                    var module = _context.Modules.Include(x => x.Students.Select(t => t.Person)).FirstOrDefault(x => x.ID == SelectedModule.ID);
                     if (module != null)
                     {
-                        module.Number = ModuleNumber;
-                        module.LessonPrice = LessonPrice;
-                        module.LessonCount = LessonCount;
-                        module.DateStart = DateStart;
-                        module.DateEnd = DateEnd;
+                        module.Number = SelectedModule.Number;
+                        module.LessonPrice = SelectedModule.LessonPrice;
+                        module.LessonCount = SelectedModule.LessonCount;
+                        module.DateStart = SelectedModule.DateStart;
+                        module.DateEnd = SelectedModule.DateEnd;
 
-
-                        _context.Students.RemoveRange(module.Students);
-                  
+                        List<Student> toDelete = new List<Student>();
+                        foreach(var person in Persons.Where(x => !x.IsChecked))
+                        {
+                            toDelete.AddRange(module.Students.Where(x => x.Person.ID == person.Item.ID).ToList());
+                        }
+                        _context.Students.RemoveRange(toDelete);
+                        _context.SaveChanges();
                         foreach (var person in Persons.Where(x => x.IsChecked))
                         {
-                            Student student = new Student()
+                            if (!module.Students.Select(x => x.Person).Any(x => x?.ID == person.Item.ID))
                             {
-                                DateStart = DateStart,
-                                Person_ID = person.Item.ID,
-                                Module_ID = SelectedModule.ID
-                            };
-                            _context.Students.Add(student);
-                            _context.Entry(student).State = EntityState.Added;
+                                Student student = new Student()
+                                {
+                                    DateStart = SelectedModule.DateStart,
+                                    Person_ID = person.Item.ID,
+                                    Module_ID = SelectedModule.ID
+                                };
+                                _context.Students.Add(student);
+                                _context.Entry(student).State = EntityState.Added;
+                            }
                         }
                         _context.SaveChanges();
                     }
                 }
-                EventsManager.RaiseObjectChangedEvent(SelectedModule);
+                EventsManager.RaiseObjectChangedEvent(SelectedModule, ChangeType.Updated);
             }
         }
-            
+
+        public static void DeleteModule(Module selectedModule)
+        {
+            if (selectedModule != null)
+            {
+                if (selectedModule.Students.Count != 0)
+                {
+                    var f = MessageBox.Show("Модуль не пуст. Вы уверены, что хотите удалить его?", "Модуль не пуст", MessageBoxButton.YesNo);
+                    if (f == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                }
+                using (var _context = new ApplicationContext())
+                {
+                    var deleted = _context.Modules.First(x => x.ID == selectedModule.ID);
+                    if (deleted != null)
+                    {
+                        _context.Modules.Remove(deleted);
+                        _context.SaveChanges();
+                    }
+                }
+                AppState.I.SelectedContextGroup = null;
+                EventsManager.RaiseObjectChangedEvent(selectedModule, ChangeType.Deleted);
+            }
+        }
+
         private ICommand _UpdateModuleCommand;
         public ICommand UpdateModuleCommand =>
             _UpdateModuleCommand ??
@@ -356,8 +230,10 @@ namespace CourseAuditor.ViewModels
             (_DeleteModuleCommand = new RelayCommand(
                 (obj) =>
                 {
-
+                    DeleteModule(SelectedModule);
                 }
                 ));
+
+        public ICommand GoBack { get; set; }
     }
 }

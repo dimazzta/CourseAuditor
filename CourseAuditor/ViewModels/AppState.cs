@@ -1,4 +1,5 @@
-﻿using CourseAuditor.Models;
+﻿using CourseAuditor.Helpers;
+using CourseAuditor.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,49 @@ namespace CourseAuditor.ViewModels
     {
         // Синглтон. Хранит разделяемые данные. На нужные данные подписываемся из страниц / окон
         // Если станет слишком большим, надо будет разбить под каждую IViewVM
-        private AppState() { }
+        private AppState() {
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
+        }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.Type == ChangeType.Deleted)
+            {
+                if(e.ObjectChanged is Course)
+                {
+                    var course = e.ObjectChanged as Course;
+                    if (SelectedGroup?.Course?.ID == course.ID)
+                    {
+                        SelectedGroup = null;
+                    }
+                    if (SelectedModule?.Group?.Course?.ID == course.ID)
+                    {
+                        SelectedModule = null;
+                    }
+                }
+                if (e.ObjectChanged is Group)
+                {
+                    var group = e.ObjectChanged as Group;
+                    if (SelectedGroup?.ID == group.ID)
+                    {
+                        SelectedGroup = null;
+                    }
+                    if (SelectedModule?.Group?.ID == group.ID)
+                    {
+                        SelectedModule = null;
+                    }
+                }
+                if (e.ObjectChanged is Module)
+                {
+                    var module = e.ObjectChanged as Module;
+                    if (SelectedModule?.ID == module.ID)
+                    {
+                        SelectedModule = null;
+                    }
+                }
+            }
+        }
+
         private static AppState _I;
         public static AppState I => _I ?? (_I = new AppState());
 

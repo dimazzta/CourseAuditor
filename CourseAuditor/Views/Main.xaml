@@ -44,12 +44,7 @@
                 <MenuItem Header="Модуль" Command="{Binding AddModulePage}"/>
                 <MenuItem Header="Студента"/>
             </MenuItem>
-            <MenuItem Header="Изменить">
-                <MenuItem Header="Курс" Command="{Binding EditCoursePage}"/>
-                <MenuItem Header="Группу" Command="{Binding EditGroupPage}"/>
-                <MenuItem Header="Модуль" Command="{Binding EditModulePage}"/>
-                <MenuItem Header="Студента"/>
-            </MenuItem>
+
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
             <MenuItem Header="Сертификат"/>
             <MenuItem Header="Справка"/>

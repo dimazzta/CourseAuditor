@@ -79,7 +79,7 @@ namespace CourseAuditor.ViewModels
             (_EditCoursePage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new EditCoursePageVM(AppState.I.SelectedContextCourse);
+                    CurrentPageVM = new EditCoursePageVM(JournalPage, AppState.I.SelectedContextCourse);
                 }
              ));
 
@@ -89,7 +89,7 @@ namespace CourseAuditor.ViewModels
             (_EditGroupPage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new EditGroupPageVM(AppState.I.SelectedContextGroup);
+                    CurrentPageVM = new EditGroupPageVM(JournalPage, AppState.I.SelectedContextGroup);
                 }
              ));
 
@@ -100,7 +100,7 @@ namespace CourseAuditor.ViewModels
             (_EditModulePage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new EditModulePageVM(AppState.I.SelectedContextModule);
+                    CurrentPageVM = new EditModulePageVM(JournalPage, AppState.I.SelectedContextModule);
                 }
              ));
 
@@ -153,7 +153,7 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                SelectedModule = _SelectedGroup.LastModule;
+                SelectedModule = _SelectedGroup?.LastModule;
                 if (_SelectedGroup != AppState.I.SelectedGroup)
                     AppState.I.SelectedGroup = _SelectedGroup;
 

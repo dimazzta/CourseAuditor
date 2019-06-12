@@ -70,7 +70,7 @@ namespace CourseAuditor.ViewModels
                 _context.Courses.Add(SelectedCourse);
                 _context.SaveChanges();
             }
-            EventsManager.RaiseObjectChangedEvent(SelectedCourse);
+            EventsManager.RaiseObjectChangedEvent(SelectedCourse, ChangeType.Added);
         }
 
         private RelayCommand _AddCourseCommand;

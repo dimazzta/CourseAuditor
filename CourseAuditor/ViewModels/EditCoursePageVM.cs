@@ -11,14 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    public class EditCoursePageVM : BaseVM, IPageVM
+    public class EditCoursePageVM : BaseVM, IPageVM, IEditPageVM
     {
         public EditCoursePageVM() { }
-        public EditCoursePageVM(Course SelectedCourse = null)
+        public EditCoursePageVM(ICommand goBack, Course SelectedCourse = null)
         {
+            GoBack = goBack;
             using (var _context = new ApplicationContext())
             {
                 Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups));
@@ -36,19 +38,13 @@ namespace CourseAuditor.ViewModels
 
         private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
         {
-            if(e.ObjectChanged is Course)
+            if(e.ObjectChanged is Course && e.Type == ChangeType.Deleted)
             {
-                
-                int? id = SelectedCourse?.ID;
-                using (var _context = new ApplicationContext())
+                if (e.ObjectChanged is Course && (e.ObjectChanged as Course).ID == SelectedCourse?.ID || SelectedCourse == null)
                 {
-                    Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups));
+                    object o = new object();
+                    GoBack.Execute(o);
                 }
-                if (id != null)
-                    if (!Courses.Any(x => x.ID == id))
-                        SelectedCourse = Courses.FirstOrDefault();
-                    else
-                        SelectedCourse = Courses.First(x => x.ID == id);
                     
             }
         }
@@ -156,7 +152,7 @@ namespace CourseAuditor.ViewModels
                     }
                 }
                 AppState.I.SelectedContextCourse = null;
-                EventsManager.RaiseObjectChangedEvent(SelectedCourse);
+                EventsManager.RaiseObjectChangedEvent(SelectedCourse, ChangeType.Deleted);
             }
         }
 
@@ -176,7 +172,7 @@ namespace CourseAuditor.ViewModels
                         _context.SaveChanges();
                     }
                 }
-                EventsManager.RaiseObjectChangedEvent(SelectedCourse);
+                EventsManager.RaiseObjectChangedEvent(SelectedCourse, ChangeType.Updated);
             }
         }
 
@@ -207,5 +203,7 @@ namespace CourseAuditor.ViewModels
                     return true;
                 }
         ));
+       
+        public ICommand GoBack { get; set; }
     }
 }

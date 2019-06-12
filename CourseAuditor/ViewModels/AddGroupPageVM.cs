@@ -30,7 +30,7 @@ namespace CourseAuditor.ViewModels
 
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if (e.ObjectChanged is Course)
+                if (e.ObjectChanged is Course && e.Type == ChangeType.Deleted)
                 {
                     using (var _context = new ApplicationContext())
                     {
@@ -99,7 +99,7 @@ namespace CourseAuditor.ViewModels
                     };
                     _context.Groups.Add(group);
                     _context.SaveChanges();
-                    EventsManager.RaiseObjectChangedEvent(group);
+                    EventsManager.RaiseObjectChangedEvent(group, ChangeType.Added);
                 }
             }
         }

@@ -9,25 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    public class EditGroupPageVM : BaseVM, IPageVM
+    public class EditGroupPageVM : BaseVM, IPageVM, IEditPageVM
     { 
-        public EditGroupPageVM(Group selectedGroup = null)
+        public EditGroupPageVM(ICommand goBack, Group selectedGroup = null)
         {
-            using (var _context = new ApplicationContext())
-            { 
-                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-            }
+            GoBack = goBack;
             if (selectedGroup != null)
             {
                 SelectedGroup = selectedGroup;
                 SelectedCourse = selectedGroup.Course;
-            }
-            else
-            {
-                SelectedCourse = Courses.FirstOrDefault();
             }
 
             EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
@@ -35,27 +29,14 @@ namespace CourseAuditor.ViewModels
 
         private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
         {
-            if (e.ObjectChanged is Group || e.ObjectChanged is Course)
-            {
-                int? id = SelectedGroup?.ID;
-                using (var _context = new ApplicationContext())
+            if ((e.ObjectChanged is Course || (e.ObjectChanged is Group) && e.Type == ChangeType.Deleted)){
+                if (e.ObjectChanged is Course && (e.ObjectChanged as Course).ID == SelectedCourse?.ID
+                 || e.ObjectChanged is Group && (e.ObjectChanged as Group).ID == SelectedGroup?.ID
+                 || SelectedGroup == null)
                 {
-                    Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-                    if (id != null)
-                    {
-                        SelectedGroup = _context.Groups.FirstOrDefault(x => x.ID == id);
-                        SelectedCourse = SelectedGroup?.Course;
-                        if (SelectedCourse != null)
-                            Groups = new ObservableCollection<Group>(SelectedCourse.Groups);
-                        else
-                            SelectedCourse = Courses.FirstOrDefault();
-                    }
-                    else
-                    {
-                        SelectedCourse = Courses.FirstOrDefault();
-                    }
+                    object o = new object();
+                    GoBack.Execute(o);
                 }
-                
             }
         }
 
@@ -69,7 +50,7 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                GroupName = _SelectedGroup?.Title;
+          
                 OnPropertyChanged("SelectedGroup");
             }
         }
@@ -84,66 +65,9 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedCourse = value;
-                if (_SelectedCourse != null)
-                {
-                    Groups = new ObservableCollection<Group>(_SelectedCourse.Groups);
-                    if (SelectedGroup == null)
-                        SelectedGroup = Groups?.FirstOrDefault();
-                }
-                else
-                {
-                    Groups = new ObservableCollection<Group>();
-                }
                 OnPropertyChanged("SelectedCourse");
             }
         }
-
-        private ObservableCollection<Group> _Groups;
-        public ObservableCollection<Group> Groups
-        {
-            get
-            {
-                return _Groups;
-            }
-            set
-            {
-                _Groups = value;
-                OnPropertyChanged("Groups");
-            }
-        }
-
-        private ObservableCollection<Course> _Courses;
-        public ObservableCollection<Course> Courses
-        {
-            get
-            {
-                return _Courses;
-            }
-            set
-            {
-                _Courses = value;
-                OnPropertyChanged("Courses");
-            }
-        }
-
-        private string _GroupName;
-        public string GroupName
-        {
-            get
-            {
-                return _GroupName ?? (_GroupName = Constants.GroupText);
-            }
-            set
-            {
-                _GroupName = value;
-                OnPropertyChanged("GroupName");
-            }
-        }
-
-
-
-
-
 
 
         public static void DeleteGroup(Group SelectedGroup)
@@ -168,7 +92,7 @@ namespace CourseAuditor.ViewModels
                     }
                 }
                 AppState.I.SelectedContextGroup = null;
-                EventsManager.RaiseObjectChangedEvent(SelectedGroup);
+                EventsManager.RaiseObjectChangedEvent(SelectedGroup, ChangeType.Deleted);
             }
         }
             
@@ -182,11 +106,11 @@ namespace CourseAuditor.ViewModels
                     var group = _context.Groups.FirstOrDefault(x => x.ID == SelectedGroup.ID);
                     if (group != null)
                     {
-                        group.Title = GroupName;
+                        group.Title = SelectedGroup.Title;
                         _context.SaveChanges();
                     }
                 }
-                EventsManager.RaiseObjectChangedEvent(SelectedGroup);
+                EventsManager.RaiseObjectChangedEvent(SelectedGroup, ChangeType.Updated);
             }
         }
 
@@ -217,5 +141,7 @@ namespace CourseAuditor.ViewModels
                     return true;
                 }
         ));
+
+        public ICommand GoBack { get; set; }
     }
 }

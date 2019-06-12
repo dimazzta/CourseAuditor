@@ -41,13 +41,11 @@ namespace CourseAuditor.ViewModels
 
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if (e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Course || e.ObjectChanged is Student)
+                if ((e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student) && e.Type == ChangeType.Deleted)
                 {
-                    int? id = SelectedGroup?.ID;
                     using (var _context = new ApplicationContext())
                     {
                         Persons.Clear();
-                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                         var persons = _context.Students
                                         .Include(x => x.Person)
                                         .Include(x => x.Module.Group.Course)
@@ -57,15 +55,11 @@ namespace CourseAuditor.ViewModels
                         {
                             Persons.Add(new CheckedListItem<Person>(person));
                         }
-                        if (id != null)
+
+                        if (e.ObjectChanged is Group && (e.ObjectChanged as Group).ID == SelectedGroup?.ID
+                        || e.ObjectChanged is Course && (e.ObjectChanged as Course).ID == SelectedCourse?.ID)
                         {
-                            SelectedGroup = _context.Groups.FirstOrDefault(x => x.ID == id);
-                            SelectedCourse = SelectedGroup?.Course;
-                            if (SelectedCourse == null)
-                                SelectedCourse = Courses.FirstOrDefault();
-                        }
-                        else
-                        {
+                            Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                             SelectedCourse = Courses.FirstOrDefault();
                         }
                     }
@@ -271,7 +265,8 @@ namespace CourseAuditor.ViewModels
                         _context.Entry(student).State = EntityState.Added;
                     }
                     _context.SaveChanges();
-                    EventsManager.RaiseObjectChangedEvent(module);
+                    EventsManager.RaiseObjectChangedEvent(module, ChangeType.Added);
+                    ModuleNumber++;
                 }
             }
             

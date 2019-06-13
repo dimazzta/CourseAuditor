@@ -17,11 +17,13 @@ namespace CourseAuditor.Views
     /// <summary>
     /// Логика взаимодействия для AddNewParentWindow.xaml
     /// </summary>
-    public partial class AddNewParentWindow : Window
+    public partial class AddNewParentWindow : Window, IView
     {
         public AddNewParentWindow()
         {
             InitializeComponent();
         }
+
+        public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

@@ -19,7 +19,8 @@ namespace CourseAuditor
         public App()
         {
             DialogService.I.Register<DateTimeDialogVM, DateTimeDialogWindow>();
-            new MainVM(new Main());
+            //new MainVM(new Main());
+            new AddParentVM(new AddNewParentWindow());
         }
     }
 }

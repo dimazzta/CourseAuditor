@@ -73,5 +73,10 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Children");
             }
         }
+
+        public override string ToString()
+        {
+            return $"{SecondName} {FirstName} {Patronymic} {Phone}";
+        }
     }
 }

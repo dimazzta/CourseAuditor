@@ -1,0 +1,21 @@
+﻿<Window x:Class="CourseAuditor.Views.AddNewParentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseAuditor.Views"
+        mc:Ignorable="d"
+        Title="AddNewParentWindow" Height="310.084" Width="256.723">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="38,70,0,0" TextWrapping="Wrap" Text="Фамилия" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="106,69,0,0" TextWrapping="Wrap" Text="{Binding SecondName}" VerticalAlignment="Top" Width="120"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="38,98,0,0" TextWrapping="Wrap" Text="Имя" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="106,97,0,0" TextWrapping="Wrap" Text="{Binding FirstName}" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="38,126,0,0" TextWrapping="Wrap" Text="Отчество" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="106,125,0,0" TextWrapping="Wrap" Text="{Binding Patronymic}" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="38,154,0,0" TextWrapping="Wrap" Text="Телефон" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="106,153,0,0" TextWrapping="Wrap" Text="{Binding Phone}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Добавить родителя" HorizontalAlignment="Left" VerticalAlignment="Top" Width="148" Margin="50,215,0,0" Height="25" Command="{Binding AddNewParentCommand}"/>
+    </Grid>
+</Window>

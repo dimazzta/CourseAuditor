@@ -86,6 +86,7 @@
     <Compile Include="ViewModels\AddModulePageVM.cs" />
     <Compile Include="ViewModels\AddStudentPageVM.cs" />
     <Compile Include="ViewModels\AddNewParentVM.cs" />
+    <Compile Include="ViewModels\AddParentVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />

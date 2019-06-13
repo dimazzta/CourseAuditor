@@ -74,6 +74,11 @@ namespace CourseAuditor.Models
             }
         }
 
+        public override string ToString()
+        {
+            return $"{SecondName} {FirstName} {Patronymic} {Phone}";
+        }
+
         [NotMapped]
         public string FullName
         {

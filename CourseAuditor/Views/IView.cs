@@ -6,5 +6,6 @@
         IPage CurrentFrame { get; set; }
         void Show();
         void Close();
+        bool? ShowDialog();
     }
 }

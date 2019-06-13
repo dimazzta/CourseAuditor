@@ -10,6 +10,7 @@ using CourseAuditor.Views;
 using System.Data.Entity;
 using CourseAuditor.Helpers;
 using System.Windows.Input;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
@@ -167,7 +168,7 @@ namespace CourseAuditor.ViewModels
                 $"Модуль: {SelectedStudent.Module.Number}.\n";
             CurrentView = view;
             CurrentView.DataContext = this;
-            CurrentView.Show();
+            CurrentView.ShowDialog();
         }
     }
 }

@@ -35,11 +35,11 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch" Width="200" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
+                    <DatePicker HorizontalAlignment="Stretch" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
                                             Mode=TwoWay}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch" Width="200" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
+                    <DatePicker HorizontalAlignment="Stretch" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
                                             Mode=TwoWay}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>

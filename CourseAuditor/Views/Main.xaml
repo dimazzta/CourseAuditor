@@ -42,7 +42,7 @@
                 <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
                 <MenuItem Header="Группу" Command="{Binding AddGroupPage}"/>
                 <MenuItem Header="Модуль" Command="{Binding AddModulePage}"/>
-                <MenuItem Header="Студента"/>
+                <MenuItem Header="Студента" Command="{Binding AddStudentPage}"/>
             </MenuItem>
 
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
@@ -143,6 +143,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:EditModulePageVM}">
                     <views:EditModulePage></views:EditModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddStudentPageVM}">
+                    <views:AddStudentPage></views:AddStudentPage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

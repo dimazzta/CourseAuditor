@@ -15,5 +15,6 @@ namespace CourseAuditor.Helpers
         public static int NotRespectfulReason => 1;
         public static int RespectfulReason => 2;
         public static int Attendance => 0;
+        public static string DefaultPhoneNumberStart => "+7";
     }
 }

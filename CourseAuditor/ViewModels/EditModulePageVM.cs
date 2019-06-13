@@ -209,7 +209,7 @@ namespace CourseAuditor.ViewModels
                         _context.SaveChanges();
                     }
                 }
-                AppState.I.SelectedContextGroup = null;
+                AppState.I.SelectedContextModule = null;
                 EventsManager.RaiseObjectChangedEvent(selectedModule, ChangeType.Deleted);
             }
         }

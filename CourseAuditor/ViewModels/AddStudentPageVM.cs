@@ -16,6 +16,8 @@ namespace CourseAuditor.ViewModels
     {
         public AddStudentPageVM(Group selectedGroup = null)
         {
+            ParentPicker = new ParentPickerVM();
+           
             Person = new Person();
             AddNewMode = true;
             using (var _context = new ApplicationContext())
@@ -35,6 +37,7 @@ namespace CourseAuditor.ViewModels
                 SelectedCourse = Courses.FirstOrDefault();
             }
         }
+        public ParentPickerVM ParentPicker { get; set; }
 
         public bool AddNewMode { get; set; }
 

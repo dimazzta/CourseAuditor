@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Windows.Input;
+using CourseAuditor.ViewModels.Dialogs;
 
 namespace CourseAuditor.ViewModels
 {
@@ -173,17 +174,34 @@ namespace CourseAuditor.ViewModels
                     var person = _context.Persons.FirstOrDefault(x => x.ID == Person.ID);
                     if (person == null)
                     {
+                        Parents = ParentPicker.Parents;
                         person = new Person()
                         {
                             FirstName = Person.FirstName,
                             SecondName = Person.SecondName,
                             Patronymic = Person.Patronymic,
-                            Phone = Person.Phone,
-                            // TODO Parents
+                            Phone = Person.Phone
                         };
                         _context.Persons.Add(person);
                         _context.SaveChanges();
+
+                        foreach (var parent in Parents)
+                        {
+                            if (!_context.Parents.Any(x => x.ID == parent.ID))
+                            {
+                                _context.Parents.Add(parent);
+                                _context.SaveChanges();
+                            }
+                            var newPair = _context.PersonParents.Add(new PersonParent()
+                            {
+                                Parent_ID = parent.ID,
+                                Person_ID = person.ID
+                            });
+                            _context.Entry(newPair).State = EntityState.Added;
+                        }
+                        _context.SaveChanges();
                     }
+
                     var student = new Student()
                     {
                         DateStart = LastModule.DateStart,
@@ -198,6 +216,7 @@ namespace CourseAuditor.ViewModels
 
             }
         }
+
 
         private ICommand _AddStudentCommand;
         public ICommand AddStudentCommand =>

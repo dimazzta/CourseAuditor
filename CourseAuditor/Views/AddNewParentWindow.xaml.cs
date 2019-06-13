@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseAuditor.ViewModels.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +18,14 @@ namespace CourseAuditor.Views
     /// <summary>
     /// Логика взаимодействия для AddNewParentWindow.xaml
     /// </summary>
-    public partial class AddNewParentWindow : Window, IView
+    public partial class AddNewParentWindow : Window, IDialog
     {
         public AddNewParentWindow()
         {
             InitializeComponent();
-        }
 
-        public IPage CurrentFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            Owner = Application.Current.MainWindow;
+        }
     }
 }

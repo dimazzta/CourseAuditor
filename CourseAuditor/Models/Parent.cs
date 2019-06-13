@@ -76,7 +76,7 @@ namespace CourseAuditor.Models
 
         public override string ToString()
         {
-            return $"{SecondName} {FirstName} {Patronymic} {Phone}";
+            return $"{SecondName} {FirstName} {Patronymic} ({Phone})";
         }
 
         [NotMapped]

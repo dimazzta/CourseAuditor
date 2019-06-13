@@ -16,16 +16,12 @@
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0, 0, 0, 2">
-                <Button Style="{StaticResource DefaultButton}" Command="{Binding AddParentComand}" Width="33" BorderBrush="Green" Background="LightCyan" Content="+" FontSize="15" VerticalContentAlignment="Center" Margin="0, 0, 5, 0"></Button>
-                <Button Style="{StaticResource DefaultButton}" Command="{Binding DeleteParentComand}" Width="33" BorderBrush="DarkRed" Background="LightCoral" Content="-" FontSize="16" VerticalContentAlignment="Center"></Button>
+                <Button Style="{StaticResource DefaultButton}" Command="{Binding AddParentCommand}" Width="33" BorderBrush="Green" Background="LightCyan" Content="+" FontSize="15" VerticalContentAlignment="Center" Margin="0, 0, 5, 0"></Button>
+                <Button Style="{StaticResource DefaultButton}" Command="{Binding DeleteParentCommand}" Width="33" BorderBrush="DarkRed" Background="LightCoral" Content="-" FontSize="16" VerticalContentAlignment="Center"></Button>
             </StackPanel>
 
             <ListBox SelectedItem="{Binding SelectedParent}" ItemsSource="{Binding Parents}" Margin="0, 0, 0, 20" Height="70">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=FullName}"></TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+
             </ListBox>
         </StackPanel>
     </Grid>

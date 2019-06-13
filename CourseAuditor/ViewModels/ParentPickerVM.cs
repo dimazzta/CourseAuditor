@@ -1,5 +1,6 @@
 ﻿using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using CourseAuditor.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,17 +24,29 @@ namespace CourseAuditor.ViewModels
         public ICommand AddParentCommand =>
             _AddParentCommand ??
             (_AddParentCommand = new RelayCommand(
-                (obj) => {
-                    // TODO: вызов формы добавления
+                (obj) =>
+                {
+                    var pickParentVM = new AddParentVM();
+                    bool? result = DialogService.I.ShowDialog(pickParentVM);
+                    if (result.HasValue)
+                    {
+                        if (result.Value)
+                        {
+                            var parent = pickParentVM.Parent;
+                            Parents.Add(parent);
+                        }
+                    }
                 }
                 ));
+
 
         private ICommand _DeleteParentCommand;
         public ICommand DeleteParentCommand =>
             _DeleteParentCommand ??
             (_DeleteParentCommand = new RelayCommand(
                 (obj) => {
-                    Parents.Remove(SelectedParent);
+                    if (SelectedParent != null)
+                        Parents.Remove(SelectedParent);
                 },
                 (obj) =>
                 {

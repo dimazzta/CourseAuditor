@@ -9,24 +9,15 @@ using System.Windows.Input;
 using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 
 namespace CourseAuditor.ViewModels
 {
-    public class PaymentVM: BaseVM, IViewVM
+    public class PaymentVM: BaseVM, IDialogRequestClose
     {
-        private IPageVM _CurrentPageVM;
-        public IPageVM CurrentPageVM
-        {
-            get => _CurrentPageVM;
-            set
-            {
-                _CurrentPageVM = value;
-                OnPropertyChanged("CurrentPageVM");
-            }
-        }
-        
-        public IView CurrentView { get; set; }
+
+ 
 
         private Student _SelectedStudent;
         public Student SelectedStudent
@@ -133,7 +124,7 @@ namespace CourseAuditor.ViewModels
                 _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
                 _context.SaveChanges();
                 SelectedStudent = student;
-                EventsManager.RaiseObjectChangedEvent(SelectedStudent, ChangeType.Added);
+                EventsManager.RaiseObjectChangedEvent(payment, ChangeType.Added);
             }
             
         }
@@ -147,7 +138,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     AddPayment();
-                    CurrentView.Close();
+                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
                 },
                 (obj) =>
                 {
@@ -156,6 +147,9 @@ namespace CourseAuditor.ViewModels
         ));
 
         private ICommand _ChangeDiscount;
+
+        
+
         public ICommand ChangeDiscount =>
             _ChangeDiscount ??
             (_ChangeDiscount = new RelayCommand(
@@ -182,15 +176,11 @@ namespace CourseAuditor.ViewModels
                 $"Текущий баланс: {SelectedStudent.Balance}";
         }
 
-        public PaymentVM(IView view, Student selectedStudent)
+        public PaymentVM(Student selectedStudent)
         {
-
             SelectedStudent = selectedStudent;
-
-            CurrentView = view;
-            CurrentView.DataContext = this;
-            CurrentView.Show();
         }
 
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
     }
 }

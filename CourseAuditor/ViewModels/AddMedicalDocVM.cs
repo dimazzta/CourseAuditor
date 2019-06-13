@@ -11,23 +11,12 @@ using System.Data.Entity;
 using CourseAuditor.Helpers;
 using System.Windows.Input;
 using System.Windows;
+using CourseAuditor.ViewModels.Dialogs;
 
 namespace CourseAuditor.ViewModels
 {
-    public class AddMedicalDocVM : BaseVM, IViewVM
+    public class AddMedicalDocVM : BaseVM, IDialogRequestClose
     {
-        private IPageVM _CurrentPageVM;
-        public IPageVM CurrentPageVM
-        {
-            get => _CurrentPageVM;
-            set
-            {
-                _CurrentPageVM = value;
-                OnPropertyChanged("CurrentPageVM");
-            }
-        }
-
-        public IView CurrentView { get; set; }
 
         private ObservableCollection<Journal> _Journals;
         public ObservableCollection<Journal> Journals
@@ -143,13 +132,16 @@ namespace CourseAuditor.ViewModels
         }
 
         private ICommand _AddMedicalDocCommand;
+
+        
+
         public ICommand AddMedicalDocCommand =>
             _AddMedicalDocCommand ??
             (_AddMedicalDocCommand = new RelayCommand(
                 (obj) =>
                 {
                     AddMedicalDoc();
-                    CurrentView.Close();
+                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
                 },
                 (obj) =>
                 {
@@ -157,7 +149,7 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
-        public AddMedicalDocVM(IView view, Student selectedStudent)
+        public AddMedicalDocVM(Student selectedStudent)
         {
             DateStart = DateTime.Now;
             DateEnd = DateTime.Now;
@@ -166,9 +158,10 @@ namespace CourseAuditor.ViewModels
                 $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
                 $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
                 $"Модуль: {SelectedStudent.Module.Number}.\n";
-            CurrentView = view;
-            CurrentView.DataContext = this;
-            CurrentView.ShowDialog();
+            
         }
+
+
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
     }
 }

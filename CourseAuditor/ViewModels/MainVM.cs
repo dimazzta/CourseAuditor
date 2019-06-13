@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.Entity;
+using CourseAuditor.ViewModels.Dialogs;
 
 namespace CourseAuditor.ViewModels
 {
@@ -140,7 +141,8 @@ namespace CourseAuditor.ViewModels
             (_AddPaymentWindow = new RelayCommand(
                 (obj) =>
                 {
-                    new PaymentVM(new PaymentWindow(),AppState.I.SelectedContextStudent);
+                    var paymentVM = new PaymentVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(paymentVM);
                 }
              ));
 
@@ -150,7 +152,8 @@ namespace CourseAuditor.ViewModels
             (_AddMedicalDocWindow = new RelayCommand(
                 (obj) =>
                 {
-                    new AddMedicalDocVM(new AddMedicalDocWindow(), AppState.I.SelectedContextStudent);
+                    var medicalVM = new AddMedicalDocVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(medicalVM);
                 }
              ));
 

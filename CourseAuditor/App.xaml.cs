@@ -18,9 +18,15 @@ namespace CourseAuditor
     {
         public App()
         {
+            // такс такс такс инъекция зависимостей подъехала
             DialogService.I.Register<DateTimeDialogVM, DateTimeDialogWindow>();
-            //new MainVM(new Main());
-            new AddParentVM(new AddNewParentWindow());
+            DialogService.I.Register<AddMedicalDocVM, AddMedicalDocWindow>();
+            DialogService.I.Register<PaymentVM, PaymentWindow>();
+            DialogService.I.Register<AddParentVM, AddNewParentWindow>();
+
+            new MainVM(new Main()); // это можно сделать аналогичным способом но пока оставим так
+
+            //new AddParentVM(new AddNewParentWindow());
         }
     }
 }

@@ -8,15 +8,13 @@ using System.Windows.Input;
 using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 
 namespace CourseAuditor.ViewModels
 {
-    public class AddParentVM : BaseVM, IViewVM
+    public class AddParentVM : BaseVM, IDialogRequestClose
     {
-        public IPageVM CurrentPageVM { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public IView CurrentView { get; set; }
 
         private ObservableCollection<Parent> _Parents;
         public ObservableCollection<Parent> Parents
@@ -112,10 +110,10 @@ namespace CourseAuditor.ViewModels
             if (AddNewMode)
             {
                 Parent = new Parent();
-                SelectedParent.FirstName = FirstName;
-                SelectedParent.SecondName = SecondName;
-                SelectedParent.Patronymic = Patronymic;
-                SelectedParent.Phone = Phone;
+                Parent.FirstName = FirstName;
+                Parent.SecondName = SecondName;
+                Parent.Patronymic = Patronymic;
+                Parent.Phone = Phone;
             }
             else
             {
@@ -124,12 +122,14 @@ namespace CourseAuditor.ViewModels
         }
 
         private ICommand _AddParentCommand;
+
         public ICommand AddParentCommand =>
             _AddParentCommand ??
             (_AddParentCommand = new RelayCommand(
                 (obj) =>
                 {
                     AddParent();
+                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
                 },
                 (obj) =>
                 {
@@ -137,16 +137,16 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
-        public AddParentVM(IView view)
+        public AddParentVM()
         {
+            AddNewMode = true;
             using (var _context = new ApplicationContext())
             {
                 Parents = new ObservableCollection<Parent>(_context.Parents);
             }
-            Phone = "+7";
-            CurrentView = view;
-            CurrentView.DataContext = this;
-            CurrentView.Show();
+            Phone = Constants.DefaultPhoneNumberStart;
         }
+
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
     }
 }

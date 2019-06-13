@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
@@ -26,34 +28,6 @@ namespace CourseAuditor.ViewModels
         
         public IView CurrentView { get; set; }
 
-        private ObservableCollection<Student> _Students;
-        public ObservableCollection<Student> Students
-        {
-            get
-            {
-                return _Students;
-            }
-            set
-            {
-                _Students = value;
-                OnPropertyChanged("Students");
-            }
-        }
-
-        private ObservableCollection<Payment> _Payments;
-        public ObservableCollection<Payment> Payments
-        {
-            get
-            {
-                return _Payments;
-            }
-            set
-            {
-                _Payments = value;
-                OnPropertyChanged("Payments");
-            }
-        }
-
         private Student _SelectedStudent;
         public Student SelectedStudent
         {
@@ -65,6 +39,7 @@ namespace CourseAuditor.ViewModels
             {
                 _SelectedStudent = value;
                 OnPropertyChanged("SelectedStudent");
+                LoadStudentInfo();
             }
         }
 
@@ -79,6 +54,37 @@ namespace CourseAuditor.ViewModels
             {
                 _Sum = Convert.ToDouble(value);
                 OnPropertyChanged("Sum");
+                CalculateActualSum();
+            }
+        }
+
+        void CalculateActualSum()
+        {
+            if (Discount > 1) Discount = 1;
+            if (Discount < 0) Discount = 0;
+
+            if (Discount == 1) ActualSum = 0;
+            else ActualSum = Math.Round(Sum / (1 - Discount), 2);
+        }
+
+        private double _ActualSum;
+        public double ActualSum
+        {
+            get
+            {
+                return _ActualSum;
+            }
+            set
+            {
+                try
+                {
+                    _ActualSum = Convert.ToDouble(value);
+                }
+                catch
+                {
+                    _ActualSum = 0;
+                }
+                OnPropertyChanged("ActualSum");
             }
         }
 
@@ -93,6 +99,7 @@ namespace CourseAuditor.ViewModels
             {
                 _Discount = Convert.ToDouble(value);
                 OnPropertyChanged("Discount");
+                CalculateActualSum();
             }
         }
 
@@ -106,35 +113,14 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _StudentInfo = value;
-                OnPropertyChanged(StudentInfo);
-            }
-        }
-
-        private double _СurrentBalance;
-        public double СurrentBalance
-        {
-            get
-            {
-                return _СurrentBalance;
-            }
-            set
-            {
-                _СurrentBalance = value;
-                OnPropertyChanged("СurrentBalance");
-            }
-        }
-
-        public string BalanceInfo
-        {
-            get
-            {
-                return $"Текущий баланс: {СurrentBalance}";
+                OnPropertyChanged("StudentInfo");
             }
         }
 
         private void AddPayment()
         {
-            SelectedStudent.Balance = Sum * (1 - Discount * 0.01);
+            CalculateActualSum();
+            SelectedStudent.Balance += ActualSum;
             using (var _context = new ApplicationContext())
             {
                 var payment = new Payment();
@@ -146,16 +132,22 @@ namespace CourseAuditor.ViewModels
                 var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
                 _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
                 _context.SaveChanges();
+                SelectedStudent = student;
+                EventsManager.RaiseObjectChangedEvent(SelectedStudent, ChangeType.Added);
             }
+            
         }
 
-        private RelayCommand _AddPaymentCommand;
-        public RelayCommand AddPaymentCommand =>
+   
+
+        private ICommand _AddPaymentCommand;
+        public ICommand AddPaymentCommand =>
             _AddPaymentCommand ??
             (_AddPaymentCommand = new RelayCommand(
                 (obj) =>
                 {
                     AddPayment();
+                    CurrentView.Close();
                 },
                 (obj) =>
                 {
@@ -163,22 +155,38 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
+        private ICommand _ChangeDiscount;
+        public ICommand ChangeDiscount =>
+            _ChangeDiscount ??
+            (_ChangeDiscount = new RelayCommand(
+                (obj) =>
+                {
+                    if (obj != null)
+                        try
+                        {
+                            Discount = Convert.ToDouble(obj, CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                            Discount = 0;
+                        }
+                }
+                ));
+
+        void LoadStudentInfo()
+        {
+            StudentInfo = $"Студент: {SelectedStudent.Person.FullName}.\n" +
+                $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
+                $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
+                $"Модуль: {SelectedStudent.Module.Number}.\n" +
+                $"Текущий баланс: {SelectedStudent.Balance}";
+        }
+
         public PaymentVM(IView view, Student selectedStudent)
         {
-            Sum = 0;
-            Discount = 0;
+
             SelectedStudent = selectedStudent;
-            CurrentView = view;
-            StudentInfo = $"{selectedStudent.Person.FullName} " +
-                $"Курс {selectedStudent.Module.Group.Course.Name} " +
-                $"Группа {selectedStudent.Module.Group.Title} " +
-                $"Модуль {selectedStudent.Module.Number}";
-            СurrentBalance = selectedStudent.Balance;
-            using (var _context = new ApplicationContext())
-            {
-                Students = new ObservableCollection<Student>(_context.Students);
-                Payments = new ObservableCollection<Payment>(_context.Payments);
-            }
+
             CurrentView = view;
             CurrentView.DataContext = this;
             CurrentView.Show();

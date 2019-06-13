@@ -5,18 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CourseAuditor.Views"
         mc:Ignorable="d"
-        Title="AddMedicalDocWindow" Height="450" Width="800">
+        Title="AddMedicalDocWindow" Height="450" Width="250">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        <TextBlock TextWrapping="Wrap" Text="Дата начала" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,98,0,0"/>
-        <DatePicker SelectedDate="{Binding Path=DateStart, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,119,0,0"></DatePicker>
+        <StackPanel Width="200" Orientation="Vertical" Margin="20, 10, 0, 20" HorizontalAlignment="Left">
+            <TextBlock Margin="0, 0, 0, 10" Text="{Binding StudentInfo}"></TextBlock>
+            
+            <TextBlock Margin="0, 0, 0, 4" Text="Дата начала"></TextBlock>
+            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding DateStart}"></DatePicker>
+            
+            <TextBlock Margin="0, 0, 0, 4" Text="Дата окончания"></TextBlock>
+            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding DateEnd}"></DatePicker>
 
-        <TextBlock TextWrapping="Wrap" Text="Дата окончания" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,148,0,0"/>
-        <DatePicker SelectedDate="{Binding Path=DateEnd, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,169,0,0"></DatePicker>
+            <TextBlock Margin="0, 0, 0, 4" Text="Комментарий"></TextBlock>
+            <TextBox  Margin="0, 0, 0, 20" Text="{Binding Comment}" Height="60"></TextBox>
 
-        <Button Content="Добавить справку" HorizontalAlignment="Left" Margin="28,364,0,0" VerticalAlignment="Top" Width="132" Height="28" Command="{Binding AddMedicalDocCommand}"/>
-        <TextBox HorizontalAlignment="Left" Height="128" Margin="28,231,0,0" TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Top" Width="182"/>
-        <TextBlock TextWrapping="Wrap" Text="Комментарии" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,210,0,0"/>
-        <TextBlock HorizontalAlignment="Left" Margin="28,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding InfoStudent}"></TextBlock>
+            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку"></Button>
+        </StackPanel>
 
     </Grid>
 </Window>

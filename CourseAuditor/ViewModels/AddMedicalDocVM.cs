@@ -9,6 +9,7 @@ using CourseAuditor.Models;
 using CourseAuditor.Views;
 using System.Data.Entity;
 using CourseAuditor.Helpers;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
@@ -69,12 +70,17 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private string _InfoStudent;
-        public string InfoStudent
+        private string _StudentInfo;
+        public string StudentInfo
         {
             get
             {
-                return $"{_InfoStudent}";
+                return _StudentInfo;
+            }
+            set
+            {
+                _StudentInfo = value;
+                OnPropertyChanged("StudentInfo");
             }
         }
 
@@ -108,8 +114,6 @@ namespace CourseAuditor.ViewModels
 
         private void AddMedicalDoc()
         {
-            Assessment RespectfulReason = new Assessment();
-            
             var MedicalDoc = new MedicalDoc();
             MedicalDoc.Comment = Comment;
             MedicalDoc.DateStart = DateStart;
@@ -118,36 +122,33 @@ namespace CourseAuditor.ViewModels
 
             using (var _context = new ApplicationContext())
             {
+                var newEndDate = DateEnd.AddDays(1).Date;
                 Journals = new ObservableCollection<Journal>(_context.Journals
-                    .Where(x => x.Date >= DateStart && x.Date <= DateEnd)
+                    .Where(x => x.Date >= DateStart.Date && x.Date < newEndDate)
                     .Where(x => x.Student.Person_ID == SelectedStudent.Person.ID)
                     .Include(x => x.Student)
                     .Include(x=>x.Assessment));
 
-                var UpdateJournals = Journals;
+                var RespectfulReason = _context.Assessments.Where(x => x.Type == 2).FirstOrDefault();
 
-                RespectfulReason = _context.Assessments.Where(x => x.Type == 2).FirstOrDefault();
-
-                foreach (var item in UpdateJournals)
+                foreach (var item in Journals)
                 {
                     item.Assessment = RespectfulReason;
-                }
-                for (int i = 0; i < Journals.Count; i++)
-                {
-                    _context.Entry(Journals[i]).CurrentValues.SetValues(UpdateJournals[i]);
+                    _context.Entry(item).State = EntityState.Modified;
                 }
                 _context.SaveChanges();
+                EventsManager.RaiseObjectChangedEvent(MedicalDoc, ChangeType.Added);
             }
-
         }
 
-        private RelayCommand _AddMedicalDocCommand;
-        public RelayCommand AddMedicalDocCommand =>
+        private ICommand _AddMedicalDocCommand;
+        public ICommand AddMedicalDocCommand =>
             _AddMedicalDocCommand ??
             (_AddMedicalDocCommand = new RelayCommand(
                 (obj) =>
                 {
                     AddMedicalDoc();
+                    CurrentView.Close();
                 },
                 (obj) =>
                 {
@@ -160,7 +161,10 @@ namespace CourseAuditor.ViewModels
             DateStart = DateTime.Now;
             DateEnd = DateTime.Now;
             SelectedStudent = selectedStudent;
-            _InfoStudent = $"{SelectedStudent.Person.FullName}";
+            StudentInfo = $"Студент: {SelectedStudent.Person.FullName}.\n" +
+                $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
+                $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
+                $"Модуль: {SelectedStudent.Module.Number}.\n";
             CurrentView = view;
             CurrentView.DataContext = this;
             CurrentView.Show();

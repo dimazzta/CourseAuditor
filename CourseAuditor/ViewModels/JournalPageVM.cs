@@ -26,11 +26,16 @@ namespace CourseAuditor.ViewModels
             {
                 Assessments = new ObservableCollection<Assessment>(_context.Assessments);
             }
-                
-
             // Подписка
             
             AppState.I.PropertyChanged += StatePropertyChanged;
+            EventsManager.ObjectChangedEvent += (s, e) =>
+            {
+                if ((e.ObjectChanged is Payment || e.ObjectChanged is MedicalDoc))
+                {
+                    UpdateJournal(SelectedModule);
+                }
+            };
         }
 
         // Обработчик изменения состояния приложения

@@ -1,0 +1,16 @@
+﻿<Window x:Class="CourseAuditor.Views.PaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseAuditor.Views"
+        mc:Ignorable="d"
+        Title="PaymentWindow" Height="400" Width="600">
+    <Grid>
+        <Button Content="Добавить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="35,243,0,0" Command="{Binding AddPaymentCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="35,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding StudentInfo}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="35,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding BalanceInfo}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Sum, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Discount, Mode=TwoWay}"/>
+    </Grid>
+</Window>

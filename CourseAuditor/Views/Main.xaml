@@ -85,8 +85,8 @@
                 </ContextMenu>
 
                 <ContextMenu x:Key="StudentMenu" Name="StudentMenu">
-                    <MenuItem Header="Добавить справку"></MenuItem>
-                    <MenuItem Header="Добавить оплату"></MenuItem>
+                    <MenuItem Header="Добавить справку" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddMedicalDocWindow}"></MenuItem>
+                    <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>

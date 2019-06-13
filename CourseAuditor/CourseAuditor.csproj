@@ -82,8 +82,10 @@
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
+    <Compile Include="ViewModels\AddMedicalDocVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
     <Compile Include="ViewModels\AddStudentPageVM.cs" />
+    <Compile Include="ViewModels\AddNewParentVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
@@ -102,17 +104,24 @@
     <Compile Include="ViewModels\JournalPageVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\ParentPickerVM.cs" />
+    <Compile Include="ViewModels\PaymentVM.cs" />
     <Compile Include="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddGroupPage.xaml.cs">
       <DependentUpon>AddGroupPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddMedicalDocWindow.xaml.cs">
+      <DependentUpon>AddMedicalDocWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddModulePage.xaml.cs">
       <DependentUpon>AddModulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddStudentPage.xaml.cs">
       <DependentUpon>AddStudentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddNewParentWindow.xaml.cs">
+      <DependentUpon>AddNewParentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -142,6 +151,9 @@
     <Compile Include="Views\ParentPicker.xaml.cs">
       <DependentUpon>ParentPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PaymentWindow.xaml.cs">
+      <DependentUpon>PaymentWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\AddCoursePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,11 +162,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddMedicalDocWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddModulePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddStudentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddNewParentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ParentPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaymentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

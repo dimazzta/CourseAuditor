@@ -1,0 +1,22 @@
+﻿<Window x:Class="CourseAuditor.Views.AddMedicalDocWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseAuditor.Views"
+        mc:Ignorable="d"
+        Title="AddMedicalDocWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock TextWrapping="Wrap" Text="Дата начала" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,98,0,0"/>
+        <DatePicker SelectedDate="{Binding Path=DateStart, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,119,0,0"></DatePicker>
+
+        <TextBlock TextWrapping="Wrap" Text="Дата окончания" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,148,0,0"/>
+        <DatePicker SelectedDate="{Binding Path=DateEnd, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,169,0,0"></DatePicker>
+
+        <Button Content="Добавить справку" HorizontalAlignment="Left" Margin="28,364,0,0" VerticalAlignment="Top" Width="132" Height="28" Command="{Binding AddMedicalDocCommand}"/>
+        <TextBox HorizontalAlignment="Left" Height="128" Margin="28,231,0,0" TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Top" Width="182"/>
+        <TextBlock TextWrapping="Wrap" Text="Комментарии" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,210,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="28,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding InfoStudent}"></TextBlock>
+
+    </Grid>
+</Window>

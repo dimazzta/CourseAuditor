@@ -134,6 +134,26 @@ namespace CourseAuditor.ViewModels
                 }
                 ));
 
+        private ICommand _AddPaymentWindow;
+        public ICommand AddPaymentWindow =>
+            _AddPaymentWindow ??
+            (_AddPaymentWindow = new RelayCommand(
+                (obj) =>
+                {
+                    new PaymentVM(new PaymentWindow(),AppState.I.SelectedContextStudent);
+                }
+             ));
+
+        private ICommand _AddMedicalDocWindow;
+        public ICommand AddMedicalDocWindow =>
+            _AddMedicalDocWindow ??
+            (_AddMedicalDocWindow = new RelayCommand(
+                (obj) =>
+                {
+                    new AddMedicalDocVM(new AddMedicalDocWindow(), AppState.I.SelectedContextStudent);
+                }
+             ));
+
         //UI View
         public IView CurrentView { get; set; }
 

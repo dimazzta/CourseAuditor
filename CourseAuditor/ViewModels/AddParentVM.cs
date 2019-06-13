@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
@@ -89,20 +90,6 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private Parent _ComboboxSelectedParent;
-        public Parent ComboboxSelectedParent
-        {
-            get
-            {
-                return _ComboboxSelectedParent;
-            }
-            set
-            {
-                _ComboboxSelectedParent = value;
-                OnPropertyChanged("ComboboxSelectedParent");
-            }
-        }
-
         private Parent _SelectedParent;
         public Parent SelectedParent
         {
@@ -110,23 +97,21 @@ namespace CourseAuditor.ViewModels
             {
                 return _SelectedParent;
             }
-            private set
+            set
             {
                 _SelectedParent = value;
                 OnPropertyChanged("SelectedParent");
             }
         }
 
-        private void AddNewParent() // добавление нового (ранее не существующего в базе данных) родителя
-        {
-            
-        }
 
-        private void AddParent()//добавление уже существующего родителя
+        public Parent Parent { get; private set; }
+
+        private void AddParent()
         {
             if (AddNewMode)
             {
-                SelectedParent = new Parent();
+                Parent = new Parent();
                 SelectedParent.FirstName = FirstName;
                 SelectedParent.SecondName = SecondName;
                 SelectedParent.Patronymic = Patronymic;
@@ -134,12 +119,12 @@ namespace CourseAuditor.ViewModels
             }
             else
             {
-                SelectedParent = ComboboxSelectedParent;
+                Parent = SelectedParent;
             } 
         }
 
-        private RelayCommand _AddParentCommand;
-        public RelayCommand AddParentCommand =>
+        private ICommand _AddParentCommand;
+        public ICommand AddParentCommand =>
             _AddParentCommand ??
             (_AddParentCommand = new RelayCommand(
                 (obj) =>

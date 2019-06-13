@@ -9,6 +9,7 @@ using CourseAuditor.Models;
 using CourseAuditor.Views;
 using System.Data.Entity;
 using CourseAuditor.Helpers;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
@@ -163,7 +164,7 @@ namespace CourseAuditor.ViewModels
             _InfoStudent = $"{SelectedStudent.Person.FullName}";
             CurrentView = view;
             CurrentView.DataContext = this;
-            CurrentView.Show();
+            CurrentView.ShowDialog();
         }
     }
 }

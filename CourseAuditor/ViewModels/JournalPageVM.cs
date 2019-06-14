@@ -146,7 +146,7 @@ namespace CourseAuditor.ViewModels
                 if (module.Students.Count > 0)
                 {
                     DataTable table = new DataTable();
-                    table.Columns.Add("Студент", typeof(Student));
+                    table.Columns.Add(Constants.StudentColumnName, typeof(Student));
 
                     List<Student> students;
                     using (var _context = new ApplicationContext())
@@ -166,7 +166,6 @@ namespace CourseAuditor.ViewModels
                                         .OrderBy(x => x.Date)
                                         .ToList();
 
-
                     foreach (var column in columns)
                     {
                         try
@@ -178,15 +177,18 @@ namespace CourseAuditor.ViewModels
                             continue;
                         }
                     }
+                    table.Columns.Add(Constants.BalanceColumnName, typeof(double));
 
                     foreach (var student in students)
                     {
                         List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
 
                         DataRow row = table.NewRow();
-                        row[0] = student;
+                        row[Constants.StudentColumnName] = student;
                         foreach (var j in journals)
                             row[j.Date.ToString("dd MMM")] = j;
+
+                        row[Constants.BalanceColumnName] = student.Balance;
                         table.Rows.Add(row);
                     }
                     Table = table;
@@ -209,6 +211,7 @@ namespace CourseAuditor.ViewModels
                     try
                     {
                         Table.Columns.Add(columnName, typeof(Journal));
+                        Table.Columns[Constants.BalanceColumnName].SetOrdinal(Table.Columns.Count - 1);
                     }
                     catch
                     {

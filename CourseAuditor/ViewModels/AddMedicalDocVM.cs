@@ -43,6 +43,7 @@ namespace CourseAuditor.ViewModels
             {
                 _SelectedStudent = value;
                 OnPropertyChanged("SelectedStudent");
+                LoadStudentInfo();
             }
         }
 
@@ -149,18 +150,26 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
+        void LoadStudentInfo()
+        {
+            StudentInfo = $"Студент: {SelectedStudent.Person.FullName}.\n" +
+               $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
+               $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
+               $"Модуль: {SelectedStudent.Module.Number}.\n";
+        }
+
         public AddMedicalDocVM(Student selectedStudent)
         {
             DateStart = DateTime.Now;
             DateEnd = DateTime.Now;
-            SelectedStudent = selectedStudent;
-            StudentInfo = $"Студент: {SelectedStudent.Person.FullName}.\n" +
-                $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
-                $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
-                $"Модуль: {SelectedStudent.Module.Number}.\n";
-            
+            using(var _context = new ApplicationContext())
+            {
+                SelectedStudent = _context.Students
+                    .Include(x => x.Person)
+                    .Include(x => x.Module.Group.Course)
+                    .FirstOrDefault(x => x.ID == selectedStudent.ID);
+            }
         }
-
 
         public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
     }

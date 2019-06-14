@@ -16,5 +16,7 @@ namespace CourseAuditor.Helpers
         public static int RespectfulReason => 2;
         public static int Attendance => 0;
         public static string DefaultPhoneNumberStart => "+7";
+        public static string StudentColumnName => "Студент";
+        public static string BalanceColumnName => "Баланс";
     }
 }

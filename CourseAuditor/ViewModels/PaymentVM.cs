@@ -11,6 +11,7 @@ using CourseAuditor.Helpers;
 using CourseAuditor.Models;
 using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
+using System.Data.Entity;
 
 namespace CourseAuditor.ViewModels
 {
@@ -178,7 +179,13 @@ namespace CourseAuditor.ViewModels
 
         public PaymentVM(Student selectedStudent)
         {
-            SelectedStudent = selectedStudent;
+            using (var _context = new ApplicationContext())
+            {
+                SelectedStudent = _context.Students
+                    .Include(x => x.Person)
+                    .Include(x => x.Module.Group.Course)
+                    .FirstOrDefault(x => x.ID == selectedStudent.ID);
+            }
         }
 
         public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;

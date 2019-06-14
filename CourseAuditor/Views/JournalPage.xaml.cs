@@ -1,5 +1,7 @@
-﻿using CourseAuditor.Models;
+﻿using CourseAuditor.Helpers;
+using CourseAuditor.Models;
 using CourseAuditor.ViewModels;
+using CourseAuditor.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,19 +42,33 @@ namespace CourseAuditor.Views
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
-            if (Students.Columns.Count > 0)
-            {
-                Students.Columns[0].IsReadOnly = true;
-                Students.Columns[0].CanUserSort = true;
-            }
+
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
         {
-            var block = (e.Row.Item as DataRowView).Row[e.Column.DisplayIndex] is Journal;
-            if (block)
+           
+            if ((e.Row.Item as DataRowView).Row[e.Column.DisplayIndex] is Journal)
             {
                 (DataContext as JournalPageVM).BeforeCellChangedHandler(e);
+            }
+            else if (e.Column.Header.ToString() == Constants.BalanceColumnName)
+            {
+                Students.CancelEdit();
+                var student = (e.Row.Item as DataRowView).Row[Constants.StudentColumnName] as Student;
+
+                var paymentVM = new PaymentVM(student);
+                DialogService.I.ShowDialog(paymentVM);
+                Students.CancelEdit();
+            }
+            else if (e.Column.Header.ToString() == Constants.StudentColumnName)
+            {
+                Students.CancelEdit();
+                var student = (e.Row.Item as DataRowView).Row[Constants.StudentColumnName] as Student;
+
+                var docVM = new AddMedicalDocVM(student);
+                DialogService.I.ShowDialog(docVM);
+                
             }
             else
             {

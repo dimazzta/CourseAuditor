@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CourseAuditor.Views
 {
     /// <summary>
-    /// Логика взаимодействия для Cert.xaml
+    /// Логика взаимодействия для CerificatePage.xaml
     /// </summary>
-    public partial class Cert : Page
+    public partial class CertificateModulePage : UserControl
     {
-        public Cert()
+        public CertificateModulePage()
         {
             InitializeComponent();
         }

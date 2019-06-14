@@ -134,7 +134,8 @@
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
-    <Compile Include="ViewModels\CertificateVM.cs" />
+    <Compile Include="ViewModels\CertificateModulePageVM.cs" />
+    <Compile Include="ViewModels\CertificateStudentPageVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
@@ -165,8 +166,11 @@
     <Compile Include="Views\AddReturnPay.xaml.cs">
       <DependentUpon>AddReturnPay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cert.xaml.cs">
-      <DependentUpon>Cert.xaml</DependentUpon>
+    <Compile Include="Views\CertificateModulePage.xaml.cs">
+      <DependentUpon>CertificateModulePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CertificateStudentPage.xaml.cs">
+      <DependentUpon>CertificateStudentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -212,9 +216,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cert.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\CertificateModulePage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CertificateStudentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DateTimeDialogWindow.xaml">
       <SubType>Designer</SubType>

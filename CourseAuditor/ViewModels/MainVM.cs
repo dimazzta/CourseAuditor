@@ -146,6 +146,26 @@ namespace CourseAuditor.ViewModels
              ));
 
 
+        private ICommand _CertificateModulePage;
+        public ICommand CertificateModulePage =>
+            _CertificateModulePage ??
+            (_CertificateModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateModulePageVM(AppState.I.SelectedContextModule);
+                }
+             ));
+
+        private ICommand _CertificateStudentPage;
+        public ICommand CertificateStudentPage =>
+            _CertificateStudentPage ??
+            (_CertificateStudentPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateStudentPageVM(AppState.I.SelectedContextStudent);
+                }));
+
+
         //UI View
         public IView CurrentView { get; set; }
 

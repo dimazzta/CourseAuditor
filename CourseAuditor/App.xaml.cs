@@ -24,6 +24,7 @@ namespace CourseAuditor
             DialogService.I.Register<AddMedicalDocVM, AddMedicalDocWindow>();
             DialogService.I.Register<PaymentVM, PaymentWindow>();
             DialogService.I.Register<AddParentVM, AddNewParentWindow>();
+            DialogService.I.Register<ReturnPaymentVM, AddReturnPay>();
 
             new MainVM(new Main()); // это можно сделать аналогичным способом но пока оставим так
 

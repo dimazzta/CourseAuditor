@@ -184,7 +184,8 @@ namespace CourseAuditor.ViewModels
             (_AddReturnPay = new RelayCommand(
                 (obj) =>
                 {
-                    new ReturnPaymentVM(new AddReturnPay(), AppState.I.SelectedContextStudent);
+                    var returnVM = new ReturnPaymentVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(returnVM);
                 }
              ));
 

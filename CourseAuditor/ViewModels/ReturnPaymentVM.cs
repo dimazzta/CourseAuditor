@@ -7,53 +7,26 @@ using System.Threading.Tasks;
 using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
+using System.Data.Entity;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    public class ReturnPaymentVM : BaseVM, IViewVM
+    public class ReturnPaymentVM : BaseVM, IDialogRequestClose
     {
-
-        public ReturnPaymentVM(IView view, Student student)
+        public ReturnPaymentVM(Student student)
         {
             SelectedStudent = student;
-            CurrentView = view;
-            CurrentView.DataContext = this;
-            Balance = SelectedStudent.Balance;
+            using(var _context = new ApplicationContext())
+            {
+                SelectedStudent = _context.Students
+                    .Include(x => x.Person)
+                    .Include(x => x.Module.Group.Course)
+                    .FirstOrDefault(x => x.ID == student.ID);
+            }
             Sum = 0;
-            InfBalance = "Баланс: " + Balance;
-            InfStudent = GetInfStud();
-            CurrentView.Show();
-        }
-
-
-        private IPageVM _CurrentPageVM;
-        public IPageVM CurrentPageVM
-        {
-            get
-            {
-                return _CurrentPageVM;
-            }
-            set
-            {
-                _CurrentPageVM = value;
-                OnPropertyChanged("CurrentPageVM");
-            }
-        }
-        public IView CurrentView  { get; set; }
-
-        private ObservableCollection<Student> _Students;
-        public ObservableCollection<Student> Students
-        {
-            get
-            {
-                return _Students;
-            }
-            set
-            {
-                _Students = value;
-                OnPropertyChanged("Students");
-            }
         }
 
         private Student _SelectedStudent;
@@ -63,11 +36,36 @@ namespace CourseAuditor.ViewModels
             {
                 return _SelectedStudent;
             }
+
             set
             {
                 _SelectedStudent = value;
                 OnPropertyChanged("SelectedStudent");
+                LoadStudentInfo();
             }
+        }
+
+        private string _StudentInfo;
+        public string StudentInfo
+        {
+            get
+            {
+                return _StudentInfo;
+            }
+            set
+            {
+                _StudentInfo = value;
+                OnPropertyChanged("StudentInfo");
+            }
+        }
+
+        void LoadStudentInfo()
+        {
+            StudentInfo = $"Студент: {SelectedStudent.Person.FullName}.\n" +
+                $"Курс: {SelectedStudent.Module.Group.Course.Name}.\n" +
+                $"Группа: {SelectedStudent.Module.Group.Title}.\n" +
+                $"Модуль: {SelectedStudent.Module.Number}.\n" +
+                $"Текущий баланс: {SelectedStudent.Balance}";
         }
 
         private double _Sum;
@@ -79,67 +77,26 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _Sum = Convert.ToDouble(value);
+                try
+                {
+                    _Sum = Convert.ToDouble(value);
+                }
+                catch
+                {
+                    _Sum = 0;
+                }
                 OnPropertyChanged("Sum");
             }
         }
 
-        private string _InfStudent;
-        public string InfStudent
-        {
-            get
-            {
-                return _InfStudent;
-            }
-            set
-            {
-                _InfStudent = value;
-                OnPropertyChanged("InfStudent");
-            }
-        }
-
-        private double _Balance;
-        public double Balance
-        {
-            get
-            {
-                return _Balance;
-            }
-            set
-            {
-                _Balance = value;
-                OnPropertyChanged("Balance");
-            }
-        }
-
-        private string _InfBalance;
-        public string InfBalance
-        {
-            get
-            {
-                return _InfBalance;
-            }
-            set
-            {
-                _InfBalance = value;
-                OnPropertyChanged("InfBalance");
-            }
-        }
-        private string GetInfStud()
-        {
-          return  $"{SelectedStudent.Person.FullName} " +
-                 $"Курс {SelectedStudent.Module.Group.Course.Name} " +
-                 $"Группа {SelectedStudent.Module.Group.Title} " +
-                 $"Модуль {SelectedStudent.Module.Number}";
-        }
-
-        private RelayCommand _AddReturnCommand;
-        public RelayCommand AddReturnCommand =>
+        private ICommand _AddReturnCommand;
+        public ICommand AddReturnCommand =>
             _AddReturnCommand ??
             (_AddReturnCommand = new RelayCommand(
                 (obj) =>
                 {
                     AddReturn();
+                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
                 },
                 (obj) =>
                 {
@@ -147,12 +104,13 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
+
         private void AddReturn()
         {
-            
             using (var _context = new ApplicationContext())
             {
-                SelectedStudent.Balance -=Sum;
+                SelectedStudent.Balance -= Sum;
                 var @return = new Return();
                 @return.Student_ID = SelectedStudent.ID;
                 @return.Sum = Sum;
@@ -161,9 +119,10 @@ namespace CourseAuditor.ViewModels
                 var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
                 _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
                 _context.SaveChanges();
+
+                EventsManager.RaiseObjectChangedEvent(@return, ChangeType.Added);
             }
         }
-
 
     }
 }

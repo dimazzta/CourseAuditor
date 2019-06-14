@@ -56,8 +56,7 @@ namespace CourseAuditor.ViewModels
                             Persons.Add(new CheckedListItem<Person>(person));
                         }
 
-                        if (e.ObjectChanged is Group && (e.ObjectChanged as Group).ID == SelectedGroup?.ID
-                        || e.ObjectChanged is Course && (e.ObjectChanged as Course).ID == SelectedCourse?.ID)
+                        if (e.ObjectChanged is Group || e.ObjectChanged is Course)
                         {
                             Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                             SelectedCourse = Courses.FirstOrDefault();

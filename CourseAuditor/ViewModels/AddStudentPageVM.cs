@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Windows.Input;
 using CourseAuditor.ViewModels.Dialogs;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
@@ -27,7 +28,7 @@ namespace CourseAuditor.ViewModels
                 Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
                 SelectedPerson = Persons.FirstOrDefault();
             }
-
+            
             if (selectedGroup != null)
             {
                 SelectedGroup = selectedGroup;
@@ -37,7 +38,38 @@ namespace CourseAuditor.ViewModels
             {
                 SelectedCourse = Courses.FirstOrDefault();
             }
+
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
         }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.Type == ChangeType.Deleted)
+            {
+                if (e.ObjectChanged is Course || e.ObjectChanged is Group || SelectedGroup == null)
+                {
+                    using (var _context = new ApplicationContext())
+                    {
+                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
+                        Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
+                        SelectedCourse = Courses.FirstOrDefault();
+                        SelectedPerson = Persons.FirstOrDefault();
+                    }
+                }
+            }
+            if (e.Type == ChangeType.Added)
+            {
+                if (e.ObjectChanged is Person)
+                {
+                    using (var _context = new ApplicationContext())
+                    {
+                        Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
+                        SelectedPerson = Persons.FirstOrDefault();
+                    }
+                }
+            }
+        }
+
         public ParentPickerVM ParentPicker { get; set; }
 
         public bool AddNewMode { get; set; }
@@ -166,7 +198,7 @@ namespace CourseAuditor.ViewModels
         private void AddStudent()
         {
             if (!AddNewMode) Person = SelectedPerson;
-
+            LastModule = SelectedGroup?.LastModule;
             if (Person != null && LastModule != null)
             {
                 using (var _context = new ApplicationContext())
@@ -182,24 +214,27 @@ namespace CourseAuditor.ViewModels
                             Patronymic = Person.Patronymic,
                             Phone = Person.Phone
                         };
+                        _context.Entry(person).State = EntityState.Added;
                         _context.Persons.Add(person);
-                        _context.SaveChanges();
 
                         foreach (var parent in Parents)
                         {
                             if (!_context.Parents.Any(x => x.ID == parent.ID))
                             {
+                                _context.Entry(parent).State = EntityState.Added;
                                 _context.Parents.Add(parent);
-                                _context.SaveChanges();
+                            }
+                            else
+                            {
+                                _context.Entry(parent).State = EntityState.Unchanged;
                             }
                             var newPair = _context.PersonParents.Add(new PersonParent()
                             {
-                                Parent_ID = parent.ID,
-                                Person_ID = person.ID
+                                Parent = parent,
+                                Person = person
                             });
                             _context.Entry(newPair).State = EntityState.Added;
                         }
-                        _context.SaveChanges();
                     }
 
                     var student = new Student()
@@ -207,13 +242,14 @@ namespace CourseAuditor.ViewModels
                         DateStart = LastModule.DateStart,
                         Balance = 0,
                         Module_ID = LastModule.ID,
-                        Person_ID = person.ID
+                        Person = person
                     };
                     _context.Students.Add(student);
                     _context.SaveChanges();
                     EventsManager.RaiseObjectChangedEvent(student, ChangeType.Added);
+                    Person = new Person();
+                    Parents.Clear();
                 }
-
             }
         }
 

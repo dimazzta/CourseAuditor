@@ -68,6 +68,7 @@
 
                 <ContextMenu x:Key="GroupMenu" Name="GroupMenu">
                     <MenuItem Header="Добавить модуль" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddModulePage}"></MenuItem>
+                    <MenuItem Header="Добавить студента" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddStudentPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
@@ -81,7 +82,7 @@
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Удалить"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteModule}"></MenuItem>
                 </ContextMenu>
 
                 <ContextMenu x:Key="StudentMenu" Name="StudentMenu">

@@ -135,6 +135,16 @@ namespace CourseAuditor.ViewModels
                 }
                 ));
 
+        private ICommand _DeleteModule;
+        public ICommand DeleteModule =>
+            _DeleteModule ??
+            (_DeleteModule = new RelayCommand(
+                (obj) =>
+                {
+                    EditModulePageVM.DeleteModule(AppState.I.SelectedContextModule);
+                }
+                ));
+
         private ICommand _AddPaymentWindow;
         public ICommand AddPaymentWindow =>
             _AddPaymentWindow ??

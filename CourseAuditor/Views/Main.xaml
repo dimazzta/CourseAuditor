@@ -95,6 +95,8 @@
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
                     <Separator Padding="0"></Separator>
+                    <MenuItem Header="Редактировать данные человека" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить"></MenuItem>
@@ -147,6 +149,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AddModulePageVM}">
                     <views:AddModulePage></views:AddModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditPersonPageVM}">
+                    <views:EditPersonPage></views:EditPersonPage>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

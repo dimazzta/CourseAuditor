@@ -53,6 +53,7 @@ namespace CourseAuditor.ViewModels
              ));
 
 
+
         private ICommand _AddGroupPage;
         public ICommand AddGroupPage =>
             _AddGroupPage ??
@@ -132,6 +133,18 @@ namespace CourseAuditor.ViewModels
                     new ReturnPaymentVM(new AddReturnPay(), AppState.I.SelectedContextStudent);
                 }
              ));
+
+
+        private ICommand _EditPersonPage;
+        public ICommand EditPersonPage =>
+            _EditPersonPage ??
+            (_EditPersonPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditPersonPageVM(AppState.I.SelectedContextStudent);
+                }
+             ));
+
 
         //UI View
         public IView CurrentView { get; set; }

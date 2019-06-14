@@ -71,5 +71,7 @@ namespace CourseAuditor.Models
             return $"ID - {ID} Название: {Title}";
         }
 
+
+
     }
 }

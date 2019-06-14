@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="43,26,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-
+        <TextBox HorizontalAlignment="Left" Height="126" Margin="43,26,0,0" TextWrapping="Wrap" Text="{Binding FullInf}" VerticalAlignment="Top" Width="497"/>
+        <Button Content="Печать" HorizontalAlignment="Left" Margin="87,174,0,0" VerticalAlignment="Top" Width="75" Command="{Binding PrintCertificate}"/>
     </Grid>
 </UserControl>

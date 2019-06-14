@@ -1,11 +1,15 @@
 ﻿using System;
 using Word = Microsoft.Office.Interop.Word;
+using Spire.Doc;
+using System.Drawing.Printing;
+using System.Windows.Controls;
 namespace CourseAuditor.Helpers
 {
     public class CreaterCertificates
     {
+        string Put = @"..\DiplomUchastnika — копия.doc\";
 
-        public void Creater(string name="Санный малой")
+        public CreaterCertificates(string name) //создание дока
         {
             string source = @"C:\Users\grine\Downloads\DiplomUchastnika.doc";
             // Создаём объект документа
@@ -15,7 +19,7 @@ namespace CourseAuditor.Helpers
                 // Создаём объект приложения
                 Word.Application app = new Word.Application();
                 // Путь до шаблона документа
-                
+
                 // Открываем
                 doc = app.Documents.Open(source);
                 doc.Activate();
@@ -35,7 +39,7 @@ namespace CourseAuditor.Helpers
                 }
 
                 // Закрываем документ
-                doc.SaveAs2(@"..\DiplomUchastnika — копия.doc");
+                doc.SaveAs2(Put);
                 doc.Close();
                 doc = null;
             }
@@ -47,8 +51,15 @@ namespace CourseAuditor.Helpers
                 doc = null;
 
             }
+        }
+        public void Print() // печать дока
+        {
+            Document doc = new Document();
+            doc.LoadFromFile($"");
+            PrintDialog dialog = new PrintDialog();
 
-           // new CertificateWriter().Writer(source);
+            PrintDocument printDoc = doc.PrintDocument;
+            printDoc.Print();
         }
 
 

@@ -16,17 +16,17 @@ namespace CourseAuditor.ViewModels
 
 
 
-        private ObservableCollection<Student> _Students;
-        public ObservableCollection<Student> Students
+        private ObservableCollection<Course> _Courses;
+        public ObservableCollection<Course> Courses
         {
             get
             {
-                return _Students;
+                return _Courses;
             }
             set
             {
-                _Students = value;
-                OnPropertyChanged("Students");
+                _Courses = value;
+                OnPropertyChanged("Courses");
             }
         }
 
@@ -153,7 +153,13 @@ namespace CourseAuditor.ViewModels
                 #endregion
 
                 //Надо кароч какта вывести данные в каком модуле, группе, и курсе челикс в нижний листбокс
-                Students = new ObservableCollection<Student>(_context.Students.Where(x => x.Person_ID == selectPerson.ID));
+
+               
+                foreach (var item in _context.Persons.Select(x => x.Students.Select(z => z.Module.Group.Course)).Select(t=>t.ToList<Course>())) 
+                {
+                    Courses = new ObservableCollection<Course>(item);
+                    break;
+                }
             }
         }
 

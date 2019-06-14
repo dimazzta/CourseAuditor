@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -14,19 +15,48 @@ namespace CourseAuditor.ViewModels
 {
     public class CertificateModulePageVM : BaseVM, IPageVM
     {
+        private ObservableCollection<CheckedListItem<Person>> _Persons;
+        public ObservableCollection<CheckedListItem<Person>> Persons
+        {
+            get
+            {
+                return _Persons;
+            }
+            set
+            {
+                _Persons = value;
+                OnPropertyChanged("Persons");
+            }
+        }
 
         public CertificateModulePageVM(Module module)
         {
             using (ApplicationContext _context = new ApplicationContext())
             {
-              var a =  _context.Modules
-                    .Include(x => x.Students)
-                    .Select(x => x.Students);
-                
+                Persons = new ObservableCollection<CheckedListItem<Person>>();
+                foreach (var item in module.Students.Select(x => x.Person))
+                {
+                    Persons.Add(new CheckedListItem<Person>(item));
+                }        
             }            
         }
 
-        
+        private void Print()
+        {
+
+        }
+
+        private ICommand _PrintCertificate;
+        public ICommand PrintCertificate =>
+            _PrintCertificate ??
+            (_PrintCertificate = new RelayCommand(
+                (obj) =>
+                {
+                   // AddModule();
+                }
+                ));
+
+
 
 
 

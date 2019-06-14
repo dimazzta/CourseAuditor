@@ -20,7 +20,7 @@
         </ListBox>
         <TextBlock HorizontalAlignment="Left" Margin="214,31,0,0" TextWrapping="Wrap" Text="Родители:" VerticalAlignment="Top"/>
         <Button Content="Редактировать" HorizontalAlignment="Left" Margin="76,236,0,0" VerticalAlignment="Top" Width="75" Command="{Binding EditPersonCommand}"/>
-        <ListBox HorizontalAlignment="Left" Height="121" Margin="211,221,0,0" VerticalAlignment="Top" Width="422" ItemsSource="{Binding Students}"/>
+        <ListBox HorizontalAlignment="Left" Height="121" Margin="211,221,0,0" VerticalAlignment="Top" Width="422" ItemsSource="{Binding Courses}"/>
         <TextBlock HorizontalAlignment="Left" Margin="214,197,0,0" TextWrapping="Wrap" Text="Список курсов:" VerticalAlignment="Top"/>
 
     </Grid>

@@ -1,8 +1,4 @@
-﻿using Spire.Doc;
-using System.Drawing.Printing;
-using System.Windows.Controls;
-
-namespace CourseAuditor.Helpers
+﻿namespace CourseAuditor.Helpers
 {
     public class CertificateWriter
     {

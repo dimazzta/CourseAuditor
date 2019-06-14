@@ -84,6 +84,7 @@
     <Compile Include="Models\TableViewData.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
+    <Compile Include="ViewModels\CertificateVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
     <Compile Include="ViewModels\AddCoursePageVM.cs" />
     <Compile Include="ViewModels\AppState.cs" />
@@ -113,6 +114,9 @@
     </Compile>
     <Compile Include="Views\AddReturnPay.xaml.cs">
       <DependentUpon>AddReturnPay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cert.xaml.cs">
+      <DependentUpon>Cert.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DateTimeDialogWindow.xaml.cs">
       <DependentUpon>DateTimeDialogWindow.xaml</DependentUpon>
@@ -157,6 +161,10 @@
     <Page Include="Views\AddReturnPay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cert.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DateTimeDialogWindow.xaml">
       <SubType>Designer</SubType>

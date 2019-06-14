@@ -43,7 +43,7 @@ namespace CourseAuditor.ViewModels
 
         private void Print()
         {
-
+           
         }
 
         private ICommand _PrintCertificate;
@@ -52,7 +52,7 @@ namespace CourseAuditor.ViewModels
             (_PrintCertificate = new RelayCommand(
                 (obj) =>
                 {
-                   // AddModule();
+                    Print();
                 }
                 ));
 

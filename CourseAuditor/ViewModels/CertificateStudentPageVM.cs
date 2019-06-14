@@ -29,7 +29,7 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-
+        public string Name { get; set; }
         private Student _Student;
         public Student Student
         {
@@ -54,13 +54,15 @@ namespace CourseAuditor.ViewModels
                       .Include(x=>x.Person)
                       .FirstOrDefault();
                 Student = student;
-                FullInf = $"{Student.Person.FullName} выпускник курса {Student.Module.Group.Course.Name}"; 
+                FullInf = $"{Student.Person.FullName} выпускник курса {Student.Module.Group.Course.Name}";
+                Name = student.Person.FullName;
             }
         }
 
         void Print()
         {
-
+            var print = new CreaterCertificates(Name);
+            print.Print();
         }
 
 

@@ -7,15 +7,14 @@ namespace CourseAuditor.Helpers
 {
     public class CreaterCertificates
     {
-        string Put = @"..\DiplomUchastnika — копия.doc\";
+        string Put = Environment.CurrentDirectory + @"\Debug.doc";
 
         public CreaterCertificates(string name) //создание дока
         {
-            string source = @"C:\Users\grine\Downloads\DiplomUchastnika.doc";
+            string source = Environment.CurrentDirectory +  @"\DiplomUchastnika.doc";
             // Создаём объект документа
             Word.Document doc = null;
-            try
-            {
+           
                 // Создаём объект приложения
                 Word.Application app = new Word.Application();
                 // Путь до шаблона документа
@@ -42,20 +41,14 @@ namespace CourseAuditor.Helpers
                 doc.SaveAs2(Put);
                 doc.Close();
                 doc = null;
-            }
-            catch (Exception ex)
-            {
-                // Если произошла ошибка, то
-                // закрываем документ и выводим информацию
-                doc.Close();
-                doc = null;
-
-            }
+            
+           
         }
         public void Print() // печать дока
         {
+            string localPut = Put ;
             Document doc = new Document();
-            doc.LoadFromFile($"");
+            doc.LoadFromFile(localPut);
             PrintDialog dialog = new PrintDialog();
 
             PrintDocument printDoc = doc.PrintDocument;

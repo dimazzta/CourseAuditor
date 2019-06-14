@@ -127,6 +127,7 @@ namespace CourseAuditor.ViewModels
                     item.Assessment = RespectfulReason;
                     _context.Entry(item).State = EntityState.Modified;
                 }
+                _context.MedicalDocs.Add(MedicalDoc);
                 _context.SaveChanges();
                 EventsManager.RaiseObjectChangedEvent(MedicalDoc, ChangeType.Added);
             }

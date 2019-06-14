@@ -61,7 +61,7 @@
                 <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
                     <MenuItem Header="Добавить группу" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddGroupPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditCoursePage}"></MenuItem>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditCoursePage}"></MenuItem>
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCourse}">
                     </MenuItem>
                 </ContextMenu>
@@ -72,7 +72,7 @@
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditGroupPage}"></MenuItem>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditGroupPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteGroup}"></MenuItem>
                 </ContextMenu>
@@ -80,7 +80,7 @@
                 <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
                     <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteModule}"></MenuItem>
                 </ContextMenu>
@@ -88,14 +88,11 @@
                 <ContextMenu x:Key="StudentMenu" Name="StudentMenu">
                     <MenuItem Header="Добавить справку" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddMedicalDocWindow}"></MenuItem>
                     <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
-                    <Separator Padding="0"></Separator>
                     <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Редактировать данные человека" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateStudentPage}"></MenuItem>
-                    <Separator Padding="0"></Separator>
-                    <MenuItem Header="Изменить"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Удалить"></MenuItem>
                 </ContextMenu>

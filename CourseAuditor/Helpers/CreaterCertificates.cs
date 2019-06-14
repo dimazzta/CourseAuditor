@@ -31,7 +31,6 @@ namespace CourseAuditor.Helpers
                 string[] data = new string[1] { $"{name}" };
                 foreach (Word.Bookmark mark in wBookmarks)
                 {
-
                     wRange = mark.Range;
                     wRange.Text = data[i];
                     i++;

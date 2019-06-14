@@ -17,6 +17,11 @@ namespace CourseAuditor.Models
         private DateTime _Date;
         private double? _Discount;
 
+        public override string ToString()
+        {
+            return $"{Date.ToString("dd MMM yyyy")} : {Sum}р. (Скидка {Discount * 100}%)";
+        }
+
         public virtual Student Student
         {
             get

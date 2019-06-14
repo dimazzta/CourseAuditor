@@ -17,6 +17,12 @@ namespace CourseAuditor.Models
         private DateTime _DateEnd;
         private string _Comment;
 
+
+        public override string ToString()
+        {
+            return $"{DateStart.ToString("dd MMM yyyy")} - {DateEnd.ToString("dd MMM yyyy")}. {Comment}";
+        }
+
         public virtual Person Person
         {
             get

@@ -19,7 +19,7 @@ namespace CourseAuditor.ViewModels
         void LoadData(Group selectedGroup = null)
         {
             ParentPicker = new ParentPickerVM();
-
+            Parents = new ObservableCollection<Parent>();
             Person = new Person();
             AddNewMode = true;
             using (var _context = new ApplicationContext())
@@ -232,10 +232,11 @@ namespace CourseAuditor.ViewModels
                     _context.SaveChanges();
 
                     EventsManager.RaiseObjectChangedEvent(student, ChangeType.Added);
-                    Person = new Person();
-                    Parents.Clear();
+                    
                 }
             }
+            Person = new Person();
+            Parents.Clear();
         }
 
         private ICommand _AddStudentCommand;

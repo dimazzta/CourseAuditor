@@ -16,6 +16,11 @@ namespace CourseAuditor.Models
         private DateTime _Date;
         private double _Sum;
 
+        public override string ToString()
+        {
+            return $"{Date.ToString("dd MMM yyyy")} : {Sum}р.";
+        }
+
         public virtual Student Student
         {
             get

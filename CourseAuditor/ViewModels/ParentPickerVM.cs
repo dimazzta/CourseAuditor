@@ -11,13 +11,27 @@ using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    public class ParentPickerVM: IPageVM
+    public class ParentPickerVM: BaseVM, IPageVM
     {
-        public ParentPickerVM() {
-            Parents = new ObservableCollection<Parent>();
+        public ParentPickerVM(List<Parent> parents = null) {
+            if (parents == null)
+                Parents = new ObservableCollection<Parent>();
+            else
+                Parents = new ObservableCollection<Parent>(parents);
         }
 
-        public ObservableCollection<Parent> Parents { get; set; }
+        private ObservableCollection<Parent> _Parents;
+        public ObservableCollection<Parent> Parents
+        {
+            get {
+                return _Parents;
+            }
+            set {
+                _Parents = value;
+                OnPropertyChanged("Parents");
+            }
+        }
+
         public Parent SelectedParent { get; set; }
 
         private ICommand _AddParentCommand;

@@ -12,10 +12,7 @@ namespace CourseAuditor.Models
         private string _Phone;
         private ICollection<PersonParent> _Children;
 
-        public override string ToString()
-        {
-            return $"{FirstName} {SecondName} {Patronymic}  {Phone}";
-        }
+
         public string FirstName
         {
             get

@@ -294,7 +294,8 @@ namespace CourseAuditor.ViewModels
 
         private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
         {
-            if (e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student || e.ObjectChanged is Module)
+            if (e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student || e.ObjectChanged is Module
+                || e.ObjectChanged is Person)
             {
                 using (var _context = new ApplicationContext())
                 {

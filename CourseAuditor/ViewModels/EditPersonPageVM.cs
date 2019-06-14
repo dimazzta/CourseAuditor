@@ -10,28 +10,6 @@ namespace CourseAuditor.ViewModels
 {
     class EditPersonPageVM : BaseVM, IPageVM
     {
-        private string _SecondName;
-        private string _Patronymic;
-        private string _Phone;
-
-
-
-        private ObservableCollection<string> _Courses;
-        public ObservableCollection<string> Courses
-        {
-            get
-            {
-                return _Courses;
-            }
-            set
-            {
-                _Courses = value;
-                OnPropertyChanged("Courses");
-            }
-        }
-
-        
-
         private Person _Person;
         public Person Person
         {
@@ -47,137 +25,153 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private string _FirstName;
-        public string FirstName
+
+        private ObservableCollection<Student> _Students;
+        public ObservableCollection<Student> Students
         {
             get
             {
-                return _FirstName;
+                return _Students;
             }
             set
             {
-                _FirstName = value;
-                OnPropertyChanged("FirstName");
+                _Students = value;
+                OnPropertyChanged("Students");
             }
         }
 
+        public ParentPickerVM ParentPicker { get; set; }
 
-  
-
-        public string SecondName
+        private Student _SelectedStudent;
+        public Student SelectedStudent
         {
             get
             {
-                return _SecondName;
+                return _SelectedStudent;
             }
             set
             {
-                _SecondName = value;
-                OnPropertyChanged("SecondName");
-            }
-        }
-        public string Patronymic
-        {
-            get
-            {
-                return _Patronymic;
-            }
-            set
-            {
-                _Patronymic = value;
-                OnPropertyChanged("Patronymic");
+                _SelectedStudent = value;
+                if (_SelectedStudent != null)
+                {
+                    Payments = new ObservableCollection<Payment>(_SelectedStudent.Payments.OrderByDescending(x => x.Date));
+                    Returns = new ObservableCollection<Return>(_SelectedStudent.Returns.OrderByDescending(x => x.Date));
+                    MedicalDocs = new ObservableCollection<MedicalDoc>(_SelectedStudent.Person.MedicalDocs.OrderByDescending(x => x.DateStart));
+                }
+                OnPropertyChanged("SelectedStudent");
             }
         }
 
-        public string Phone
+        private ObservableCollection<Payment> _Payments;
+        public ObservableCollection<Payment> Payments
         {
             get
             {
-                return _Phone;
+                return _Payments;
             }
             set
             {
-                _Phone = value;
-                OnPropertyChanged("Phone");
+                _Payments = value;
+                OnPropertyChanged("Payments");
             }
         }
 
-        private ObservableCollection<Parent>_Parents;
-        public ObservableCollection<Parent> Parents
+        private ObservableCollection<Return> _Returns;
+        public ObservableCollection<Return> Returns
         {
             get
             {
-                return _Parents;
+                return _Returns;
             }
             set
             {
-                _Parents = value;
-                OnPropertyChanged("Parents");
+                _Returns = value;
+                OnPropertyChanged("Returns");
             }
         }
 
-        private ObservableCollection<Group> _Groups;
-        public ObservableCollection<Group> Groups
+        private ObservableCollection<MedicalDoc> _MedicalDocs;
+        public ObservableCollection<MedicalDoc> MedicalDocs
         {
             get
             {
-                return _Groups;
+                return _MedicalDocs;
             }
             set
             {
-                _Groups = value;
-                OnPropertyChanged("Groups");
+                _MedicalDocs = value;
+                OnPropertyChanged("MedicalDocs");
             }
         }
 
         public EditPersonPageVM(Student student)
         {
-            #region вывод в текстбоксы
             Person = new Person();
-            Parents = new ObservableCollection<Parent>();
             using(ApplicationContext _context = new ApplicationContext())
             {
-                var personPer = _context.PersonParents.Where(x => x.Person_ID == student.Person_ID);
-                var parents = personPer.Select(x => x.Parent);
-                foreach (var item in parents)
-                {
-                    Parents.Add(item);
-                }
-                var person = personPer.FirstOrDefault();
-                var selectPerson = _context.Persons.Where(x => x.ID == person.Person_ID).FirstOrDefault();
-                Person = selectPerson;
-                Phone = selectPerson.Phone;
-                Patronymic = selectPerson.Patronymic;
-                FirstName = selectPerson.FirstName;
-                SecondName = selectPerson.SecondName;
-                #endregion
+                Person = _context.Persons
+                    .Include(t => t.Parents
+                    .Select(m => m.Parent))
+                    .FirstOrDefault(x => x.ID == student.Person_ID);
 
-                //Надо кароч какта вывести данные в каком модуле, группе, и курсе челикс в нижний листбокс
+                Students = new ObservableCollection<Student>(
+                    _context.Students.Where(x => x.Person.ID == Person.ID)
+                    .Include(x => x.Payments)
+                    .Include(x => x.Returns)
+                    .Include(x => x.Person.MedicalDocs)
+                    .Include(x => x.Module.Group.Course));
 
-               
-                foreach (var item in _context.Persons.Select(x => x.Students.Select(z => z.Module.Group.Course.Name))) 
-                {
-                    Courses = new ObservableCollection<string>(item);
-                    break;
-                }
+                SelectedStudent = Students.FirstOrDefault();
+
+                var parents = _context.PersonParents.Where(x => x.Person_ID == Person.ID).Select(x => x.Parent).ToList();
+                ParentPicker = new ParentPickerVM(parents);
             }
         }
 
         private void EditPerson()
         {
-
-            Person.FirstName = FirstName;
-            Person.SecondName = SecondName;
-            Person.Patronymic = Patronymic;
-            Person.Phone = Phone;
             using (var _context = new ApplicationContext())
             {
-                var person = _context.Persons.FirstOrDefault(x => x.ID == Person.ID);
+                var person = _context.Persons
+                    .Include(t => t.Parents
+                    .Select(m => m.Parent))
+                    .FirstOrDefault(x => x.ID == Person.ID);
+
                 _context.Entry(person).CurrentValues.SetValues(Person);
+                _context.Entry(person).State = EntityState.Modified;
+
+                foreach(var p in person.Parents.ToList())
+                {
+                    _context.Entry(p).State = EntityState.Deleted;
+                }
+
+                var parents = ParentPicker.Parents;
+                foreach(var parent in parents)
+                {
+                    var p = _context.Parents.FirstOrDefault(x => x.ID == parent.ID);
+                    if (p == null)
+                    {
+                        p = _context.Parents.Add(parent);
+                        _context.Entry(p).State = EntityState.Added;
+                    }
+                    else
+                    {
+                        _context.Entry(p).State = EntityState.Unchanged;
+                    }
+                   
+                    var pp = _context.PersonParents.Add(new PersonParent()
+                    {
+                        Parent = p,
+                        Person = person
+                    });
+                    _context.Entry(pp).State = EntityState.Added;
+                }
                 _context.SaveChanges();
             }
-            EventsManager.RaiseObjectChangedEvent(Person);
+            EventsManager.RaiseObjectChangedEvent(Person, ChangeType.Updated);
         }
+
+
         private ICommand _EditPersonCommand;
         public ICommand EditPersonCommand =>
             _EditPersonCommand ??
@@ -187,7 +181,5 @@ namespace CourseAuditor.ViewModels
                     EditPerson();
                 }
                 ));
-
-
     }
 }

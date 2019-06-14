@@ -27,7 +27,9 @@
             <TextBlock Margin="0, 0, 0, 4" Text="Комментарий"></TextBlock>
             <TextBox  Margin="0, 0, 0, 20" Text="{Binding Comment}" Height="60"></TextBox>
 
-            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку"></Button>
+            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку" Margin="0, 0, 0, 4"></Button>
+            <TextBlock Text="История справок:" Margin="0,0,0,4"></TextBlock>
+            <ListBox ItemsSource="{Binding MedicalDocs}"></ListBox>
         </StackPanel>
 
     </Grid>

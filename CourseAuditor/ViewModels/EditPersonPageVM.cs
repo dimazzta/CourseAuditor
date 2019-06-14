@@ -16,8 +16,8 @@ namespace CourseAuditor.ViewModels
 
 
 
-        private ObservableCollection<Course> _Courses;
-        public ObservableCollection<Course> Courses
+        private ObservableCollection<string> _Courses;
+        public ObservableCollection<string> Courses
         {
             get
             {
@@ -155,9 +155,9 @@ namespace CourseAuditor.ViewModels
                 //Надо кароч какта вывести данные в каком модуле, группе, и курсе челикс в нижний листбокс
 
                
-                foreach (var item in _context.Persons.Select(x => x.Students.Select(z => z.Module.Group.Course)).Select(t=>t.ToList<Course>())) 
+                foreach (var item in _context.Persons.Select(x => x.Students.Select(z => z.Module.Group.Course.Name))) 
                 {
-                    Courses = new ObservableCollection<Course>(item);
+                    Courses = new ObservableCollection<string>(item);
                     break;
                 }
             }

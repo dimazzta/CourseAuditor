@@ -14,14 +14,14 @@ namespace CourseAuditor.ViewModels
 {
     public class AddModulePageVM : BaseVM, IPageVM
     {
-        public AddModulePageVM(Group selectedGroup = null)
+        void LoadData(Group selectedGroup = null)
         {
             Persons = new ObservableCollection<CheckedListItem<Person>>();
             using (var _context = new ApplicationContext())
             {
                 Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
                 var persons = _context.Persons.OrderBy(x => x.SecondName).ToList();
-                foreach(var person in persons)
+                foreach (var person in persons)
                 {
                     Persons.Add(new CheckedListItem<Person>(person));
                 }
@@ -38,34 +38,21 @@ namespace CourseAuditor.ViewModels
             }
 
             CalculateDateBounds();
-
-            EventsManager.ObjectChangedEvent += (s, e) =>
-            {
-                if ((e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student) && e.Type == ChangeType.Deleted)
-                {
-                    using (var _context = new ApplicationContext())
-                    {
-                        Persons.Clear();
-                        var persons = _context.Students
-                                        .Include(x => x.Person)
-                                        .Include(x => x.Module.Group.Course)
-                                        .Select(x => x.Person)
-                                        .Distinct();
-                        foreach (var person in persons)
-                        {
-                            Persons.Add(new CheckedListItem<Person>(person));
-                        }
-
-                        if (e.ObjectChanged is Group || e.ObjectChanged is Course)
-                        {
-                            Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-                            SelectedCourse = Courses.FirstOrDefault();
-                        }
-                    }
-                }
-            };
         }
 
+        public AddModulePageVM(Group selectedGroup = null)
+        {
+            LoadData(selectedGroup);
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
+        }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.ObjectChanged is Course || e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Person)
+            {
+                LoadData(null);
+            }
+        }
 
         private Course _SelectedCourse;
         public Course SelectedCourse

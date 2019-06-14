@@ -13,7 +13,7 @@ namespace CourseAuditor.ViewModels
 {
     public class AddGroupPageVM : BaseVM, IPageVM
     {
-        public AddGroupPageVM(Course selectedCourse=null)
+        void LoadData(Course selectedCourse = null)
         {
             using (var _context = new ApplicationContext())
             {
@@ -27,23 +27,22 @@ namespace CourseAuditor.ViewModels
             {
                 SelectedCourse = Courses.FirstOrDefault();
             }
-
-            EventsManager.ObjectChangedEvent += (s, e) =>
-            {
-                if (e.ObjectChanged is Course && e.Type == ChangeType.Deleted)
-                {
-                    using (var _context = new ApplicationContext())
-                    {
-                        Courses = new ObservableCollection<Course>(_context.Courses);
-                    }
-                    if (SelectedCourse == null)
-                    {
-                        SelectedCourse = Courses.FirstOrDefault();
-                    }
-                }
-            };
         }
-        
+
+        public AddGroupPageVM(Course selectedCourse=null)
+        {
+            LoadData(selectedCourse);
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
+        }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.ObjectChanged is Course)
+            {
+                LoadData(null);
+            }
+        }
+
         private Course _SelectedCourse;
         public Course SelectedCourse
         {

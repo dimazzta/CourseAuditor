@@ -16,10 +16,10 @@ namespace CourseAuditor.ViewModels
 {
     public class AddStudentPageVM : BaseVM, IPageVM
     {
-        public AddStudentPageVM(Group selectedGroup = null)
+        void LoadData(Group selectedGroup = null)
         {
             ParentPicker = new ParentPickerVM();
-           
+
             Person = new Person();
             AddNewMode = true;
             using (var _context = new ApplicationContext())
@@ -28,7 +28,7 @@ namespace CourseAuditor.ViewModels
                 Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
                 SelectedPerson = Persons.FirstOrDefault();
             }
-            
+
             if (selectedGroup != null)
             {
                 SelectedGroup = selectedGroup;
@@ -38,35 +38,19 @@ namespace CourseAuditor.ViewModels
             {
                 SelectedCourse = Courses.FirstOrDefault();
             }
+        }
 
+        public AddStudentPageVM(Group selectedGroup = null)
+        {
+            LoadData(selectedGroup);
             EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
         }
 
         private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
         {
-            if (e.Type == ChangeType.Deleted)
+            if (e.ObjectChanged is Course || e.ObjectChanged is Group || e.ObjectChanged is Module || e.ObjectChanged is Person)
             {
-                if (e.ObjectChanged is Course || e.ObjectChanged is Group || SelectedGroup == null)
-                {
-                    using (var _context = new ApplicationContext())
-                    {
-                        Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups.Select(t => t.Modules)));
-                        Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
-                        SelectedCourse = Courses.FirstOrDefault();
-                        SelectedPerson = Persons.FirstOrDefault();
-                    }
-                }
-            }
-            if (e.Type == ChangeType.Added)
-            {
-                if (e.ObjectChanged is Person)
-                {
-                    using (var _context = new ApplicationContext())
-                    {
-                        Persons = new ObservableCollection<Person>(_context.Persons.OrderBy(x => x.SecondName));
-                        SelectedPerson = Persons.FirstOrDefault();
-                    }
-                }
+                LoadData(null);
             }
         }
 
@@ -246,13 +230,13 @@ namespace CourseAuditor.ViewModels
                     };
                     _context.Students.Add(student);
                     _context.SaveChanges();
+
                     EventsManager.RaiseObjectChangedEvent(student, ChangeType.Added);
                     Person = new Person();
                     Parents.Clear();
                 }
             }
         }
-
 
         private ICommand _AddStudentCommand;
         public ICommand AddStudentCommand =>

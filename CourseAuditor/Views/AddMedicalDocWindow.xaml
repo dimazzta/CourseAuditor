@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CourseAuditor.Views"
         mc:Ignorable="d"
-        Title="AddMedicalDocWindow" Height="450" Width="250">
+        Title="AddMedicalDocWindow" Height="520.5" Width="318">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,22 +14,22 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <StackPanel Width="200" Orientation="Vertical" Margin="20, 10, 0, 20" HorizontalAlignment="Left">
+    <Grid Margin="0,0,0,17">
+        <StackPanel Width="290" Orientation="Vertical" Margin="10,10,0,20" HorizontalAlignment="Left">
             <TextBlock Margin="0, 0, 0, 10" Text="{Binding StudentInfo}"></TextBlock>
-            
+
             <TextBlock Margin="0, 0, 0, 4" Text="Дата начала"></TextBlock>
-            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding DateStart}"></DatePicker>
-            
+            <DatePicker Margin="0,0,10,10" SelectedDate="{Binding DateStart}"></DatePicker>
+
             <TextBlock Margin="0, 0, 0, 4" Text="Дата окончания"></TextBlock>
-            <DatePicker Margin="0, 0, 0, 10" SelectedDate="{Binding DateEnd}"></DatePicker>
+            <DatePicker Margin="0,0,10,10" SelectedDate="{Binding DateEnd}"></DatePicker>
 
             <TextBlock Margin="0, 0, 0, 4" Text="Комментарий"></TextBlock>
-            <TextBox  Margin="0, 0, 0, 20" Text="{Binding Comment}" Height="60"></TextBox>
+            <TextBox  Margin="0,0,10,20" Text="{Binding Comment}" Height="60"></TextBox>
 
-            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку" Margin="0, 0, 0, 4"></Button>
+            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку" Margin="0,0,10,4"></Button>
             <TextBlock Text="История справок:" Margin="0,0,0,4"></TextBlock>
-            <ListBox ItemsSource="{Binding MedicalDocs}" Height="96"></ListBox>
+            <ListBox ItemsSource="{Binding MedicalDocs}" Height="74" Margin="0,0,10,0"/>
         </StackPanel>
 
     </Grid>

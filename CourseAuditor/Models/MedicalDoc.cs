@@ -70,7 +70,7 @@ namespace CourseAuditor.Models
 
         public override string ToString()
         {
-            return "ыхвза";
+            return  "Болел с " + _DateStart.ToLongDateString() + " по " + _DateEnd.ToLongDateString() + "\n" + "Комментарий: " + _Comment;
         }
 
     }

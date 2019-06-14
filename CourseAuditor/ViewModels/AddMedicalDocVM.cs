@@ -140,6 +140,7 @@ namespace CourseAuditor.ViewModels
                     item.Assessment = RespectfulReason;
                     _context.Entry(item).State = EntityState.Modified;
                 }
+                _context.MedicalDocs.Add(MedicalDoc);
                 _context.SaveChanges();
                 EventsManager.RaiseObjectChangedEvent(MedicalDoc, ChangeType.Added);
             }
@@ -176,7 +177,7 @@ namespace CourseAuditor.ViewModels
             //прошлые справки
             using (ApplicationContext _context = new ApplicationContext())
             {
-                MedicalDocs = new ObservableCollection<MedicalDoc>(_context.MedicalDocs);
+                MedicalDocs = new ObservableCollection<MedicalDoc>(_context.MedicalDocs.Where(x=>x.Person_ID==selectedStudent.Person_ID));
                
                
             }

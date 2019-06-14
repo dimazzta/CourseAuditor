@@ -54,6 +54,7 @@ namespace CourseAuditor.ViewModels
              ));
 
 
+
         private ICommand _AddGroupPage;
         public ICommand AddGroupPage =>
             _AddGroupPage ??
@@ -166,6 +167,48 @@ namespace CourseAuditor.ViewModels
                     DialogService.I.ShowDialog(medicalVM);
                 }
              ));
+        //TODO исп
+        private ICommand _AddReturnPay;
+        public ICommand AddReturnPay =>
+            _AddReturnPay ??
+            (_AddReturnPay = new RelayCommand(
+                (obj) =>
+                {
+                    new ReturnPaymentVM(new AddReturnPay(), AppState.I.SelectedContextStudent);
+                }
+             ));
+
+
+        private ICommand _EditPersonPage;
+        public ICommand EditPersonPage =>
+            _EditPersonPage ??
+            (_EditPersonPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditPersonPageVM(AppState.I.SelectedContextStudent);
+                }
+             ));
+
+
+        private ICommand _CertificateModulePage;
+        public ICommand CertificateModulePage =>
+            _CertificateModulePage ??
+            (_CertificateModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateModulePageVM(AppState.I.SelectedContextModule);
+                }
+             ));
+
+        private ICommand _CertificateStudentPage;
+        public ICommand CertificateStudentPage =>
+            _CertificateStudentPage ??
+            (_CertificateStudentPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateStudentPageVM(AppState.I.SelectedContextStudent);
+                }));
+
 
         //UI View
         public IView CurrentView { get; set; }

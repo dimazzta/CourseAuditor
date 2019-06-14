@@ -46,7 +46,7 @@
             </MenuItem>
 
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
-            <MenuItem Header="Сертификат"/>
+            <MenuItem Header="Сертификат" Click="MenuItem_Click" />
             <MenuItem Header="Справка"/>
         </Menu>
 
@@ -78,7 +78,7 @@
                 </ContextMenu>
 
                 <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
-                    <MenuItem Header="Печать сертификатов"></MenuItem>
+                    <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
                     <Separator Padding="0"></Separator>
@@ -89,7 +89,11 @@
                     <MenuItem Header="Добавить справку" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddMedicalDocWindow}"></MenuItem>
                     <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Печать сертификатов"></MenuItem>
+                    <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Редактировать данные человека" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateStudentPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Изменить"></MenuItem>
                     <Separator Padding="0"></Separator>
@@ -141,6 +145,15 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AddModulePageVM}">
                     <views:AddModulePage></views:AddModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditPersonPageVM}">
+                    <views:EditPersonPage></views:EditPersonPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CertificateModulePageVM}">
+                    <views:CertificateModulePage></views:CertificateModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CertificateStudentPageVM}">
+                    <views:CertificateStudentPage></views:CertificateStudentPage>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:EditModulePageVM}">
                     <views:EditModulePage></views:EditModulePage>

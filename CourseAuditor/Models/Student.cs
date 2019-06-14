@@ -134,5 +134,7 @@ namespace CourseAuditor.Models
         {
             return Person.FullName;
         }
+
+
     }
 }

@@ -42,6 +42,55 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Spire.Barcode, Version=3.5.0.11040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Barcode.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Common, Version=2.6.2.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.DataExport, Version=4.1.9.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.DataExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.DataExport.ResourceMgr, Version=2.1.0.18040, Culture=neutral, PublicKeyToken=4bc1500157862925, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.DataExport.ResourceMgr.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=7.6.2.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Doc.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.DocViewer.Forms, Version=4.5.1.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.DocViewer.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Email, Version=2.4.6.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Email.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.7.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.OfficeViewer.Forms, Version=4.6.0.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.OfficeViewer.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=5.6.3.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.PdfViewer.Asp, Version=4.5.11.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.PdfViewer.Asp.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.PdfViewer.Forms, Version=4.5.11.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.PdfViewer.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Presentation, Version=4.5.10.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Spreadsheet, Version=3.6.1.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.Spreadsheet.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS, Version=9.6.2.18040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Office.4.6.0\lib\net40\Spire.XLS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -54,6 +103,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.110.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -72,8 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\CertificateWriter.cs" />
     <Compile Include="Helpers\CheckedListItem.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\CreaterCertificates.cs" />
     <Compile Include="Helpers\EventsManager.cs" />
     <Compile Include="Helpers\Ext.cs" />
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
@@ -84,6 +136,8 @@
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\AddMedicalDocVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
+    <Compile Include="ViewModels\CertificateModulePageVM.cs" />
+    <Compile Include="ViewModels\CertificateStudentPageVM.cs" />
     <Compile Include="ViewModels\AddStudentPageVM.cs" />
     <Compile Include="ViewModels\AddParentVM.cs" />
     <Compile Include="ViewModels\EditCoursePageVM.cs" />
@@ -97,6 +151,7 @@
     <Compile Include="ViewModels\Dialogs\IDialogService.cs" />
     <Compile Include="ViewModels\DateTimeDialogVM.cs" />
     <Compile Include="ViewModels\EditGroupPageVM.cs" />
+    <Compile Include="ViewModels\EditPersonPageVM.cs" />
     <Compile Include="ViewModels\EditModulePageVM.cs" />
     <Compile Include="ViewModels\IEditPageVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
@@ -105,6 +160,7 @@
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\ParentPickerVM.cs" />
     <Compile Include="ViewModels\PaymentVM.cs" />
+    <Compile Include="ViewModels\ReturnPaymentVM.cs" />
     <Compile Include="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
     </Compile>
@@ -116,6 +172,15 @@
     </Compile>
     <Compile Include="Views\AddModulePage.xaml.cs">
       <DependentUpon>AddModulePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddReturnPay.xaml.cs">
+      <DependentUpon>AddReturnPay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CertificateModulePage.xaml.cs">
+      <DependentUpon>CertificateModulePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CertificateStudentPage.xaml.cs">
+      <DependentUpon>CertificateStudentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddStudentPage.xaml.cs">
       <DependentUpon>AddStudentPage.xaml</DependentUpon>
@@ -131,6 +196,9 @@
     </Compile>
     <Compile Include="Views\EditGroupPage.xaml.cs">
       <DependentUpon>EditGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditPersonPage.xaml.cs">
+      <DependentUpon>EditPersonPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditModulePage.xaml.cs">
       <DependentUpon>EditModulePage.xaml</DependentUpon>
@@ -170,6 +238,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddReturnPay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CertificateModulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CertificateStudentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddStudentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditPersonPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

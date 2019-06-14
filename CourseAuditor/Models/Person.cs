@@ -15,6 +15,20 @@ namespace CourseAuditor.Models
         private string _Phone;
         private ICollection<PersonParent> _Parents;
         private ICollection<MedicalDoc> _MedicalDocs;
+        private ICollection<Student> _Students;
+
+        public virtual ICollection<Student> Students
+        {
+            get
+            {
+                return _Students;
+            }
+            set
+            {
+                _Students = value;
+                OnPropertyChanged("Students");
+            }
+        }
 
         [NotMapped]
         public string FullName

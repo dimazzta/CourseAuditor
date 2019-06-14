@@ -1,4 +1,5 @@
-﻿using CourseAuditor.ViewModels;
+﻿using CourseAuditor.Helpers;
+using CourseAuditor.ViewModels;
 using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 using System;

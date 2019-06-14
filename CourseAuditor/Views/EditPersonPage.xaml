@@ -44,13 +44,16 @@
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
-
-                <Button  Style="{StaticResource DefaultButton}" Command="{Binding EditPersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Изменить"></Button>
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 10">
+                    <Button Margin="0, 0, 10, 0" Style="{StaticResource DefaultButton}" Command="{Binding EditPersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Изменить"></Button>
+                    <Button Style="{StaticResource DefaultButton}" Command="{Binding DeleteStudentCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Удалить из группы"></Button>
+                </StackPanel>
+                <Button BorderBrush="MediumVioletRed" Background="IndianRed" Style="{StaticResource DefaultButton}" Command="{Binding DeletePersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Удалить полностью"></Button>
             </StackPanel>
             <StackPanel Width="400" Grid.Column="1" Margin="20, 10, 0, 20" HorizontalAlignment="Left" Orientation="Vertical">
 
                 <TextBlock TextWrapping="Wrap" Text="Группы" Margin="0, 0, 0, 4"/>
-                    <ListBox ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" Margin="0, 0, 0, 10" Height="80">
+                <ListBox ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" Margin="0, 0, 0, 10" Height="80">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

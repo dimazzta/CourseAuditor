@@ -31,7 +31,8 @@ namespace CourseAuditor.ViewModels
             AppState.I.PropertyChanged += StatePropertyChanged;
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if ((e.ObjectChanged is Payment || e.ObjectChanged is MedicalDoc))
+                if ((e.ObjectChanged is Payment || e.ObjectChanged is MedicalDoc 
+                || e.ObjectChanged is Student || e.ObjectChanged is Person || e.ObjectChanged is Return))
                 {
                     UpdateJournal(SelectedModule);
                 }
@@ -141,8 +142,13 @@ namespace CourseAuditor.ViewModels
         private void UpdateJournal(Module module)
         {
             Table = new DataTable();
+
             if (module != null)
             {
+                using (var _context = new ApplicationContext())
+                {
+                    module = _context.Modules.Include(x => x.Students.Select(t => t.Person)).FirstOrDefault(x => x.ID == module.ID);
+                }
                 if (module.Students.Count > 0)
                 {
                     DataTable table = new DataTable();

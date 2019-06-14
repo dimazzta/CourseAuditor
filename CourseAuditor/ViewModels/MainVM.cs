@@ -146,6 +146,16 @@ namespace CourseAuditor.ViewModels
                 }
                 ));
 
+        private ICommand _DeleteStudent;
+        public ICommand DeleteStudent =>
+            _DeleteStudent ??
+            (_DeleteStudent = new RelayCommand(
+                (obj) =>
+                {
+                    EditPersonPageVM.DeleteStudent(AppState.I.SelectedContextStudent);
+                }
+             ));
+
         private ICommand _AddPaymentWindow;
         public ICommand AddPaymentWindow =>
             _AddPaymentWindow ??
@@ -185,7 +195,7 @@ namespace CourseAuditor.ViewModels
             (_EditPersonPage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new EditPersonPageVM(AppState.I.SelectedContextStudent);
+                    CurrentPageVM = new EditPersonPageVM(JournalPage, AppState.I.SelectedContextStudent);
                 }
              ));
 

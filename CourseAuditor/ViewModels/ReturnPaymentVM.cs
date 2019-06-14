@@ -16,7 +16,6 @@ namespace CourseAuditor.ViewModels
 
         public ReturnPaymentVM(IView view, Student student)
         {
-
             SelectedStudent = student;
             CurrentView = view;
             CurrentView.DataContext = this;
@@ -26,9 +25,9 @@ namespace CourseAuditor.ViewModels
             InfStudent = GetInfStud();
             CurrentView.Show();
         }
-        private IPageVM _CurrentPageVM;
-       
 
+
+        private IPageVM _CurrentPageVM;
         public IPageVM CurrentPageVM
         {
             get

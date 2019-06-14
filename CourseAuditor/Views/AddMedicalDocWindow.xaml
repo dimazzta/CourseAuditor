@@ -29,7 +29,7 @@
 
             <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку" Margin="0, 0, 0, 4"></Button>
             <TextBlock Text="История справок:" Margin="0,0,0,4"></TextBlock>
-            <ListBox ItemsSource="{Binding MedicalDocs}"></ListBox>
+            <ListBox ItemsSource="{Binding MedicalDocs}" Height="96"></ListBox>
         </StackPanel>
 
     </Grid>

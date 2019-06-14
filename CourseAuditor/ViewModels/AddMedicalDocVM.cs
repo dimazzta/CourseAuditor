@@ -176,11 +176,8 @@ namespace CourseAuditor.ViewModels
             //прошлые справки
             using (ApplicationContext _context = new ApplicationContext())
             {
-                MedicalDocs = new ObservableCollection<MedicalDoc>();
-                foreach (var item in _context.Persons.Where(z => z.ID == selectedStudent.Person_ID).Select(x => x.MedicalDocs).ToList())
-                {
-                    MedicalDocs.Add(item.ToList() as );
-                }
+                MedicalDocs = new ObservableCollection<MedicalDoc>(_context.MedicalDocs);
+               
                
             }
            

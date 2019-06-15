@@ -18,8 +18,6 @@ namespace CourseAuditor.ViewModels
     public class PaymentVM: BaseVM, IDialogRequestClose
     {
 
- 
-
         private Student _SelectedStudent;
         public Student SelectedStudent
         {
@@ -80,6 +78,20 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private PaymentType _Type;
+        public PaymentType Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                _Type = value;
+                OnPropertyChanged("Type");
+            }
+        }
+
         private double _Discount;
         public double Discount
         {
@@ -120,6 +132,7 @@ namespace CourseAuditor.ViewModels
                 payment.Sum = Sum;
                 payment.Student_ID = SelectedStudent.ID;
                 payment.Date = DateTime.Now;
+                payment.Type = Type;
                 _context.Payments.Add(payment);
                 var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
                 _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
@@ -149,8 +162,6 @@ namespace CourseAuditor.ViewModels
 
         private ICommand _ChangeDiscount;
 
-        
-
         public ICommand ChangeDiscount =>
             _ChangeDiscount ??
             (_ChangeDiscount = new RelayCommand(
@@ -159,10 +170,29 @@ namespace CourseAuditor.ViewModels
                     if (obj != null)
                         try
                         {
-                            Discount = Convert.ToDouble(obj, CultureInfo.InvariantCulture);
+                            int type = Convert.ToInt32(obj);
+                            switch (type)
+                            {
+                                case 0:
+                                    Type = PaymentType.OneTime;
+                                    Discount = 0;
+                                    break;
+                                case 1:
+                                    Type = PaymentType.Month;
+                                    Discount = 0.1;
+                                    break;
+                                case 2:
+                                    Type = PaymentType.Module;
+                                    Discount = 0.2;
+                                    break;
+                                default:
+                                    Type = PaymentType.Arbitraty;
+                                    break;
+                            }
                         }
                         catch
                         {
+                            Type = PaymentType.Arbitraty;
                             Discount = 0;
                         }
                 }
@@ -179,6 +209,7 @@ namespace CourseAuditor.ViewModels
 
         public PaymentVM(Student selectedStudent)
         {
+            Type = PaymentType.OneTime;
             using (var _context = new ApplicationContext())
             {
                 SelectedStudent = _context.Students

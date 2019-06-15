@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
+    public enum PaymentType
+    {
+        OneTime = 0,
+        Month = 1,
+        Module = 2,
+        Arbitraty = 3
+    };
+
     public class Payment : ObservableObject
     {
         [ForeignKey("Student")]
@@ -16,12 +24,25 @@ namespace CourseAuditor.Models
         private double _Sum;
         private DateTime _Date;
         private double? _Discount;
+        private PaymentType _Type;
 
         public override string ToString()
         {
             return $"{Date.ToString("dd MMM yyyy")} : {Sum}р. (Скидка {Discount * 100}%)";
         }
 
+        public PaymentType Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                _Type = value;
+                OnPropertyChanged("Type");
+            }
+        }
         public virtual Student Student
         {
             get

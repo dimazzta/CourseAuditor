@@ -187,6 +187,7 @@ namespace CourseAuditor.ViewModels
 
                     foreach (var student in students)
                     {
+                        student.RecalculateBalance();
                         List<Journal> journals = student.Journals.OrderBy(x => x.Date).ToList();
 
                         DataRow row = table.NewRow();
@@ -266,19 +267,21 @@ namespace CourseAuditor.ViewModels
                             }
                             else
                             {
-                                var newJournal = new Journal()
+                                bJournal = new Journal()
                                 {
                                     Student = _context.Students.First(x => x.ID == journal.Student.ID),
                                     Date = journal.Date,
                                     Assessment = _context.Assessments.FirstOrDefault(x => x.ID == journal.Assessment.ID)
                                 };
-                                _context.Journals.Add(newJournal);
-                                _context.Entry(newJournal).State = EntityState.Added;
+                                _context.Journals.Add(bJournal);
+                                _context.Entry(bJournal).State = EntityState.Added;
                             }
+
                         }
                     }
                 }
                 _context.SaveChanges();
+                UpdateJournal(SelectedModule);
             }
             HasChanges = false;
         }

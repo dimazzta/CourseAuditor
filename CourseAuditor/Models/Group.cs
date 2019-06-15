@@ -10,12 +10,11 @@ namespace CourseAuditor.Models
 {
     public class Group : ObservableObject, INotifyPropertyChanged
     {
-
+        [ForeignKey("Course")]
+        public int Course_ID { get; set; }
         private Course _Course;
         private string _Title;
-        private ICollection<Student> _Students;
         private ICollection<Module> _Modules;
-
 
         [NotMapped]
         public Module LastModule
@@ -26,7 +25,7 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual ICollection<Module> Modules
+        public virtual  ICollection<Module> Modules
         {
             get
             {
@@ -39,19 +38,8 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual ICollection<Student> Students
-        {
-            get
-            {
-                return _Students;
-            }
-            set
-            {
-                _Students = value;
-                OnPropertyChanged("Students");
-            }
-        }
 
+        
         public virtual Course Course
         {
             get
@@ -70,7 +58,7 @@ namespace CourseAuditor.Models
         {
             get
             {
-                return "Группа " + _Title;
+                return  _Title;
             }
             set
             {
@@ -78,7 +66,12 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Title");
             }
         }
+        public override string ToString()
+        {
+            return $"ID - {ID} Название: {Title}";
+        }
 
-        
+
+
     }
 }

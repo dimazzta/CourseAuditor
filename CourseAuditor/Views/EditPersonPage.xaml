@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="CourseAuditor.Views.EditPersonPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:CourseAuditor.Views"
+             xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="20, 10, 0, 20" HorizontalAlignment="Left" Orientation="Vertical">
+
+                <TextBlock TextWrapping="Wrap" Text="Имя" Margin="0, 0, 0, 4"/>
+                <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding Person.FirstName}"></TextBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Фамилия" Margin="0, 0, 0, 4"/>
+                <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding Person.SecondName}"></TextBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Отчество" Margin="0, 0, 0, 4"/>
+                <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding Person.Patronymic}"></TextBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Номер телефона"  Margin="0, 0, 0, 4"/>
+                <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding Person.Phone}"></TextBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Родители"  Margin="0, 0, 0, 4"/>
+                <ContentControl Content="{Binding ParentPicker}" Width="300">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type viewmodels:ParentPickerVM}">
+                            <views:ParentPicker></views:ParentPicker>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 10">
+                    <Button Margin="0, 0, 10, 0" Style="{StaticResource DefaultButton}" Command="{Binding EditPersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Изменить"></Button>
+                    <Button Style="{StaticResource DefaultButton}" Command="{Binding DeleteStudentCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Удалить из группы"></Button>
+                </StackPanel>
+                <Button BorderBrush="MediumVioletRed" Background="IndianRed" Style="{StaticResource DefaultButton}" Command="{Binding DeletePersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Удалить полностью"></Button>
+            </StackPanel>
+            <StackPanel Width="400" Grid.Column="1" Margin="20, 10, 0, 20" HorizontalAlignment="Left" Orientation="Vertical">
+
+                <TextBlock TextWrapping="Wrap" Text="Группы" Margin="0, 0, 0, 4"/>
+                <ListBox ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" Margin="0, 0, 0, 10" Height="80">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=Module.Group.Course.Name, StringFormat='{}{0}, '}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=Module.Group.Title, StringFormat='{}{0}, '}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=Module, StringFormat='{}{0}'}"></TextBlock>
+                                </StackPanel>
+                            
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Платежи" Margin="0, 0, 0, 4"/>
+                <ListBox ItemsSource="{Binding Payments}" Margin="0, 0, 0, 10" Height="130"></ListBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Возвраты" Margin="0, 0, 0, 4"/>
+                <ListBox ItemsSource="{Binding Returns}" Margin="0, 0, 0, 10" Height="130"></ListBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Справки" Margin="0, 0, 0, 4"/>
+                <ListBox ItemsSource="{Binding MedicalDocs}" Margin="0, 0, 0, 10" Height="130"></ListBox>
+
+            </StackPanel>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

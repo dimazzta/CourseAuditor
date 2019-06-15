@@ -14,41 +14,229 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Data.Entity;
+using CourseAuditor.ViewModels.Dialogs;
 
 namespace CourseAuditor.ViewModels
 {
-    public class MainVM : BaseVM
+    public class MainVM : BaseVM, IViewVM
     {
-        #region Props
-        private ApplicationContext _context;
-        public IView CurrentView { get; set; }
-        public ObservableCollection<Course> Courses { get; set; }
-        public ObservableCollection<Assessment> Assessments { get; set; }
-        private ObservableCollection<Student> _Students;
-        public ObservableCollection<Student> Students
+        private IPageVM _CurrentPageVM;
+        public IPageVM CurrentPageVM
         {
-            get
-            {
-                return _Students;
-            }
+            get => _CurrentPageVM;
             set
             {
-                _Students = value;
-                OnPropertyChanged("Students");
+                _CurrentPageVM = value;
+                OnPropertyChanged("CurrentPageVM");
             }
         }
 
-        private Assessment _SelectedAssessment;
-        public Assessment SelectedAssessment
+        // Команда для смены страницы. Под кажду страницу своя команда. В команде явно создаем новый экземпляр VM.
+        private ICommand _JournalPage;
+        public ICommand JournalPage =>
+            _JournalPage ??
+            (_JournalPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new JournalPageVM();
+                }
+             ));
+
+        private ICommand _AddCoursePage;
+        public ICommand AddCoursePage =>
+            _AddCoursePage ??
+            (_AddCoursePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddCoursePageVM();
+                }
+             ));
+
+
+
+        private ICommand _AddGroupPage;
+        public ICommand AddGroupPage =>
+            _AddGroupPage ??
+            (_AddGroupPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddGroupPageVM(AppState.I.SelectedContextCourse);
+                }
+             ));
+
+        private ICommand _AddModulePage;
+        public ICommand AddModulePage =>
+            _AddModulePage ??
+            (_AddModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddModulePageVM(AppState.I.SelectedContextGroup);
+                }
+             ));
+
+        private ICommand _AddStudentPage;
+        public ICommand AddStudentPage =>
+            _AddStudentPage ??
+            (_AddStudentPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new AddStudentPageVM(AppState.I.SelectedContextGroup);
+                }
+             ));
+
+        private ICommand _EditCoursePage;
+        public ICommand EditCoursePage =>
+            _EditCoursePage ??
+            (_EditCoursePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditCoursePageVM(JournalPage, AppState.I.SelectedContextCourse);
+                }
+             ));
+
+        private ICommand _EditGroupPage;
+        public ICommand EditGroupPage =>
+            _EditGroupPage ??
+            (_EditGroupPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditGroupPageVM(JournalPage, AppState.I.SelectedContextGroup);
+                }
+             ));
+
+
+        private ICommand _EditModulePage;
+        public ICommand EditModulePage =>
+            _EditModulePage ??
+            (_EditModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditModulePageVM(JournalPage, AppState.I.SelectedContextModule);
+                }
+             ));
+
+        private ICommand _DeleteCourse;
+        public ICommand DeleteCourse =>
+            _DeleteCourse ??
+            (_DeleteCourse = new RelayCommand(
+                (obj) =>
+                {
+                    EditCoursePageVM.DeleteCourse(AppState.I.SelectedContextCourse);
+                }
+                ));
+
+        private ICommand _DeleteGroup;
+        public ICommand DeleteGroup =>
+            _DeleteGroup ??
+            (_DeleteGroup = new RelayCommand(
+                (obj) =>
+                {
+                    EditGroupPageVM.DeleteGroup(AppState.I.SelectedContextGroup);
+                }
+                ));
+
+        private ICommand _DeleteModule;
+        public ICommand DeleteModule =>
+            _DeleteModule ??
+            (_DeleteModule = new RelayCommand(
+                (obj) =>
+                {
+                    EditModulePageVM.DeleteModule(AppState.I.SelectedContextModule);
+                }
+                ));
+
+        private ICommand _DeleteStudent;
+        public ICommand DeleteStudent =>
+            _DeleteStudent ??
+            (_DeleteStudent = new RelayCommand(
+                (obj) =>
+                {
+                    EditPersonPageVM.DeleteStudent(AppState.I.SelectedContextStudent);
+                }
+             ));
+
+        private ICommand _AddPaymentWindow;
+        public ICommand AddPaymentWindow =>
+            _AddPaymentWindow ??
+            (_AddPaymentWindow = new RelayCommand(
+                (obj) =>
+                {
+                    var paymentVM = new PaymentVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(paymentVM);
+                }
+             ));
+
+        private ICommand _AddMedicalDocWindow;
+        public ICommand AddMedicalDocWindow =>
+            _AddMedicalDocWindow ??
+            (_AddMedicalDocWindow = new RelayCommand(
+                (obj) =>
+                {
+                    var medicalVM = new AddMedicalDocVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(medicalVM);
+                }
+             ));
+        //TODO исп
+        private ICommand _AddReturnPay;
+        public ICommand AddReturnPay =>
+            _AddReturnPay ??
+            (_AddReturnPay = new RelayCommand(
+                (obj) =>
+                {
+                    var returnVM = new ReturnPaymentVM(AppState.I.SelectedContextStudent);
+                    DialogService.I.ShowDialog(returnVM);
+                }
+             ));
+
+
+        private ICommand _EditPersonPage;
+        public ICommand EditPersonPage =>
+            _EditPersonPage ??
+            (_EditPersonPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new EditPersonPageVM(JournalPage, AppState.I.SelectedContextStudent);
+                }
+             ));
+
+
+        private ICommand _CertificateModulePage;
+        public ICommand CertificateModulePage =>
+            _CertificateModulePage ??
+            (_CertificateModulePage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateModulePageVM(AppState.I.SelectedContextModule);
+                }
+             ));
+
+        private ICommand _CertificateStudentPage;
+        public ICommand CertificateStudentPage =>
+            _CertificateStudentPage ??
+            (_CertificateStudentPage = new RelayCommand(
+                (obj) =>
+                {
+                    CurrentPageVM = new CertificateStudentPageVM(AppState.I.SelectedContextStudent);
+                }));
+
+
+        //UI View
+        public IView CurrentView { get; set; }
+
+
+        //Логика самого View
+        private ObservableCollection<Course> _Courses;
+        public ObservableCollection<Course> Courses
         {
             get
             {
-                return _SelectedAssessment;
+                return _Courses;
             }
             set
             {
-                _SelectedAssessment = value;
-                OnPropertyChanged("SelectedAssessment");
+                _Courses = value;
+                OnPropertyChanged("Courses");
             }
         }
 
@@ -62,7 +250,10 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _SelectedGroup = value;
-                SelectedModule = _SelectedGroup.LastModule;
+                SelectedModule = _SelectedGroup?.LastModule;
+                if (_SelectedGroup != AppState.I.SelectedGroup)
+                    AppState.I.SelectedGroup = _SelectedGroup;
+
                 OnPropertyChanged("SelectedGroup");
             }
         }
@@ -78,195 +269,69 @@ namespace CourseAuditor.ViewModels
             {
                 if (value != _SelectedModule)
                 {
-                    UnsavedChangesPrompt();
                     _SelectedModule = value;
-                    Students = new ObservableCollection<Student>(value.Students);
-                    UpdateJournal(_SelectedModule);
+
+                    // В сеттере меняем глобальное состояние (если это предсмотрено логикой)
+                    if (_SelectedModule != AppState.I.SelectedModule)
+                        AppState.I.SelectedModule = _SelectedModule;
+
                     OnPropertyChanged("SelectedModule");
                 }
             }
         }
 
-        private DataTable _Table;
-        public DataTable Table
-        {
-            get
-            {
-                return _Table;
-            }
-            set
-            {
-                _Table = value;
-                OnPropertyChanged("Table");
-            }
-        }
-        public List<Tuple<Journal, Assessment>> TableInitialValues;
-        #endregion
+        
 
-        #region Methods
-        private void UpdateJournal(Module module)
-        {
-            DataTable table = new DataTable();
-
-            List<Student> students = module.Students.OrderBy(x => x.Person.FullName).ToList();
-            table.Columns.Add("Студент", typeof(Student));
-
-            List<DateTime> columns = students[0].Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).Select(x => x.Date).OrderBy(x => x.Date).ToList();
-            foreach (var column in columns)
-            {
-                var c = table.Columns.Add(column.ToString("dd-MM"), typeof(Journal));
-            }
-      
-            foreach (var student in students)
-            {
-                List<Journal> journals = student.Journals.Where(x => x.Date.InRange(module.DateStart, module.DateEnd)).OrderBy(x => x.Date).ToList();
-                DataRow row = table.NewRow();
-                row[0] = student;
-                int i = 1;
-                foreach (var j in journals)
-                    row[i++] = j;
-
-                table.Rows.Add(row);
-            }
-            Table = table;
-            TableInitialValues = new List<Tuple<Journal, Assessment>>();
-            CopyValues(Table, TableInitialValues);  // Данная копия хранит изначальный слепок таблицы. На нее будем откатываться.
-        }
-
-        private void SaveChanges()
-        {
-            _context.SaveChanges();
-            CopyValues(Table, TableInitialValues);  // Новый слепок только что сохраненной таблицы.
-            SaveChangesCommand.RaiseCanExecuteChanged();
-            DiscardChangesCommand.RaiseCanExecuteChanged();
-        }
-
-        private void DiscardChanges()
-        {
-            RestoreValues(TableInitialValues);  // Откат
-            UpdateJournal(_SelectedModule);
-            SaveChangesCommand.RaiseCanExecuteChanged();
-            DiscardChangesCommand.RaiseCanExecuteChanged();
-        }
-
-        private bool HasChanges(List<Tuple<Journal, Assessment>> source)
-        {
-            bool result = true;
-            if (source != null)
-                foreach (var pair in source)
-                {
-                    result &= (pair.Item1 as Journal).Assessment == pair.Item2;
-                }
-            return !result;
-        }
-
-        private void CopyValues(DataTable source, List<Tuple<Journal, Assessment>> dest)
-        {
-            dest.Clear();
-            int rows = source.Rows.Count;
-            int cols = source.Columns.Count;
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (source.Rows[i][j] is Journal)
-                    {
-                        dest.Add(new Tuple<Journal, Assessment>(source.Rows[i][j] as Journal, (source.Rows[i][j] as Journal).Assessment));
-                    }
-                }
-            }
-        }
-
-        private void RestoreValues(List<Tuple<Journal, Assessment>> source)
-        {
-            foreach(var pair in source)
-            {
-                (pair.Item1 as Journal).Assessment = pair.Item2;
-            }
-        }
-
-        private void UnsavedChangesPrompt()
-        {
-            if (HasChanges(TableInitialValues))
-            {
-                var result = MessageBox.Show("В журнале есть несохраненные данные. Сохранить перед переходом к новой группе?", "Несохраненные данные", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                {
-                    SaveChanges();
-                }
-                else
-                {
-                    DiscardChanges();
-                }
-            }
-                
-        }
-
-        #endregion
-
-        #region Handlers
-        public void CellChangedHanlder(DataGridCellEditEndingEventArgs e)
-        {
-            int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
-            {
-                ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment = SelectedAssessment;
-                SaveChangesCommand.RaiseCanExecuteChanged();
-                DiscardChangesCommand.RaiseCanExecuteChanged();
-            }
-                
-        }
-
-        public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
-        {
-            int selectedColumn = e.Column.DisplayIndex;
-            if (selectedColumn != 0)
-                SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
-        }
-        #endregion
-
-        #region Commands
-        private RelayCommand _SaveChangesCommand;
-        public RelayCommand SaveChangesCommand =>
-            _SaveChangesCommand ??
-            (_SaveChangesCommand = new RelayCommand(
-                (obj) =>
-                {
-                    SaveChanges();
-                },
-                (obj) =>
-                {
-                    return HasChanges(TableInitialValues);
-                }
-        ));
-
-        private RelayCommand _DiscardChangesCommand;
-        public RelayCommand DiscardChangesCommand =>
-            _DiscardChangesCommand ??
-            (_DiscardChangesCommand = new RelayCommand(
-                (obj) =>
-                {
-                    DiscardChanges();
-                },
-                (obj) =>
-                {
-                    return HasChanges(TableInitialValues);
-                }
-        ));
-
-        #endregion
 
         #region Contructors
         public MainVM(IView view)
         {
-            _context = new ApplicationContext();
-            Courses = new ObservableCollection<Course>(_context.Courses);
-            Assessments = new ObservableCollection<Assessment>(_context.Assessments);
-            
+            using(var _context = new ApplicationContext())
+            {
+                Courses = new ObservableCollection<Course>(_context.Courses
+                                                           .Include(x => x.Groups
+                                                           .Select(t => t.Modules
+                                                           .Select(m => m.Students
+                                                           .Select(q => q.Person)))));
+            }
+            EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
+            AppState.I.PropertyChanged += StatePropertyChanged;
+
             CurrentView = view;
             CurrentView.DataContext = this;
+            CurrentPageVM = new JournalPageVM();
             CurrentView.Show();
         }
+
+        private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
+        {
+            if (e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student || e.ObjectChanged is Module
+                || e.ObjectChanged is Person)
+            {
+                using (var _context = new ApplicationContext())
+                {
+                    Courses = new ObservableCollection<Course>(_context.Courses
+                                                           .Include(x => x.Groups
+                                                           .Select(t => t.Modules
+                                                           .Select(m => m.Students
+                                                           .Select(q => q.Person)))));
+                }
+            }
+        }
+
+        private void StatePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedModule":
+                    this.SelectedModule = AppState.I.SelectedModule;
+                    break;
+                case "SelectedGroup":
+                    this.SelectedGroup = AppState.I.SelectedGroup;
+                    break;
+            }
+        }
+
         #endregion
     }
 }

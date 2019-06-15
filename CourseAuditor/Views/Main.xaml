@@ -6,20 +6,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local1="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         xmlns:sdk="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:views="clr-namespace:CourseAuditor.Views"
+        xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
         mc:Ignorable="d"
-        Title="Main"
+        Title="Главная"
         WindowState="Normal">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary>
+                    <viewmodels:EditCoursePageVM x:Key="editCoursePageVM">
+
+                    </viewmodels:EditCoursePageVM>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+      
         </ResourceDictionary>
+
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -28,17 +37,75 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TreeView x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Добавить">
+                <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
+                <MenuItem Header="Группу" Command="{Binding AddGroupPage}"/>
+                <MenuItem Header="Модуль" Command="{Binding AddModulePage}"/>
+                <MenuItem Header="Студента" Command="{Binding AddStudentPage}"/>
+            </MenuItem>
+
+            <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
+            <!--<MenuItem Header="Сертификат" Click="MenuItem_Click" />-->
+            <!--<MenuItem Header="Справка"/>-->
+        </Menu>
+
+        <TreeView  x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+            <TreeView.ContextMenu>
+                <ContextMenu Name="TreeViewMenu">
+                    <MenuItem Header="Добавить курс" Command="{Binding AddCoursePage}"></MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <TreeView.Resources>
+                <!--Набор контекстных меню. Команды указываются здесь-->
+                <ContextMenu x:Key="CourseMenu" Name="CourseMenu">
+                    <MenuItem Header="Добавить группу" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddGroupPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditCoursePage}"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCourse}">
+                    </MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="GroupMenu" Name="GroupMenu">
+                    <MenuItem Header="Добавить модуль" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddModulePage}"></MenuItem>
+                    <MenuItem Header="Добавить студента" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddStudentPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditGroupPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteGroup}"></MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="ModuleMenu" Name="ModuleMenu">
+                    <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateModulePage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditModulePage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteModule}"></MenuItem>
+                </ContextMenu>
+
+                <ContextMenu x:Key="StudentMenu" Name="StudentMenu">
+                    <MenuItem Header="Добавить справку" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddMedicalDocWindow}"></MenuItem>
+                    <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
+                    <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Профиль/Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateStudentPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteStudent}"></MenuItem>
+                </ContextMenu>
+            </TreeView.Resources>
+
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}" >
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}">
                     <TextBlock Text="{Binding Name}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Modules}">
                             <TextBlock Text="{Binding Title}" />
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <HierarchicalDataTemplate 
-                                    ItemsSource="{Binding Path=Students}">
-                                    <TextBlock Text="{Binding}" />
+                                ItemsSource="{Binding Students}">
+                                    <TextBlock Text="{Binding}"/>
                                     <HierarchicalDataTemplate.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}"></TextBlock>
@@ -50,52 +117,47 @@
                     </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-        </TreeView>
-        <DataGrid 
-                  CanUserAddRows="False"
-                  SelectionUnit="Cell" 
-                  SelectionMode="Extended"
-                  x:Name="Students"
-                  ItemsSource="{Binding Table}"
-                  Grid.Column="1" 
-                  Grid.Row="1">
 
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsEditing"  Value="True"></Condition>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid>
-                                            <ComboBox x:Name="cbCondition1" 
-                                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.Assessments}"
-                                                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.SelectedAssessment}">
-                                            </ComboBox>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </MultiTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-        </DataGrid>
-        <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
-            <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
-        </StackPanel>
+        </TreeView>
+
+        <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
+            <!-- Обязательно указываем все вновь добавленные VM + V в таком формате. Т.е. DataType = наша VM, внутри соответствующий ей V-->
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">
+                    <views:JournalFrame></views:JournalFrame>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddCoursePageVM}">
+                    <views:AddCoursePage></views:AddCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditCoursePageVM}">
+                    <views:EditCoursePage></views:EditCoursePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddGroupPageVM}">
+                    <views:AddGroupPage></views:AddGroupPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditGroupPageVM}">
+                    <views:EditGroupPage></views:EditGroupPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddModulePageVM}">
+                    <views:AddModulePage></views:AddModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditPersonPageVM}">
+                    <views:EditPersonPage></views:EditPersonPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CertificateModulePageVM}">
+                    <views:CertificateModulePage></views:CertificateModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CertificateStudentPageVM}">
+                    <views:CertificateStudentPage></views:CertificateStudentPage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditModulePageVM}">
+                    <views:EditModulePage></views:EditModulePage>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddStudentPageVM}">
+                    <views:AddStudentPage></views:AddStudentPage>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
         <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
-        <Menu HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Top" Width="760" Grid.ColumnSpan="2">
-            <MenuItem Header="Добавить">
-                <MenuItem Header="Курс" Command=""/>
-                <MenuItem Header="Группу"/>
-                <MenuItem Header="Студента"/>
-            </MenuItem>
-        </Menu>
     </Grid>
-    
 </Window>

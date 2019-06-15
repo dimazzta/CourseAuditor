@@ -29,6 +29,19 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Title");
             }
         }
+        private int _Type;
+        public int Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                _Type = value;
+                OnPropertyChanged("Type");
+            }
+        }
         public override string ToString()
         {
             return Title;

@@ -9,9 +9,17 @@ namespace CourseAuditor.Models
 {
     public class Return : ObservableObject
     {
+        [ForeignKey("Student")]
+        public int Student_ID { get; set; }
+
         private Student _Student;
         private DateTime _Date;
         private double _Sum;
+
+        public override string ToString()
+        {
+            return $"{Date.ToString("dd MMM yyyy")} : {Sum}р.";
+        }
 
         public virtual Student Student
         {

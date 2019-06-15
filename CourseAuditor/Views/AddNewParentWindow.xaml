@@ -1,0 +1,52 @@
+﻿<Window x:Class="CourseAuditor.Views.AddNewParentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseAuditor.Views"
+        mc:Ignorable="d"
+        Title="Добавить родителя" Height="357.417" Width="500">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="20, 10, 0, 10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <RadioButton Margin="0, 0, 0, 7" Content="Добавить нового" Grid.Column="0" x:Name="CNChecked" IsChecked="{Binding AddNewMode}"></RadioButton>
+        <RadioButton Margin="0, 0, 0, 7" Content="Выбрать существующего" Grid.Column="2" x:Name="AEChecked"></RadioButton>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" IsEnabled="{Binding ElementName=CNChecked, Path=IsChecked}">
+
+            <TextBlock TextWrapping="Wrap" Text="Имя" Margin="0, 0, 0, 4"/>
+            <TextBox Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding FirstName}"></TextBox>
+
+            <TextBlock TextWrapping="Wrap" Text="Фамилия" Margin="0, 0, 0, 4"/>
+            <TextBox Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding SecondName}"></TextBox>
+
+            <TextBlock TextWrapping="Wrap" Text="Отчество" Margin="0, 0, 0, 4"/>
+            <TextBox Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 10" Text="{Binding Patronymic}"></TextBox>
+
+            <TextBlock TextWrapping="Wrap" Text="Номер телефона" Margin="0, 0, 0, 4"/>
+            <TextBox Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 20" Text="{Binding Phone}"></TextBox>
+
+            <Button Command="{Binding AddParentCommand}" Padding="25, 5" HorizontalAlignment="Center" Content="Добавить"></Button>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" IsEnabled="{Binding ElementName=AEChecked, Path=IsChecked}">
+            <TextBlock TextWrapping="Wrap" Text="Родитель" Margin="0, 10, 0, 4"/>
+            <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Parents}" SelectedItem="{Binding SelectedParent}"></ComboBox>
+
+            <Button Command="{Binding AddParentCommand}" Padding="25, 5" HorizontalAlignment="Center" Content="Добавить"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

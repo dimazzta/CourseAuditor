@@ -11,7 +11,7 @@ namespace CourseAuditor.Models
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         private int _Id;
-        public virtual int Id
+        public virtual int ID
         {
             get
             {
@@ -20,7 +20,7 @@ namespace CourseAuditor.Models
             set
             {
                 _Id = value;
-                OnPropertyChanged("Id");
+                OnPropertyChanged("ID");
             }
         }
 

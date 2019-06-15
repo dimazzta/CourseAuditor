@@ -1,29 +1,41 @@
-﻿using CourseAuditor.Helpers;
+﻿using CourseAuditor.DAL;
+using CourseAuditor.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Data.Entity;
 
 namespace CourseAuditor.Models
 {
     public class Module : ObservableObject
     {
+        [ForeignKey("Group")]
+        public int Group_ID { get; set; }
+
         private Group _Group;
         private int _Number;
         private DateTime _DateStart;
-        private DateTime _DateEnd;
+        private DateTime? _DateEnd;
+        private ICollection<Student> _Students;
+        private double _LessonPrice;
+        private int _LessonCount;
 
-        [NotMapped]
-        public ICollection<Student> Students
+        public virtual ICollection<Student> Students
         {
             get
             {
-                return Group.Students.Where(x => x.DateStart.InRange(DateStart, DateEnd)).ToList();
+                return _Students;
+            }
+            set
+            {
+                _Students = value;
+                OnPropertyChanged("Students");
             }
         }
 
 
-        public Group Group
+        public virtual Group Group
         {
             get
             {
@@ -60,7 +72,7 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("DateStart");
             }
         }
-        public DateTime DateEnd
+        public DateTime? DateEnd
         {
             get
             {
@@ -70,6 +82,33 @@ namespace CourseAuditor.Models
             {
                 _DateEnd = value;
                 OnPropertyChanged("DateEnd");
+            }
+        }
+
+        public double LessonPrice
+        {
+            get
+            {
+                return _LessonPrice;
+            }
+            set
+            {
+                _LessonPrice = value;
+                OnPropertyChanged("LessonPrice");
+            }
+        }
+
+
+        public int LessonCount
+        {
+            get
+            {
+                return _LessonCount;
+            }
+            set
+            {
+                _LessonCount = value;
+                OnPropertyChanged("LessonCount");
             }
         }
 

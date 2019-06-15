@@ -1,22 +1,90 @@
-﻿using System;
+﻿using CourseAuditor.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
+using CourseAuditor.Helpers;
 
 namespace CourseAuditor.Models
 {
     public class Student : ObservableObject
     {
+
+        [ForeignKey("Person")]
+        public int Person_ID { get; set; }
+
+        [ForeignKey("Module")]
+        public int Module_ID { get; set; }
+
         private Person _Person;
         private DateTime _DateStart;
         private DateTime? _DateEnd;
-        private Group _Group;
+        private Module _Module;
         private ICollection<Journal> _Journals;
         private ICollection<Return> _Returns;
         private ICollection<Payment> _Payments;
+        private double _Balance;
         
+        public double CalculatePureBalance()
+        {
+            double balance = 0;
+            using(var _context = new ApplicationContext())
+            {
+                double payments = _context.Students.First(x => x.ID == ID).Payments.Sum(x => x.Sum / (1 - x.Discount));
+                double returns = _context.Students.First(x => x.ID == ID).Returns.Sum(x => x.Sum);
+                balance = payments - returns;
+            }
+            return balance;
+        }
+
+        public void RecalculateBalance()
+        {
+            var pureBalance = CalculatePureBalance();
+            using(var _context = new ApplicationContext())
+            {
+                var module = _context.Students.First(x => x.ID == ID).Module;
+                var journals = _context.Students.Include(t => t.Journals.Select(x => x.Assessment)).First(x => x.ID == ID).Journals;
+                foreach(var journal in journals)
+                {
+                    if (journal.Assessment.Type == Constants.Attendance)
+                    {
+                        pureBalance -= module.LessonPrice;
+                    }
+                    else if (journal.Assessment.Type == Constants.NotRespectfulReason)
+                    {
+                        var lastPaymentSoFar = LastPayment(journal.Date);
+                        if (lastPaymentSoFar != null)
+                        {
+                            // Важный момент - если у студента осталось меньше 
+                            // чем на занятие, то это значит что все проплаченные месячные занятия 
+                            // кончились и снимать деньги не надо
+                            if ((lastPaymentSoFar.Type == PaymentType.Module || lastPaymentSoFar.Type == PaymentType.Month)
+                            && pureBalance >= module.LessonPrice)
+                            {
+                                pureBalance -= module.LessonPrice;
+                            }
+                        }
+                    }
+                }
+                Balance = pureBalance;
+                _context.Students.First(x => x.ID == ID).Balance = Balance;
+                _context.SaveChanges();
+            }
+        }
+ 
+        public Payment LastPayment(DateTime date) {
+            date = date.Date;
+            using (var _context = new ApplicationContext())
+            {
+                return _context.Students.First(x => x.ID == ID).Payments  // уточнить
+                    .Where(x => x.Date.Date <= date)
+                    .OrderBy(x => x.Date)
+                    .LastOrDefault();
+            }
+}
 
         public virtual Person Person
         {
@@ -57,16 +125,16 @@ namespace CourseAuditor.Models
             }
         }
 
-        public virtual Group Group
+        public virtual Module Module
         {
             get
             {
-                return _Group;
+                return _Module;
             }
             set
             {
-                _Group = value;
-                OnPropertyChanged("Group");
+                _Module = value;
+                OnPropertyChanged("Module");
             }
         }
 
@@ -109,9 +177,24 @@ namespace CourseAuditor.Models
             }
         }
 
+        public double Balance
+        {
+            get
+            {
+                return _Balance;
+            }
+            set
+            {
+                _Balance = value;
+                OnPropertyChanged("Balance");
+            }
+        }
+
         public override string ToString()
         {
             return Person.FullName;
         }
+
+
     }
 }

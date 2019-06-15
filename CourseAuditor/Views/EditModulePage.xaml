@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="CourseAuditor.Views.EditModulePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseAuditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 40, 20">
+                    <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
+                    <TextBox Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedCourse.Name, FallbackValue=''}" IsEnabled="False"></TextBox>
+
+                    <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
+                    <TextBox Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedGroup.Title, FallbackValue=''}" IsEnabled="False"></TextBox>
+
+                    <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.Number, FallbackValue=''}"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.LessonCount, FallbackValue=''}"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.LessonPrice, FallbackValue=''}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
+                    <DatePicker HorizontalAlignment="Stretch"  Margin="0, 0, 0, 10" SelectedDate="{Binding SelectedModule.DateStart}"></DatePicker>
+
+                    <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
+                    <DatePicker HorizontalAlignment="Stretch"  Margin="0, 0, 0, 10" SelectedDate="{Binding SelectedModule.DateEnd}"></DatePicker>
+
+                    <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
+                    <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
+                                </CheckBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"> 
+                        <Button Margin="0, 0, 5, 0" Content="Изменить" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding UpdateModuleCommand}"/>
+                        <Button Content="Удалить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding DeleteModuleCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+
+        </ScrollViewer>
+    </Grid>
+</UserControl>

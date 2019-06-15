@@ -1,0 +1,42 @@
+﻿<Window x:Class="CourseAuditor.Views.PaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseAuditor.Views"
+        xmlns:local1="clr-namespace:CourseAuditor.Helpers"
+        mc:Ignorable="d"
+        Title="Добавить оплату" Height="500" Width="250">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary>
+                    <local1:DiscountConverter x:Key="discountConverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="20, 10, 0, 20" HorizontalAlignment="Left">
+            <TextBlock Margin="0, 0, 0, 20" Text="{Binding StudentInfo}"></TextBlock>
+            <TextBlock Margin="0, 0, 0, 4" Text="Введите сумму"></TextBlock>
+            <TextBox Margin="0, 0, 0, 10" Style="{StaticResource DefaultTBox}" Text="{Binding Sum, Mode=TwoWay}"></TextBox>
+            <TextBlock Margin="0, 0, 0, 4" Text="Тип платежа"></TextBlock>
+            <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 10">
+                <RadioButton Command="{Binding ChangeDiscount}" CommandParameter="0" Margin="0, 0, 0, 4" Content="За 1 занятие" IsChecked="True"></RadioButton>
+                <RadioButton Command="{Binding ChangeDiscount}" CommandParameter="1" Margin="0, 0, 0, 4" Content="За месяц"></RadioButton>
+                <RadioButton Command="{Binding ChangeDiscount}" CommandParameter="2" Margin="0, 0, 0, 4" Content="За весь курс"></RadioButton>
+                <RadioButton Command="{Binding ChangeDiscount}" Margin="0, 0, 0, 4" Content="Произвольный"></RadioButton>
+            </StackPanel>
+            <TextBlock Margin="0, 0, 0, 4" Text="Скидка"></TextBlock>
+            <TextBox Margin="0, 0, 0, 15" Style="{StaticResource DefaultTBox}" Text="{Binding Discount, Converter={StaticResource discountConverter}}"></TextBox>
+            
+            <TextBlock Margin="0, 0, 0, 4" Text="Сумма зачисления"></TextBlock>
+            <TextBox Margin="0, 0, 0, 15" Style="{StaticResource DefaultTBox}" Text="{Binding ActualSum, Mode=TwoWay}" IsEnabled="False"></TextBox>
+
+            <Button Style="{StaticResource DefaultButton}" Command="{Binding AddPaymentCommand}" Content="Внести платеж"></Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

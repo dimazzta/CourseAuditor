@@ -1,4 +1,6 @@
-﻿using CourseAuditor.ViewModels;
+﻿using CourseAuditor.Helpers;
+using CourseAuditor.ViewModels;
+using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,16 @@ namespace CourseAuditor
     {
         public App()
         {
-            new MainVM(new Main());
+            // такс такс такс инъекция зависимостей подъехала
+            DialogService.I.Register<DateTimeDialogVM, DateTimeDialogWindow>();
+            DialogService.I.Register<AddMedicalDocVM, AddMedicalDocWindow>();
+            DialogService.I.Register<PaymentVM, PaymentWindow>();
+            DialogService.I.Register<AddParentVM, AddNewParentWindow>();
+            DialogService.I.Register<ReturnPaymentVM, AddReturnPay>();
+
+            new MainVM(new Main()); // это можно сделать аналогичным способом но пока оставим так
+
+            //new AddParentVM(new AddNewParentWindow());
         }
     }
 }

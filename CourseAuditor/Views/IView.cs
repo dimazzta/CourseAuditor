@@ -3,8 +3,9 @@
     public interface IView
     {
         object DataContext { get; set; }
-        IFrame CurrentFrame { get; set; }
+        IPage CurrentFrame { get; set; }
         void Show();
         void Close();
+        bool? ShowDialog();
     }
 }

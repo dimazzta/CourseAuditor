@@ -10,10 +10,18 @@ namespace CourseAuditor.Models
 
     public class MedicalDoc : ObservableObject
     {
+        [ForeignKey("Person")]
+        public int Person_ID { get; set; }
         private Person _Person;
         private DateTime _DateStart;
         private DateTime _DateEnd;
         private string _Comment;
+
+
+        public override string ToString()
+        {
+            return $"{DateStart.ToString("dd MMM yyyy")} - {DateEnd.ToString("dd MMM yyyy")}. {Comment}";
+        }
 
         public virtual Person Person
         {

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="CourseAuditor.Views.EditGroupPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseAuditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+                <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
+                <TextBox Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedCourse.Name}" IsEnabled="False" ></TextBox>
+
+                <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
+                <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedGroup.Title, FallbackValue=''}"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Изменить" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding EditGroupCommand}" Margin="0,0,5,0"/>
+                    <Button Content="Удалить группу" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding DeleteGroupCommand}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

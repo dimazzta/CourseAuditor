@@ -8,8 +8,8 @@ namespace CourseAuditor.Models
     public class Course : ObservableObject, INotifyPropertyChanged
     {
         private string _Name;
-        private double _Price;
-        private int _LessonsCount;
+        private double _LessonPrice;
+        private int _LessonCount;
         private ICollection<Group> _Groups;
 
         public string Name
@@ -26,34 +26,34 @@ namespace CourseAuditor.Models
         }
 
        
-        public double Price
+        public double LessonPrice
         {
             get
             {
-                return _Price;
+                return _LessonPrice;
             }
             set
             {
-                _Price = value;
-                OnPropertyChanged("Price");
+                _LessonPrice = value;
+                OnPropertyChanged("LessonPrice");
             }
         }
 
         
-        public int LessonsCount
+        public int LessonCount
         {
             get
             {
-                return _LessonsCount;
+                return _LessonCount;
             }
             set
             {
-                _LessonsCount = value;
-                OnPropertyChanged("LessonsCount");
+                _LessonCount = value;
+                OnPropertyChanged("LessonCount");
             }
         }
 
-        
+        [ForeignKey("Course_ID")]
         public virtual ICollection<Group> Groups
         {
             get {
@@ -64,6 +64,11 @@ namespace CourseAuditor.Models
                 _Groups = value;
                 OnPropertyChanged("Groups");
             }
+        }
+
+        public override string ToString()
+        {
+            return $"ID - {ID} Название: {Name}";
         }
     }
 }

@@ -62,7 +62,7 @@ namespace CourseAuditor.ViewModels
         void Print()
         {
             var print = new CreaterCertificates(Name);
-            print.Print();
+
         }
 
 

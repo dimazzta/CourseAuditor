@@ -8,17 +8,12 @@ namespace CourseAuditor.Helpers
 
         public void Writer(string s)
         {
-
-
             Document doc = new Document();
             doc.LoadFromFile($"{s}");
             PrintDialog dialog = new PrintDialog();
 
             PrintDocument printDoc = doc.PrintDocument;
             printDoc.Print();
-
-            
-
         }
 
     }

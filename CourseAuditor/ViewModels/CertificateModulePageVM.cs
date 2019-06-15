@@ -10,22 +10,23 @@ using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
 using CourseAuditor.Views;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace CourseAuditor.ViewModels
 {
     public class CertificateModulePageVM : BaseVM, IPageVM
     {
-        private ObservableCollection<CheckedListItem<Person>> _Persons;
-        public ObservableCollection<CheckedListItem<Person>> Persons
+        private ObservableCollection<CheckedListItem<Student>> _Students;
+        public ObservableCollection<CheckedListItem<Student>> Students
         {
             get
             {
-                return _Persons;
+                return _Students;
             }
             set
             {
-                _Persons = value;
-                OnPropertyChanged("Persons");
+                _Students = value;
+                OnPropertyChanged("Students");
             }
         }
 
@@ -33,17 +34,43 @@ namespace CourseAuditor.ViewModels
         {
             using (ApplicationContext _context = new ApplicationContext())
             {
-                Persons = new ObservableCollection<CheckedListItem<Person>>();
-                foreach (var item in module.Students.Select(x => x.Person))
+                Students = new ObservableCollection<CheckedListItem<Student>>();
+                foreach (var item in module.Students)
                 {
-                    Persons.Add(new CheckedListItem<Person>(item));
+                    Students.Add(new CheckedListItem<Student>(item));
                 }        
             }            
         }
 
         private void Print()
         {
-           
+            string templateFileName = "";
+            string savePath = "";
+            CommonOpenFileDialog templateDialog = new CommonOpenFileDialog("Выберите шаблон для печати");
+            if (templateDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                templateFileName = templateDialog.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                savePath = dialog.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            foreach (var student in Students.Where(x => x.IsChecked))
+            {
+                var cf = new CreaterCertificates(templateFileName, savePath, student.Item);
+            }
         }
 
         private ICommand _PrintCertificate;
@@ -55,12 +82,5 @@ namespace CourseAuditor.ViewModels
                     Print();
                 }
                 ));
-
-
-
-
-
-
-
     }
 }

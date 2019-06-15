@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CourseAuditor.Views"
         xmlns:local1="clr-namespace:CourseAuditor.Helpers"
         mc:Ignorable="d"
-        Title="PaymentWindow" Height="500" Width="250">
+        Title="Добавить оплату" Height="500" Width="250">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

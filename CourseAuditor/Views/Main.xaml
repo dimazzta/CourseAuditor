@@ -9,7 +9,7 @@
         xmlns:views="clr-namespace:CourseAuditor.Views"
         xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
         mc:Ignorable="d"
-        Title="Main"
+        Title="Главная"
         WindowState="Normal">
     <Window.Resources>
         <ResourceDictionary>
@@ -46,8 +46,8 @@
             </MenuItem>
 
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
-            <MenuItem Header="Сертификат" Click="MenuItem_Click" />
-            <MenuItem Header="Справка"/>
+            <!--<MenuItem Header="Сертификат" Click="MenuItem_Click" />-->
+            <!--<MenuItem Header="Справка"/>-->
         </Menu>
 
         <TreeView  x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
@@ -70,8 +70,6 @@
                     <MenuItem Header="Добавить модуль" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddModulePage}"></MenuItem>
                     <MenuItem Header="Добавить студента" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddStudentPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Печать сертификатов"></MenuItem>
-                    <Separator Padding="0"></Separator>
                     <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditGroupPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteGroup}"></MenuItem>
@@ -90,7 +88,7 @@
                     <MenuItem Header="Добавить оплату" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddPaymentWindow}"></MenuItem>
                     <MenuItem Header="Добавить возврат" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AddReturnPay}"></MenuItem>
                     <Separator Padding="0"></Separator>
-                    <MenuItem Header="Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <MenuItem Header="Профиль/Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.EditPersonPage}"></MenuItem>
                     <Separator Padding="0"></Separator>
                     <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CertificateStudentPage}"></MenuItem>
                     <Separator Padding="0"></Separator>

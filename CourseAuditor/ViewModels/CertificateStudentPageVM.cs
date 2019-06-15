@@ -1,35 +1,22 @@
 ﻿using CourseAuditor.DAL;
 using CourseAuditor.Helpers;
 using CourseAuditor.Models;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    class CertificateStudentPageVM:BaseVM, IPageVM
+    class CertificateStudentPageVM: BaseVM, IPageVM
     {
 
-
-        private string _FullInf;
-        public string FullInf
-        {
-            get
-            {
-                return _FullInf;
-            }
-            set
-            {
-                _FullInf = value;
-                OnPropertyChanged("FullInf");
-            }
-        }
-
-        public string Name { get; set; }
         private Student _Student;
         public Student Student
         {
@@ -48,23 +35,41 @@ namespace CourseAuditor.ViewModels
         {
             using (ApplicationContext _context = new ApplicationContext())
             {
-                var a = _context.Students.Include(x => x.Module)
+                Student  = _context.Students.Include(x => x.Module)
                       .Include(x => x.Module.Group)
                       .Include(x => x.Module.Group.Course)
-                      .Include(x=>x.Person)
-                      .FirstOrDefault();
-                Student = student;
-                FullInf = $"{Student.Person.FullName} выпускник курса {Student.Module.Group.Course.Name}";
-                Name = student.Person.FullName;
+                      .Include(x => x.Person)
+                      .FirstOrDefault(x => x.ID == student.ID);
             }
         }
 
         void Print()
         {
-            var print = new CreaterCertificates(Name);
+            string templateFileName = "";
+            string savePath = "";
+            CommonOpenFileDialog templateDialog = new CommonOpenFileDialog("Выберите шаблон для печати");
+            if (templateDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                templateFileName = templateDialog.FileName;
+            }
+            else
+            {
+                return;
+            }
 
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                savePath = dialog.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            var cf = new CreaterCertificates(templateFileName, savePath, Student);
         }
-
 
         private ICommand _PrintCertificate;
         public ICommand PrintCertificate =>

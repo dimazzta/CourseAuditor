@@ -6,8 +6,23 @@
              xmlns:local="clr-namespace:CourseAuditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="126" Margin="43,26,0,0" TextWrapping="Wrap" Text="{Binding FullInf}" VerticalAlignment="Top" Width="497"/>
-        <Button Content="Печать" HorizontalAlignment="Left" Margin="87,174,0,0" VerticalAlignment="Top" Width="75" Command="{Binding PrintCertificate}"/>
+        <StackPanel Orientation="Vertical" Margin="20, 10, 0, 20" HorizontalAlignment="Left">
+            <TextBlock Margin="0, 0, 0, 4" Text="Курс"></TextBlock>
+            <TextBox Margin="0, 0, 0, 10" Style="{StaticResource DefaultTBox}" Text="{Binding Student.Module.Group.Course.Name}"></TextBox>
+            <TextBlock Margin="0, 0, 0, 4" Text="Группа"></TextBlock>
+            <TextBox Margin="0, 0, 0, 10" Style="{StaticResource DefaultTBox}" Text="{Binding Student.Module.Group.Title}"></TextBox>
+            <TextBlock Margin="0, 0, 0, 4" Text="Студент"></TextBlock>
+            <TextBox Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding Student.Person.FullName}"></TextBox>
+            <Button Style="{StaticResource DefaultButton}" Content="Печать" Command="{Binding PrintCertificate}"></Button>
+        </StackPanel>
     </Grid>
 </UserControl>

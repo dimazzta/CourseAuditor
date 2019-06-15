@@ -6,9 +6,17 @@
              xmlns:local="clr-namespace:CourseAuditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <StackPanel>
-            <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="200">
+        <StackPanel HorizontalAlignment="Left" Margin="20, 10, 0, 20">
+            <TextBlock Margin="0, 0, 0, 4" Text="Выберите студентов"></TextBlock>
+            <ListBox Width="300" ItemsSource="{Binding Students}" Margin="0, 0, 0, 20" Height="200">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
@@ -16,11 +24,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel>
-                <Button Command="{Binding WriterCertCommand}" x:Name="bAddCertificates" Content="Печка" Width="100">
-
-                </Button>
-            </StackPanel>
+            <Button Style="{StaticResource DefaultButton}"  Command="{Binding PrintCertificate}" x:Name="bAddCertificates" Content="Печать" Width="100">
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

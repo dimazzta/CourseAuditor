@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CourseAuditor.Views"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="DialogWindow" Height="170" Width="300"
+        Title="Выбрать дату" Height="170" Width="300"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary>

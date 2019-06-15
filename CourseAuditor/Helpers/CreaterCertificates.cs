@@ -4,59 +4,56 @@ using Spire.Doc;
 using System.Drawing.Printing;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using CourseAuditor.Models;
+using CourseAuditor.DAL;
+using System.Linq;
+using System.Data.Entity;
+using Microsoft.Office.Interop.Word;
 
 namespace CourseAuditor.Helpers
 {
     public class CreaterCertificates
     {
-        string Put = Environment.CurrentDirectory + @"\Debug.doc";
-
-        public CreaterCertificates(string name) //создание дока
+        public CreaterCertificates(string templatePath, string savePath, Student student)
         {
-            string source = Environment.CurrentDirectory +  @"\DiplomUchastnika.doc";
-            // Создаём объект документа
-            Word.Document doc = null;
-           
-            // Создаём объект приложения
-            Word.Application app = new Word.Application();
-            // Путь до шаблона документа
-
-            // Открываем
-            doc = app.Documents.Open(source);
-            doc.Activate();
-
-            // Добавляем информацию
-            // wBookmarks содержит все закладки
-            Word.Bookmarks wBookmarks = doc.Bookmarks;
-            Word.Range wRange;
-            int i = 0;
-            string[] data = new string[1] { $"{name}" };
-            foreach (Word.Bookmark mark in wBookmarks)
+            using(var _context = new ApplicationContext())
             {
-                wRange = mark.Range;
-                wRange.Text = data[i];
-                i++;
+                student = _context.Students.Include(x => x.Person).Include(x => x.Module.Group.Course).First(x => x.ID == student.ID);
             }
 
-            object copies = "1";
-            object pages = "";
-            object range = Word.WdPrintOutRange.wdPrintAllDocument;
-            object items = Word.WdPrintOutItem.wdPrintDocumentContent;
-            object pageType = Word.WdPrintOutPages.wdPrintAllPages;
-            object oTrue = true;
-            object oFalse = false;
-            Object missing = System.Type.Missing;
-            doc.PrintOut(ref oTrue, ref oFalse, ref range, ref missing, ref missing, ref missing,
-    ref items, ref copies, ref pages, ref pageType, ref oFalse, ref oTrue,
-    ref missing, ref oFalse, ref missing, ref missing, ref missing, ref missing);
-            // Закрываем документ
-            doc.SaveAs2(Put);
+            Word.Application app = new Word.Application();
+            Word.Document doc = app.Documents.Open(templatePath, ReadOnly:false);
+            doc.Activate();
+
+            var range = doc.Range();
+            range.Find.Execute(FindText: "#УЧЕНИК", Replace: WdReplace.wdReplaceAll, ReplaceWith: student.Person.FullName);
+            range.Find.Execute(FindText: "#КУРС", Replace: WdReplace.wdReplaceAll, ReplaceWith: student.Module.Group.Course.Name);
+            range.Find.Execute(FindText: "#ГРУППА", Replace: WdReplace.wdReplaceAll, ReplaceWith: student.Module.Group.Title);
+
+            var shapes = doc.Shapes;
+            foreach (Microsoft.Office.Interop.Word.Shape shape in shapes)
+            {
+                try
+                {
+                    var initialText = shape.TextFrame.TextRange.Text;
+                    var resultingText = initialText
+                        .Replace("#УЧЕНИК", student.Person.FullName)
+                        .Replace("#КУРС", student.Module.Group.Course.Name)
+                        .Replace("#ГРУППА", student.Module.Group.Title);
+                    if (initialText != resultingText)
+                        shape.TextFrame.TextRange.Text = resultingText;
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            WordHelpers.PrintDocument(doc);
+            doc.SaveAs2($"{savePath}\\{student.Person.FullName}_{DateTime.Now.ToString("dd-MMM-yyyy")}");
             doc.Close();
             doc = null;
-            
-           
+            GC.Collect();
         }
-
     }
 }
 

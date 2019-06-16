@@ -220,6 +220,45 @@ namespace CourseAuditor.ViewModels
                     CurrentPageVM = new CertificateStudentPageVM(AppState.I.SelectedContextStudent);
                 }));
 
+        private ICommand _ExpandCommand;
+        public ICommand ExpandCommand =>
+            _ExpandCommand ??
+            (_ExpandCommand = new RelayCommand(
+                (obj) =>
+                {
+                    ChangeExpandState(true);
+                }));
+
+        private ICommand _CollapseCommand;
+        public ICommand CollapseCommand =>
+            _CollapseCommand ??
+            (_CollapseCommand = new RelayCommand(
+                (obj) =>
+                {
+                    ChangeExpandState(false);
+                }));
+
+        public void Filter(string phrase)
+        {
+
+        }
+
+        private void ChangeExpandState(bool state)
+        {
+            foreach(Course course in Courses)
+            {
+                course.Expanded = state;
+                foreach(Group group in course.Groups)
+                {
+                    group.Expanded = state;
+                    foreach(Module module in group.Modules)
+                    {
+                        module.Expanded = state;
+                    }
+                }
+
+            }
+        }
 
         //UI View
         public IView CurrentView { get; set; }

@@ -87,9 +87,10 @@ namespace CourseAuditor.Views
             return source as TreeViewItem;
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-           // new CertificateVM(new Certificate());
+            //var phrase = SearchPhrase.Text;
+
         }
     }
 }

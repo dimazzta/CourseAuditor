@@ -5,8 +5,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseAuditor.Models
 {
-    public class Course : ObservableObject, INotifyPropertyChanged
+    public class Course : ObservableObject, IExpandable
     {
+        private bool _Expanded;
+        [NotMapped]
+        public bool Expanded
+        {
+            get
+            {
+                return _Expanded;
+            }
+            set
+            {
+                _Expanded = value;
+                OnPropertyChanged("Expanded");
+            }
+        }
+
         private string _Name;
         private double _LessonPrice;
         private int _LessonCount;

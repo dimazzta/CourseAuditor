@@ -8,8 +8,23 @@ using System.Data.Entity;
 
 namespace CourseAuditor.Models
 {
-    public class Module : ObservableObject
+    public class Module : ObservableObject, IExpandable
     {
+        private bool _Expanded;
+        [NotMapped]
+        public bool Expanded
+        {
+            get
+            {
+                return _Expanded;
+            }
+            set
+            {
+                _Expanded = value;
+                OnPropertyChanged("Expanded");
+            }
+        }
+
         [ForeignKey("Group")]
         public int Group_ID { get; set; }
 

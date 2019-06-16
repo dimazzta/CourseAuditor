@@ -29,6 +29,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -46,11 +47,17 @@
             </MenuItem>
 
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
-            <!--<MenuItem Header="Сертификат" Click="MenuItem_Click" />-->
-            <!--<MenuItem Header="Справка"/>-->
         </Menu>
-
-        <TreeView  x:Name="TVCourseGroups" Grid.Row="1" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5, 5, 5, 0">
+            <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" Margin="0, 0, 0, 5">
+                <Button Padding="3" Margin="0, 0, 5, 0" Content="Раскрыть все" Command="{Binding ExpandCommand}"></Button>
+                <Button Padding="3" Content="Свернуть все" Command="{Binding CollapseCommand}"></Button>
+            </StackPanel>
+            <!--<TextBlock Text="Начните вводить"></TextBlock>-->
+            <!--<TextBox x:Name="SearchPhrase" TextChanged="TextBox_TextChanged"></TextBox>-->
+        </StackPanel>
+        
+        <TreeView x:Name="TVCourseGroups" Grid.Row="2" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ContextMenu>
                 <ContextMenu Name="TreeViewMenu">
                     <MenuItem Header="Добавить курс" Command="{Binding AddCoursePage}"></MenuItem>
@@ -95,9 +102,14 @@
                     <MenuItem Header="Удалить" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteStudent}"></MenuItem>
                 </ContextMenu>
             </TreeView.Resources>
-
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding Expanded, Mode=TwoWay}"></Setter>
+                   
+                </Style>
+            </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Groups}">
+                <HierarchicalDataTemplate  ItemsSource="{Binding Path=Groups}">
                     <TextBlock Text="{Binding Name}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Modules}">
@@ -120,7 +132,7 @@
 
         </TreeView>
 
-        <ContentControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Content="{Binding CurrentPageVM}">
+        <ContentControl Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" Content="{Binding CurrentPageVM}">
             <!-- Обязательно указываем все вновь добавленные VM + V в таком формате. Т.е. DataType = наша VM, внутри соответствующий ей V-->
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:JournalPageVM}">

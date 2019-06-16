@@ -8,8 +8,23 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Group : ObservableObject, INotifyPropertyChanged
+    public class Group : ObservableObject, IExpandable
     {
+        private bool _Expanded;
+        [NotMapped]
+        public bool Expanded
+        {
+            get
+            {
+                return _Expanded;
+            }
+            set
+            {
+                _Expanded = value;
+                OnPropertyChanged("Expanded");
+            }
+        }
+
         [ForeignKey("Course")]
         public int Course_ID { get; set; }
         private Course _Course;

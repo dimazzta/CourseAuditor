@@ -32,7 +32,7 @@ namespace CourseAuditor.ViewModels
         {
             get
             {
-                return _CoursePrice ?? (_CoursePrice = Constants.CoursePrice);
+                return _CoursePrice ?? (_CoursePrice = Constants.LessonPrice);
             }
             set
             {

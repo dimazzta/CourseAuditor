@@ -9,7 +9,7 @@ namespace CourseAuditor.Helpers
     public static class Constants
     {
         public static int LessonsCount => 12;
-        public static double CoursePrice => 6500;
+        public static double LessonPrice => 500;
         public static string GroupText => "Группа";
         public static int DefaultModuleLengthMonth => 3;
         public static int NotRespectfulReason => 1;

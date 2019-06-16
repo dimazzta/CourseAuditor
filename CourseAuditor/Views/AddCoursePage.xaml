@@ -19,7 +19,7 @@
                 <TextBlock TextWrapping="Wrap" Text="Название курса" Margin="0, 0, 0, 4"/>
                 <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseName, Mode=TwoWay}"/>
 
-                <TextBlock TextWrapping="Wrap" Text="Цена курса" Margin="0, 0, 0, 4"/>
+                <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
                 <TextBox Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CoursePrice, Mode=TwoWay}"/>
 
                 <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>

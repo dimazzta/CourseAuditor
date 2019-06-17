@@ -153,7 +153,7 @@ namespace CourseAuditor.ViewModels
                 {
                     DataTable table = new DataTable();
                     table.Columns.Add(Constants.StudentColumnName, typeof(Student));
-
+                    table.Columns.Add(Constants.BalanceColumnName, typeof(double));
                     List<Student> students;
                     using (var _context = new ApplicationContext())
                     {
@@ -183,7 +183,7 @@ namespace CourseAuditor.ViewModels
                             continue;
                         }
                     }
-                    table.Columns.Add(Constants.BalanceColumnName, typeof(double));
+                    
 
                     foreach (var student in students)
                     {
@@ -218,7 +218,6 @@ namespace CourseAuditor.ViewModels
                     try
                     {
                         Table.Columns.Add(columnName, typeof(Journal));
-                        Table.Columns[Constants.BalanceColumnName].SetOrdinal(Table.Columns.Count - 1);
                     }
                     catch
                     {
@@ -242,7 +241,6 @@ namespace CourseAuditor.ViewModels
                 }
                 
             }
-            
         }
 
         private void SaveChanges()

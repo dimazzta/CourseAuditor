@@ -115,5 +115,7 @@ namespace CourseAuditor.ViewModels
                 {
                     return true;
                 }));
+
+        public string PageTitle => "Добавление группы";
     }
 }

@@ -124,7 +124,7 @@ namespace CourseAuditor.ViewModels
         private void AddPayment()
         {
             CalculateActualSum();
-            SelectedStudent.Balance += ActualSum;
+            SelectedStudent.Balance += Sum;
             using (var _context = new ApplicationContext())
             {
                 var payment = new Payment();

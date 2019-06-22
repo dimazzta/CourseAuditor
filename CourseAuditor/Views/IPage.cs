@@ -8,6 +8,5 @@ namespace CourseAuditor.Views
 {
     public interface IPage
     {
-
     }
 }

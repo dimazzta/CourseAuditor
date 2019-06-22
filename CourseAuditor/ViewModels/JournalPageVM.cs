@@ -117,6 +117,7 @@ namespace CourseAuditor.ViewModels
                     _SelectedModule = value;
                     Students = value == null ?  new ObservableCollection<Student>() : new ObservableCollection<Student>(value.Students);
                     UpdateJournal(_SelectedModule);
+                    RefreshPageTitle();
                     OnPropertyChanged("SelectedModule");
                 }
             }
@@ -198,6 +199,7 @@ namespace CourseAuditor.ViewModels
                         row[Constants.BalanceColumnName] = student.Balance;
                         table.Rows.Add(row);
                     }
+
                     Table = table;
                 }
             }
@@ -375,6 +377,22 @@ namespace CourseAuditor.ViewModels
                 ));
 
         #endregion
-        
+
+
+        private void RefreshPageTitle() => PageTitle = $"Журнал. Курс {SelectedModule.Group.Course.Name}, группа {SelectedModule.Group.Title}, модуль {SelectedModule.Number}";
+
+        private string _PageTitle;
+        public string PageTitle
+        {
+            get
+            {
+                return _PageTitle;
+            }
+            set
+            {
+                _PageTitle = value;
+                OnPropertyChanged("PageTitle");
+            }
+        }
     }
 }

@@ -248,5 +248,7 @@ namespace CourseAuditor.ViewModels
                     AddStudent();
                 }
                 ));
+
+        public string PageTitle => "Добавление студента";
     }
 }

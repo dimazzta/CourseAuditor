@@ -235,5 +235,7 @@ namespace CourseAuditor.ViewModels
                 ));
 
         public ICommand GoBack { get; set; }
+
+        public string PageTitle => "Редактирование модуля";
     }
 }

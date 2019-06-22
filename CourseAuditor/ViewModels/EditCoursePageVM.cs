@@ -21,18 +21,7 @@ namespace CourseAuditor.ViewModels
         public EditCoursePageVM(ICommand goBack, Course SelectedCourse = null)
         {
             GoBack = goBack;
-            using (var _context = new ApplicationContext())
-            {
-                Courses = new ObservableCollection<Course>(_context.Courses.Include(x => x.Groups));
-            }
-            if (SelectedCourse == null)
-            {
-                this.SelectedCourse = Courses.FirstOrDefault();
-            }
-            else
-            {
-                this.SelectedCourse = SelectedCourse;
-            }
+            this.SelectedCourse = SelectedCourse;
             EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
         }
 
@@ -46,20 +35,6 @@ namespace CourseAuditor.ViewModels
                     GoBack.Execute(o);
                 }
                     
-            }
-        }
-
-        private ObservableCollection<Course> _Courses;
-        public ObservableCollection<Course> Courses
-        {
-            get
-            {
-                return _Courses;
-            }
-            set
-            {
-                _Courses = value;
-                OnPropertyChanged("Courses");
             }
         }
 
@@ -205,5 +180,7 @@ namespace CourseAuditor.ViewModels
         ));
        
         public ICommand GoBack { get; set; }
+
+        public string PageTitle => "Редактирование курса";
     }
 }

@@ -267,5 +267,7 @@ namespace CourseAuditor.ViewModels
                     AddModule();
                 }
                 ));
+
+        public string PageTitle => "Добавление модуля";
     }
 }

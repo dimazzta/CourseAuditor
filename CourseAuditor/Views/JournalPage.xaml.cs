@@ -42,7 +42,6 @@ namespace CourseAuditor.Views
 
         private void ItemsSourceChangedHanlder(object sender, EventArgs e)
         {
-
         }
 
         private void Students_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)

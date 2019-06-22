@@ -9,7 +9,7 @@
         xmlns:views="clr-namespace:CourseAuditor.Views"
         xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
         mc:Ignorable="d"
-        Title="Главная"
+        Title="{Binding PageTitle, FallbackValue='Главная'}"
         WindowState="Normal">
     <Window.Resources>
         <ResourceDictionary>

@@ -86,5 +86,7 @@ namespace CourseAuditor.ViewModels
                     return CourseName != null && CourseName != null && CourseLessonsCount != null;
                 }
         ));
+
+        public string PageTitle => "Добавление курса";
     }
 }

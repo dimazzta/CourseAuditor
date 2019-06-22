@@ -68,7 +68,7 @@ namespace CourseAuditor.ViewModels
                 return;
             }
 
-            var cf = new CreaterCertificates(templateFileName, savePath, Student);
+            var cf = new CreaterCertificates(templateFileName, savePath, new List<Student>() { Student });
         }
 
         private ICommand _PrintCertificate;
@@ -80,5 +80,8 @@ namespace CourseAuditor.ViewModels
                     Print();
                 }
                 ));
+
+
+        public string PageTitle => "Печать сертификатов для студента";
     }
 }

@@ -33,7 +33,7 @@ namespace CourseAuditor.Models
             double balance = 0;
             using(var _context = new ApplicationContext())
             {
-                double payments = _context.Students.First(x => x.ID == ID).Payments.Sum(x => x.Sum / (1 - x.Discount));
+                double payments = _context.Students.First(x => x.ID == ID).Payments.Sum(x => x.Sum);
                 double returns = _context.Students.First(x => x.ID == ID).Returns.Sum(x => x.Sum);
                 balance = payments - returns;
             }
@@ -49,22 +49,42 @@ namespace CourseAuditor.Models
                 var journals = _context.Students.Include(t => t.Journals.Select(x => x.Assessment)).First(x => x.ID == ID).Journals;
                 foreach(var journal in journals)
                 {
+                    var lastPaymentSoFar = LastPayment(journal.Date);
+                    double lastDiscount = lastPaymentSoFar != null ? lastPaymentSoFar.Discount : 0;
+                    var toDecrease = module.LessonPrice - module.LessonPrice * lastDiscount;
                     if (journal.Assessment.Type == Constants.Attendance)
                     {
-                        pureBalance -= module.LessonPrice;
+                        bool t = false;
+                        if (lastPaymentSoFar != null)
+                        {
+                            if ((lastPaymentSoFar.Type == PaymentType.Module || lastPaymentSoFar.Type == PaymentType.Month)
+                            && pureBalance >= toDecrease)
+                            {
+                                pureBalance -= toDecrease;
+                                t = true;
+                            }
+                            else
+                            {
+                                toDecrease = module.LessonPrice;
+                            }
+                        }
+                        if (!t)
+                        {
+                            pureBalance -= toDecrease;
+                        }
                     }
                     else if (journal.Assessment.Type == Constants.NotRespectfulReason)
                     {
-                        var lastPaymentSoFar = LastPayment(journal.Date);
+                     
                         if (lastPaymentSoFar != null)
                         {
                             // Важный момент - если у студента осталось меньше 
                             // чем на занятие, то это значит что все проплаченные месячные занятия 
                             // кончились и снимать деньги не надо
                             if ((lastPaymentSoFar.Type == PaymentType.Module || lastPaymentSoFar.Type == PaymentType.Month)
-                            && pureBalance >= module.LessonPrice)
+                            && pureBalance >= toDecrease)
                             {
-                                pureBalance -= module.LessonPrice;
+                                pureBalance -= toDecrease;
                             }
                         }
                     }

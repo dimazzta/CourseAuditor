@@ -16,6 +16,24 @@ namespace CourseAuditor.ViewModels
 {
     public class CertificateModulePageVM : BaseVM, IPageVM
     {
+        private bool _SelectAll;
+        public bool SelectAll
+        {
+            get
+            {
+                return _SelectAll;
+            }
+            set
+            {
+                _SelectAll = value;
+                foreach(var st in Students)
+                {
+                    st.IsChecked = value;
+                }
+                OnPropertyChanged("SelectAll");
+            }
+        }
+
         private ObservableCollection<CheckedListItem<Student>> _Students;
         public ObservableCollection<CheckedListItem<Student>> Students
         {
@@ -67,10 +85,13 @@ namespace CourseAuditor.ViewModels
                 return;
             }
 
-            foreach (var student in Students.Where(x => x.IsChecked))
-            {
-                var cf = new CreaterCertificates(templateFileName, savePath, student.Item);
-            }
+           
+            var cf = new CreaterCertificates(templateFileName, savePath, 
+                Students
+                .Where(x => x.IsChecked)
+                .Select(x => x.Item)
+                .ToList());
+        
         }
 
         private ICommand _PrintCertificate;
@@ -82,5 +103,7 @@ namespace CourseAuditor.ViewModels
                     Print();
                 }
                 ));
+
+        public string PageTitle => "Печать сертификатов для модуля";
     }
 }

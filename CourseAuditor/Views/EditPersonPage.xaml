@@ -53,8 +53,8 @@
             <StackPanel Width="400" Grid.Column="1" Margin="20, 10, 0, 20" HorizontalAlignment="Left" Orientation="Vertical">
 
                 <TextBlock TextWrapping="Wrap" Text="Группы" Margin="0, 0, 0, 4"/>
-                <ListBox ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" Margin="0, 0, 0, 10" Height="80">
-                        <ListBox.ItemTemplate>
+                <ComboBox ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" Margin="0, 0, 0, 10">
+                        <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Path=Module.Group.Course.Name, StringFormat='{}{0}, '}"></TextBlock>
@@ -63,8 +63,8 @@
                                 </StackPanel>
                             
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
 
                 <TextBlock TextWrapping="Wrap" Text="Платежи" Margin="0, 0, 0, 4"/>
                 <ListBox ItemsSource="{Binding Payments}" Margin="0, 0, 0, 10" Height="130"></ListBox>

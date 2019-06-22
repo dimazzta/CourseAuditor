@@ -13,6 +13,7 @@ namespace CourseAuditor.ViewModels
 {
     public class ParentPickerVM: BaseVM, IPageVM
     {
+        
         public ParentPickerVM(List<Parent> parents = null) {
             if (parents == null)
                 Parents = new ObservableCollection<Parent>();
@@ -67,5 +68,7 @@ namespace CourseAuditor.ViewModels
                     return SelectedParent != null;
                 }
                 ));
+
+        public string PageTitle => "Выбор родителя";
     }
 }

@@ -14,7 +14,12 @@ namespace CourseAuditor.Helpers
             
         }
 
-        public static void PrintDocument(Document doc)
+ 
+  
+
+
+
+    public static void PrintDocument(Document doc)
         {
             object copies = "1";
             object pages = "";

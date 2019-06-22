@@ -21,6 +21,19 @@ namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM, IViewVM
     {
+        private string _PageTitle;
+        public string PageTitle
+        {
+            get
+            {
+                return _PageTitle;
+            }
+            set
+            {
+                _PageTitle = value;
+                OnPropertyChanged("PageTitle");
+            }
+        }
         private IPageVM _CurrentPageVM;
         public IPageVM CurrentPageVM
         {
@@ -28,6 +41,11 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _CurrentPageVM = value;
+                PageTitle = _CurrentPageVM.PageTitle;
+                _CurrentPageVM.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == "PageTitle") PageTitle = _CurrentPageVM.PageTitle;
+                };
                 OnPropertyChanged("CurrentPageVM");
             }
         }

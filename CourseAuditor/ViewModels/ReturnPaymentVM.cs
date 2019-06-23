@@ -11,6 +11,7 @@ using CourseAuditor.ViewModels.Dialogs;
 using CourseAuditor.Views;
 using System.Data.Entity;
 using System.Windows.Input;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
@@ -110,17 +111,24 @@ namespace CourseAuditor.ViewModels
         {
             using (var _context = new ApplicationContext())
             {
-                SelectedStudent.Balance -= Sum;
-                var @return = new Return();
-                @return.Student_ID = SelectedStudent.ID;
-                @return.Sum = Sum;
-                @return.Date = DateTime.Now;
-                _context.Returns.Add(@return);
-                var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
-                _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
-                _context.SaveChanges();
+                if (SelectedStudent.Balance >= Sum)
+                {
+                    SelectedStudent.Balance -= Sum;
+                    var @return = new Return();
+                    @return.Student_ID = SelectedStudent.ID;
+                    @return.Sum = Sum;
+                    @return.Date = DateTime.Now;
+                    _context.Returns.Add(@return);
+                    var student = _context.Students.First(x => x.ID == SelectedStudent.ID);
+                    _context.Entry(student).CurrentValues.SetValues(SelectedStudent);
+                    _context.SaveChanges();
 
-                EventsManager.RaiseObjectChangedEvent(@return, ChangeType.Added);
+                    EventsManager.RaiseObjectChangedEvent(@return, ChangeType.Added);
+                }
+                else
+                {
+                    MessageBox.Show("Невозможно оформить вовзрат. Баланс студента с учетом возврата отрицательный.");
+                }
             }
         }
 

@@ -267,14 +267,17 @@ namespace CourseAuditor.ViewModels
                             }
                             else
                             {
-                                bJournal = new Journal()
+                                if (!_context.Journals.Any(x => x.Date == journal.Date))
                                 {
-                                    Student = _context.Students.First(x => x.ID == journal.Student.ID),
-                                    Date = journal.Date,
-                                    Assessment = _context.Assessments.FirstOrDefault(x => x.ID == journal.Assessment.ID)
-                                };
-                                _context.Journals.Add(bJournal);
-                                _context.Entry(bJournal).State = EntityState.Added;
+                                    bJournal = new Journal()
+                                    {
+                                        Student = _context.Students.First(x => x.ID == journal.Student.ID),
+                                        Date = journal.Date,
+                                        Assessment = _context.Assessments.FirstOrDefault(x => x.ID == journal.Assessment.ID)
+                                    };
+                                    _context.Journals.Add(bJournal);
+                                    _context.Entry(bJournal).State = EntityState.Added;
+                                }
                             }
 
                         }

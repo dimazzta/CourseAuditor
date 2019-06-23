@@ -34,8 +34,7 @@ namespace CourseAuditor.Models
             using(var _context = new ApplicationContext())
             {
                 double payments = _context.Students.First(x => x.ID == ID).Payments.Sum(x => x.Sum);
-                double returns = _context.Students.First(x => x.ID == ID).Returns.Sum(x => x.Sum);
-                balance = payments - returns;
+                balance = payments;
             }
             return balance;
         }
@@ -47,9 +46,31 @@ namespace CourseAuditor.Models
             {
                 var module = _context.Students.First(x => x.ID == ID).Module;
                 var journals = _context.Students.Include(t => t.Journals.Select(x => x.Assessment)).First(x => x.ID == ID).Journals;
+                List<Payment> payments = _context.Students.First(x => x.ID == ID).Payments.OrderBy(x => x.Date).ToList();
+                int currentPaymentIndex = 0;
+                Payment lastPaymentSoFar = null;
+                double currentBalance = 0;
+                if (payments.Count > currentPaymentIndex)
+                {
+                    lastPaymentSoFar = payments[currentPaymentIndex];
+                    currentBalance = lastPaymentSoFar.Sum;
+                }
+                  
                 foreach(var journal in journals)
                 {
-                    var lastPaymentSoFar = LastPayment(journal.Date);
+                    if (lastPaymentSoFar != null)
+                    {
+                        if (currentBalance <= 0)
+                        {
+                            currentPaymentIndex++;
+                            if (payments.Count > currentPaymentIndex)
+                            {
+                                lastPaymentSoFar = payments[currentPaymentIndex];
+                                currentBalance = lastPaymentSoFar.Sum;
+                            }
+                        }
+                    }
+                    
                     double lastDiscount = lastPaymentSoFar != null ? lastPaymentSoFar.Discount : 0;
                     var toDecrease = module.LessonPrice - module.LessonPrice * lastDiscount;
                     if (journal.Assessment.Type == Constants.Attendance)
@@ -61,6 +82,7 @@ namespace CourseAuditor.Models
                             && pureBalance >= toDecrease)
                             {
                                 pureBalance -= toDecrease;
+                                currentBalance -= toDecrease;
                                 t = true;
                             }
                             else
@@ -71,6 +93,7 @@ namespace CourseAuditor.Models
                         if (!t)
                         {
                             pureBalance -= toDecrease;
+                            currentBalance -= toDecrease;
                         }
                     }
                     else if (journal.Assessment.Type == Constants.NotRespectfulReason)
@@ -85,11 +108,15 @@ namespace CourseAuditor.Models
                             && pureBalance >= toDecrease)
                             {
                                 pureBalance -= toDecrease;
+                                currentBalance -= toDecrease;
                             }
                         }
                     }
                 }
-                Balance = pureBalance;
+                
+                
+                double returnSum = _context.Students.First(x => x.ID == ID).Returns.Sum(x => x.Sum);
+                Balance = pureBalance - returnSum;
                 _context.Students.First(x => x.ID == ID).Balance = Balance;
                 _context.SaveChanges();
             }

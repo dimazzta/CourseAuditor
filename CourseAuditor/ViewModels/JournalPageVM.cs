@@ -27,11 +27,11 @@ namespace CourseAuditor.ViewModels
                 Assessments = new ObservableCollection<Assessment>(_context.Assessments);
             }
             // Подписка
-            
+
             AppState.I.PropertyChanged += StatePropertyChanged;
             EventsManager.ObjectChangedEvent += (s, e) =>
             {
-                if ((e.ObjectChanged is Payment || e.ObjectChanged is MedicalDoc 
+                if ((e.ObjectChanged is Payment || e.ObjectChanged is MedicalDoc
                 || e.ObjectChanged is Student || e.ObjectChanged is Person || e.ObjectChanged is Return))
                 {
                     UpdateJournal(SelectedModule);
@@ -115,7 +115,7 @@ namespace CourseAuditor.ViewModels
                 {
                     UnsavedChangesPrompt();
                     _SelectedModule = value;
-                    Students = value == null ?  new ObservableCollection<Student>() : new ObservableCollection<Student>(value.Students);
+                    Students = value == null ? new ObservableCollection<Student>() : new ObservableCollection<Student>(value.Students);
                     UpdateJournal(_SelectedModule);
                     RefreshPageTitle();
                     OnPropertyChanged("SelectedModule");
@@ -158,14 +158,14 @@ namespace CourseAuditor.ViewModels
                     List<Student> students;
                     using (var _context = new ApplicationContext())
                     {
-                            students = _context.Students
-                            .Where(x => x.Module.ID == module.ID)
-                            .Include(x => x.Journals
-                            .Select(t => t.Assessment))
-                            .Include(x => x.Person)
-                            .ToList();
+                        students = _context.Students
+                        .Where(x => x.Module.ID == module.ID)
+                        .Include(x => x.Journals
+                        .Select(t => t.Assessment))
+                        .Include(x => x.Person)
+                        .ToList();
                     }
-                                            
+
                     List<DateTime> columns = students
                                         .First(x => x.Journals.Count == students
                                         .Max(t => t.Journals.Count)).Journals
@@ -184,7 +184,7 @@ namespace CourseAuditor.ViewModels
                             continue;
                         }
                     }
-                    
+
 
                     foreach (var student in students)
                     {
@@ -241,7 +241,7 @@ namespace CourseAuditor.ViewModels
                     HasChanges = true;
                     Table = Table.Copy(); // чтобы обновить UI. Не самое эффективное решение, но зато VM по прежнему ничего не знает о V
                 }
-                
+
             }
         }
 
@@ -382,8 +382,17 @@ namespace CourseAuditor.ViewModels
         #endregion
 
 
-        private void RefreshPageTitle() => PageTitle = $"Журнал. Курс {SelectedModule.Group.Course.Name}, группа {SelectedModule.Group.Title}, модуль {SelectedModule.Number}";
-
+        private void RefreshPageTitle()
+        {
+            try
+            {
+                PageTitle = $"Журнал. Курс {SelectedModule.Group.Course.Name}, группа {SelectedModule.Group.Title}, модуль {SelectedModule.Number}";
+            }
+            catch
+            {
+                PageTitle = $"Главная";
+            }
+        }
         private string _PageTitle;
         public string PageTitle
         {

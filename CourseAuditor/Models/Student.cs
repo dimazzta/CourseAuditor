@@ -45,7 +45,7 @@ namespace CourseAuditor.Models
             using(var _context = new ApplicationContext())
             {
                 var module = _context.Students.First(x => x.ID == ID).Module;
-                var journals = _context.Students.Include(t => t.Journals.Select(x => x.Assessment)).First(x => x.ID == ID).Journals;
+                var journals = _context.Students.Include(t => t.Journals.Select(x => x.Assessment)).First(x => x.ID == ID).Journals.OrderBy(x => x.Date);
                 List<Payment> payments = _context.Students.First(x => x.ID == ID).Payments.OrderBy(x => x.Date).ToList();
                 int currentPaymentIndex = 0;
                 Payment lastPaymentSoFar = null;

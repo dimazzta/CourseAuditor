@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CourseAuditor.DAL;
 using CourseAuditor.Models;
-using CourseAuditor.Views;
 using System.Data.Entity;
 using CourseAuditor.Helpers;
 using System.Windows.Input;
-using System.Windows;
 using CourseAuditor.ViewModels.Dialogs;
 
 namespace CourseAuditor.ViewModels
@@ -117,6 +112,7 @@ namespace CourseAuditor.ViewModels
                 Journals = new ObservableCollection<Journal>(_context.Journals
                     .Where(x => x.Date >= DateStart.Date && x.Date < newEndDate)
                     .Where(x => x.Student.Person_ID == SelectedStudent.Person.ID)
+                    .Where(x => x.Assessment.Type==1)
                     .Include(x => x.Student)
                     .Include(x=>x.Assessment));
 

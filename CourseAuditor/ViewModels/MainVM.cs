@@ -21,6 +21,10 @@ namespace CourseAuditor.ViewModels
 {
     public class MainVM : BaseVM, IViewVM
     {
+        public MainVM()
+        {
+
+        }
         private string _PageTitle;
         public string PageTitle
         {
@@ -34,6 +38,7 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("PageTitle");
             }
         }
+
         private IPageVM _CurrentPageVM;
         public IPageVM CurrentPageVM
         {
@@ -57,7 +62,7 @@ namespace CourseAuditor.ViewModels
             (_JournalPage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new JournalPageVM();
+                    CurrentPageVM = new JournalPageVM(EditPersonPage, CertificateStudentPage);
                 }
              ));
 
@@ -70,8 +75,6 @@ namespace CourseAuditor.ViewModels
                     CurrentPageVM = new AddCoursePageVM();
                 }
              ));
-
-
 
         private ICommand _AddGroupPage;
         public ICommand AddGroupPage =>
@@ -123,7 +126,6 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
-
         private ICommand _EditModulePage;
         public ICommand EditModulePage =>
             _EditModulePage ??
@@ -171,6 +173,10 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     EditPersonPageVM.DeleteStudent(AppState.I.SelectedContextStudent);
+                },
+                (obj) =>
+                {
+                    return AppState.I.SelectedModule.IsClosed == 0;
                 }
              ));
 
@@ -193,9 +199,13 @@ namespace CourseAuditor.ViewModels
                 {
                     var medicalVM = new AddMedicalDocVM(AppState.I.SelectedContextStudent);
                     DialogService.I.ShowDialog(medicalVM);
+                },
+                (obj) =>
+                {
+                    return AppState.I.SelectedModule.IsClosed == 0;
                 }
              ));
-        //TODO исп
+
         private ICommand _AddReturnPay;
         public ICommand AddReturnPay =>
             _AddReturnPay ??
@@ -207,7 +217,6 @@ namespace CourseAuditor.ViewModels
                 }
              ));
 
-
         private ICommand _EditPersonPage;
         public ICommand EditPersonPage =>
             _EditPersonPage ??
@@ -217,7 +226,6 @@ namespace CourseAuditor.ViewModels
                     CurrentPageVM = new EditPersonPageVM(JournalPage, AppState.I.SelectedContextStudent);
                 }
              ));
-
 
         private ICommand _CertificateModulePage;
         public ICommand CertificateModulePage =>
@@ -281,7 +289,6 @@ namespace CourseAuditor.ViewModels
         //UI View
         public IView CurrentView { get; set; }
 
-
         //Логика самого View
         private ObservableCollection<Course> _Courses;
         public ObservableCollection<Course> Courses
@@ -330,15 +337,21 @@ namespace CourseAuditor.ViewModels
 
                     // В сеттере меняем глобальное состояние (если это предсмотрено логикой)
                     if (_SelectedModule != AppState.I.SelectedModule)
-                        AppState.I.SelectedModule = _SelectedModule;
+                    {
+                        using (var _context = new ApplicationContext())
+                        {
+                            var module = _context.Modules.FirstOrDefault(x => x.ID == _SelectedModule.ID);
+                            AppState.I.SelectedModule = module;
+                            _SelectedModule = module;
+                        }
+                        
+                    }
+                        
 
                     OnPropertyChanged("SelectedModule");
                 }
             }
-        }
-
-        
-
+        }        
 
         #region Contructors
         public MainVM(IView view)
@@ -356,7 +369,7 @@ namespace CourseAuditor.ViewModels
 
             CurrentView = view;
             CurrentView.DataContext = this;
-            CurrentPageVM = new JournalPageVM();
+            CurrentPageVM = new JournalPageVM(EditPersonPage, CertificateStudentPage);
             CurrentView.Show();
         }
 
@@ -381,10 +394,12 @@ namespace CourseAuditor.ViewModels
             switch (e.PropertyName)
             {
                 case "SelectedModule":
-                    this.SelectedModule = AppState.I.SelectedModule;
+                    if (this.SelectedModule != AppState.I.SelectedModule)
+                        this.SelectedModule = AppState.I.SelectedModule;
                     break;
                 case "SelectedGroup":
-                    this.SelectedGroup = AppState.I.SelectedGroup;
+                    if (this.SelectedGroup != AppState.I.SelectedGroup)
+                        this.SelectedGroup = AppState.I.SelectedGroup;
                     break;
             }
         }

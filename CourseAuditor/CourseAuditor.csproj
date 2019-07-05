@@ -131,6 +131,7 @@
     <Compile Include="Helpers\CheckedListItem.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\CreaterCertificates.cs" />
+    <Compile Include="Helpers\ModuleDatesConverter.cs" />
     <Compile Include="Helpers\EventsManager.cs" />
     <Compile Include="Helpers\Ext.cs" />
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Helpers\WordHelpers.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
+    <Compile Include="ViewModels\ActiveModuleBottomPanelVM.cs" />
     <Compile Include="ViewModels\AddGroupPageVM.cs" />
     <Compile Include="ViewModels\AddMedicalDocVM.cs" />
     <Compile Include="ViewModels\AddModulePageVM.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="ViewModels\EditModulePageVM.cs" />
     <Compile Include="ViewModels\IEditPageVM.cs" />
     <Compile Include="Models\IExpandable.cs" />
+    <Compile Include="ViewModels\InactiveModuleBottomPanelVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
     <Compile Include="ViewModels\IViewVM.cs" />
     <Compile Include="ViewModels\JournalPageVM.cs" />
@@ -168,6 +171,9 @@
     <Compile Include="ViewModels\ParentPickerVM.cs" />
     <Compile Include="ViewModels\PaymentVM.cs" />
     <Compile Include="ViewModels\ReturnPaymentVM.cs" />
+    <Compile Include="Views\ActiveModuleBottomPanel.xaml.cs">
+      <DependentUpon>ActiveModuleBottomPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddCoursePage.xaml.cs">
       <DependentUpon>AddCoursePage.xaml</DependentUpon>
     </Compile>
@@ -210,6 +216,9 @@
     <Compile Include="Views\EditModulePage.xaml.cs">
       <DependentUpon>EditModulePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InactiveModuleBottomPanel.xaml.cs">
+      <DependentUpon>InactiveModuleBottomPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IPage.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\JournalPage.xaml.cs">
@@ -229,6 +238,10 @@
     <Compile Include="Views\PaymentWindow.xaml.cs">
       <DependentUpon>PaymentWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ActiveModuleBottomPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddCoursePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -282,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditModulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InactiveModuleBottomPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

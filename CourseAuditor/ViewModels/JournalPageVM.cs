@@ -14,12 +14,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
     public class JournalPageVM : BaseVM, IPageVM
     {
-        public JournalPageVM()
+        public JournalPageVM(ICommand goToEditPage, ICommand goToCertificatesPage)
         {
             SelectedModule = AppState.I.SelectedModule;
             using (var _context = new ApplicationContext())
@@ -37,6 +38,39 @@ namespace CourseAuditor.ViewModels
                     UpdateJournal(SelectedModule);
                 }
             };
+
+            EditPersonPage = goToEditPage;
+            CertificateStudentPage = goToCertificatesPage;
+
+        }
+
+
+        private void SelectProperBottomPanel()
+        {
+            if (SelectedModule != null)
+            {
+                if (SelectedModule.IsClosed == 0)
+                    CurrentPanel = new ActiveModuleBottomPanelVM(AddNewClassCommand, SaveChangesCommand, DiscardChangesCommand, CloseModule);
+                else
+                    CurrentPanel = new InactiveModuleBottomPanelVM(SelectedModule);
+            } 
+        }
+
+        public ICommand EditPersonPage { get; set; }
+        public ICommand CertificateStudentPage { get; set; }
+
+        private IPageVM _CurrentPanel;
+        public IPageVM CurrentPanel
+        {
+            get
+            {
+                return _CurrentPanel;
+            }
+            set
+            {
+                _CurrentPanel = value;
+                OnPropertyChanged("CurrentPanel");
+            }
         }
 
         // Обработчик изменения состояния приложения
@@ -118,8 +152,23 @@ namespace CourseAuditor.ViewModels
                     Students = value == null ? new ObservableCollection<Student>() : new ObservableCollection<Student>(value.Students);
                     UpdateJournal(_SelectedModule);
                     RefreshPageTitle();
+                    SelectProperBottomPanel();
                     OnPropertyChanged("SelectedModule");
                 }
+            }
+        }
+
+        private int _IsClosed;
+        public int IsClosed
+        {
+            get
+            {
+                return _IsClosed;
+            }
+            set
+            {
+                _IsClosed = value;
+                OnPropertyChanged("IsClosed");
             }
         }
 
@@ -201,6 +250,7 @@ namespace CourseAuditor.ViewModels
                     }
 
                     Table = table;
+                    
                 }
             }
         }
@@ -325,20 +375,20 @@ namespace CourseAuditor.ViewModels
 
         }
 
-        public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e)
+        public void BeforeCellChangedHandler(DataGridPreparingCellForEditEventArgs e, Action Unfocus = null)
         {
             int selectedColumn = e.Column.DisplayIndex;
             if (selectedColumn != 0 && (e.Row.Item as DataRowView).Row[selectedColumn] is Journal)
             {
                 SelectedAssessment = ((e.Row.Item as DataRowView).Row[selectedColumn] as Journal).Assessment;
             }
-
+        
         }
         #endregion
 
         #region Commands
-        private RelayCommand _SaveChangesCommand;
-        public RelayCommand SaveChangesCommand =>
+        private ICommand _SaveChangesCommand;
+        public ICommand SaveChangesCommand =>
             _SaveChangesCommand ??
             (_SaveChangesCommand = new RelayCommand(
                 (obj) =>
@@ -351,8 +401,8 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
-        private RelayCommand _DiscardChangesCommand;
-        public RelayCommand DiscardChangesCommand =>
+        private ICommand _DiscardChangesCommand;
+        public ICommand DiscardChangesCommand =>
             _DiscardChangesCommand ??
             (_DiscardChangesCommand = new RelayCommand(
                 (obj) =>
@@ -365,8 +415,8 @@ namespace CourseAuditor.ViewModels
                 }
         ));
 
-        private RelayCommand _AddNewClassCommand;
-        public RelayCommand AddNewClassCommand =>
+        private ICommand _AddNewClassCommand;
+        public ICommand AddNewClassCommand =>
             _AddNewClassCommand ??
             (_AddNewClassCommand = new RelayCommand(
                 (obj) =>
@@ -379,8 +429,25 @@ namespace CourseAuditor.ViewModels
                 }
                 ));
 
+        private ICommand _CloseModule;
+        public ICommand CloseModule =>
+            _CloseModule ?? (
+            _CloseModule = new RelayCommand(
+                (_) =>
+                {
+                    var result = MessageBox.Show("Вы уверены, что хотите закрыть модуль? " +
+                        "После закрытия модуль будет невозможно открыть, будет невозможно редактировать отметки посещаемости и " +
+                        "вносить справки, однако по прежнему можно будет оформлять возвраты и довносить платежи.", "Вы уверены?",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SelectedModule.Close();
+                        SelectProperBottomPanel();
+                        UpdateJournal(SelectedModule);
+                    }
+                }
+                ));
         #endregion
-
 
         private void RefreshPageTitle()
         {
@@ -393,6 +460,7 @@ namespace CourseAuditor.ViewModels
                 PageTitle = $"Главная";
             }
         }
+
         private string _PageTitle;
         public string PageTitle
         {

@@ -4,15 +4,66 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CourseAuditor.Views"
+             xmlns:viewmodels="clr-namespace:CourseAuditor.ViewModels"
+             xmlns:views="clr-namespace:CourseAuditor.Views"
+             xmlns:local1="clr-namespace:CourseAuditor.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary>
+                    <viewmodels:MainVM x:Key="mainVM">
+
+                    </viewmodels:MainVM>
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <local1:ModuleDatesConverter x:Key="moduleDatesConverter" />
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <Style x:Key="BottomPanel" TargetType="{x:Type ContentControl}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsClosed}" Value="1">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Grid Margin="5, 0, 0, 0">
+                                                <TextBlock  VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SelectedModule, Converter={StaticResource moduleDatesConverter}}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=SelectedModule.IsClosed}" Value="0">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Button  Content="Новое занятие" Style="{StaticResource DefaultButton}" Margin="10,0,0,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.AddNewClassCommand}"></Button>
+                                                </StackPanel>
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                                    <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SaveChangesCommand}"></Button>
+                                                    <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.DiscardChangesCommand}"></Button>
+                                                    <Button Content="Закрыть модуль" Background="IndianRed" BorderBrush="DarkRed"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CloseModule}"></Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+                
             </ResourceDictionary.MergedDictionaries>
+            
         </ResourceDictionary>
+        
     </UserControl.Resources>
+    
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -26,8 +77,21 @@
                   x:Name="Students"
                   AutoGenerateColumns="True"
                   ItemsSource="{Binding Table}"
+                  MouseRightButtonUp="Students_MouseUp"
                   Grid.Row="0">
-
+            <DataGrid.Resources>
+                <ContextMenu x:Key="StudentMenu" Name="StudentMenu">
+                    <MenuItem Header="Добавить справку" Command="{Binding Source={StaticResource ResourceKey=mainVM}, Path=AddMedicalDocWindow}"></MenuItem>
+                    <MenuItem Header="Добавить оплату" Command="{Binding Source={StaticResource ResourceKey=mainVM}, Path=AddPaymentWindow}"></MenuItem>
+                    <MenuItem Header="Добавить возврат" Command="{Binding Source={StaticResource ResourceKey=mainVM}, Path=AddReturnPay}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Профиль/Редактировать" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.EditPersonPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Печать сертификатов" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CertificateStudentPage}"></MenuItem>
+                    <Separator Padding="0"></Separator>
+                    <MenuItem Header="Удалить" Command="{Binding Source={StaticResource ResourceKey=mainVM}, Path=DeleteStudent}"></MenuItem>
+                </ContextMenu>
+            </DataGrid.Resources> 
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Style.Triggers>
@@ -58,13 +122,18 @@
             </DataGrid.CellStyle>
         </DataGrid>
         <Grid Grid.Column="0" Grid.Row="1">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding SaveChangesCommand}"></Button>
-                <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding DiscardChangesCommand}"></Button>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                <Button  Content="Новое занятие" Style="{StaticResource DefaultButton}" Margin="10,0,0,0" Command="{Binding AddNewClassCommand}"></Button>
-            </StackPanel>
+            <ContentControl Content="{Binding CurrentPanel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewmodels:ActiveModuleBottomPanelVM}">
+                        <views:ActiveModuleBottomPanel></views:ActiveModuleBottomPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:InactiveModuleBottomPanelVM}">
+                        <views:InactiveModuleBottomPanel></views:InactiveModuleBottomPanel>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
         </Grid>
+        
+       
     </Grid>
 </UserControl>

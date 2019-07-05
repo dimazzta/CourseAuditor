@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="CourseAuditor.Views.InactiveModuleBottomPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseAuditor.Views"
+             xmlns:local1="clr-namespace:CourseAuditor.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <local1:ModuleDatesConverter x:Key="moduleDatesConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <TextBlock  VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SelectedModule, Converter={StaticResource moduleDatesConverter}}" />
+    </Grid>
+</UserControl>

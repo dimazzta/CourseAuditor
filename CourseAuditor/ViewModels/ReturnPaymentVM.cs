@@ -19,7 +19,6 @@ namespace CourseAuditor.ViewModels
     {
         public ReturnPaymentVM(Student student)
         {
-            SelectedStudent = student;
             using(var _context = new ApplicationContext())
             {
                 SelectedStudent = _context.Students

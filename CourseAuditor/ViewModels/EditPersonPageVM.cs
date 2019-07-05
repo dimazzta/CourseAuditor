@@ -129,7 +129,7 @@ namespace CourseAuditor.ViewModels
                 using (var _context = new ApplicationContext())
                 {
                     var deleted = _context.Students.Include(x => x.Module.Group.Course).First(x => x.ID == student.ID);
-                    var module = student.Module;
+                    var module = deleted.Module;
                     var group = module.Group;
                     if (deleted != null)
                     {

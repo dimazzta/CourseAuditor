@@ -35,6 +35,31 @@ namespace CourseAuditor.Models
         private ICollection<Student> _Students;
         private double _LessonPrice;
         private int _LessonCount;
+        private int _IsClosed;
+
+        public int IsClosed
+        {
+            get
+            {
+                return _IsClosed;
+            }
+            set
+            {
+                _IsClosed = value;
+                OnPropertyChanged("IsClosed");
+            }
+        }
+
+        public void Close()
+        {
+            using(var _context = new ApplicationContext())
+            {
+                var module = _context.Modules.FirstOrDefault(x => x.ID == ID);
+                module.IsClosed = IsClosed = 1;
+                module.DateEnd = DateEnd = DateTime.Now;
+                _context.SaveChanges();
+            }
+        }
 
         public virtual ICollection<Student> Students
         {
@@ -48,6 +73,7 @@ namespace CourseAuditor.Models
                 OnPropertyChanged("Students");
             }
         }
+
 
 
         public virtual Group Group

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CourseAuditor.Views"
         mc:Ignorable="d"
-        Title="Добавить родителя" Height="357.417" Width="500">
+        Title="Добавить родителя" Height="400" Width="500">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -39,7 +39,7 @@
 
             <TextBlock TextWrapping="Wrap" Text="Номер телефона" Margin="0, 0, 0, 4"/>
             <TextBox Style="{StaticResource DefaultTBox}" TextWrapping="Wrap" Margin="0, 0, 0, 20" Text="{Binding Phone}"></TextBox>
-
+            <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
             <Button Command="{Binding AddParentCommand}" Padding="25, 5" HorizontalAlignment="Center" Content="Добавить"></Button>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" IsEnabled="{Binding ElementName=AEChecked, Path=IsChecked}">

@@ -95,7 +95,39 @@ namespace CourseAuditor.ViewModels
                 EventsManager.RaiseObjectChangedEvent(SelectedGroup, ChangeType.Deleted);
             }
         }
-            
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+
+            if (string.IsNullOrEmpty(SelectedGroup.Title))
+            {
+                err.Append("*Название группы не может быть пустым. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         private void UpdateGroup()
         {
@@ -120,7 +152,8 @@ namespace CourseAuditor.ViewModels
             (_EditGroupCommand = new RelayCommand(
                 (obj) =>
                 {
-                    UpdateGroup();
+                    if (Validate())
+                        UpdateGroup();
                 },
                 (obj) =>
                 {

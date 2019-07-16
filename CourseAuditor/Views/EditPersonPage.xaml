@@ -44,6 +44,7 @@
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
+                <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
                 <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 10">
                     <Button Margin="0, 0, 10, 0" Style="{StaticResource DefaultButton}" Command="{Binding EditPersonCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Изменить"></Button>
                     <Button Style="{StaticResource DefaultButton}" Command="{Binding DeleteStudentCommand}" Padding="25, 5" HorizontalAlignment="Left" Content="Удалить из группы"></Button>

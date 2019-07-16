@@ -4,28 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CourseAuditor.Views"
+             xmlns:validationrules="clr-namespace:CourseAuditor.Helpers.ValidationRules"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="textBoxInError" TargetType="TextBox">
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
+        
     </UserControl.Resources>
+    
     <Grid>
         <ScrollViewer>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
+            <StackPanel  Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
                 <TextBlock TextWrapping="Wrap" Text="Название курса" Margin="0, 0, 0, 4"/>
-                <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseName, Mode=TwoWay}"/>
-
+                <TextBox Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseName, Mode=TwoWay}"/>
+               
                 <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
                 <TextBox Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CoursePrice, Mode=TwoWay}"/>
 
                 <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
                 <TextBox Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding CourseLessonsCount, Mode=TwoWay}"/>
 
-                <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}"   Command="{Binding AddCourseCommand}"/>
+                <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
+                <Button x:Name="AddCourse" Content="Добавить курс" HorizontalAlignment="Left" Style="{StaticResource DefaultButton}" Command="{Binding AddCourseCommand}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

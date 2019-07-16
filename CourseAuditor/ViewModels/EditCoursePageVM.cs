@@ -67,8 +67,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double _CoursePrice;
-        public double CoursePrice
+        private string _CoursePrice;
+        public string CoursePrice
         {
             get
             {
@@ -76,13 +76,13 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _CoursePrice = Convert.ToDouble(value);
+                _CoursePrice = value;
                 OnPropertyChanged("CoursePrice");
             }
         }
 
-        private int _CourseLessonsCount;
-        public int CourseLessonsCount
+        private string _CourseLessonsCount;
+        public string CourseLessonsCount
         {
             get
             {
@@ -90,7 +90,7 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _CourseLessonsCount = Convert.ToInt32(value);
+                _CourseLessonsCount = value;
                 OnPropertyChanged("CourseLessonsCount");
             }
         }
@@ -100,8 +100,8 @@ namespace CourseAuditor.ViewModels
             if(SelectedCourse != null)
             {
                 CourseName = SelectedCourse.Name;
-                CoursePrice = SelectedCourse.LessonPrice;
-                CourseLessonsCount = SelectedCourse.LessonCount;
+                CoursePrice = SelectedCourse.LessonPrice.ToString();
+                CourseLessonsCount = SelectedCourse.LessonCount.ToString();
             }
         }
 
@@ -131,13 +131,66 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+
+            if (string.IsNullOrEmpty(CourseName))
+            {
+                err.Append("*Название курса не может быть пустым. \n");
+            }
+            int n;
+            if (!Int32.TryParse(CourseLessonsCount, out n))
+            {
+                err.Append("*Количество занятий должно быть числом. \n");
+            }
+            else if (n <= 0)
+            {
+                err.Append("*Количество занятий должно быть больше нуля. \n");
+            }
+
+            double d;
+            if (!Double.TryParse(CoursePrice, out d))
+            {
+                err.Append("*Цена занятия должна быть целым или вещественным числом. \n");
+            }
+            else if (d <= 0)
+            {
+                err.Append("*Цена занятия должна быть больше нуля. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void EditCourse()
         {
             if (SelectedCourse != null)
             {
                 SelectedCourse.Name = CourseName;
-                SelectedCourse.LessonPrice = CoursePrice;
-                SelectedCourse.LessonCount = CourseLessonsCount;
+                SelectedCourse.LessonPrice = double.Parse(CoursePrice);
+                SelectedCourse.LessonCount = int.Parse(CourseLessonsCount);
                 using (var _context = new ApplicationContext())
                 {
                     var course = _context.Courses.FirstOrDefault(x => x.ID == SelectedCourse.ID);
@@ -157,7 +210,8 @@ namespace CourseAuditor.ViewModels
             (_EditCourseCommand = new RelayCommand(
                 (obj) =>
                 {
-                    EditCourse();
+                    if (Validate())
+                        EditCourse();
                 },
                 (obj) =>
                 {

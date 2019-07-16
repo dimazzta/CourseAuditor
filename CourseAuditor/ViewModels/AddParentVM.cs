@@ -102,6 +102,51 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            if (AddNewMode)
+            {
+                StringBuilder err = new StringBuilder();
+
+                if (string.IsNullOrEmpty(FirstName))
+                {
+                    err.Append("*Имя не может быть пустым. \n");
+                }
+                if (string.IsNullOrEmpty(SecondName))
+                {
+                    err.Append("*Фамилия не может быть пустой. \n");
+                }
+                if (string.IsNullOrEmpty(Phone))
+                {
+                    err.Append("*Телефон не может быть пустым. \n");
+                }
+                Error = err.ToString();
+                if (err.Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
         public Parent Parent { get; private set; }
 
@@ -128,8 +173,12 @@ namespace CourseAuditor.ViewModels
             (_AddParentCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddParent();
-                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    if (Validate())
+                    {
+                        AddParent();
+                        CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    }
+                    
                 },
                 (obj) =>
                 {

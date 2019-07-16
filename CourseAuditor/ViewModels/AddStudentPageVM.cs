@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
-    public class AddStudentPageVM : BaseVM, IPageVM
+    public class AddStudentPageVM : BaseVM, IPageVM, IValidatable
     {
         void LoadData(Group selectedGroup = null)
         {
@@ -179,6 +179,48 @@ namespace CourseAuditor.ViewModels
 
         public ObservableCollection<Parent> Parents { get; set; }
 
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            if (AddNewMode)
+            {
+                StringBuilder err = new StringBuilder();
+
+                if (string.IsNullOrEmpty(Person.FirstName))
+                {
+                    err.Append("*Имя не может быть пустым. \n");
+                }
+                if (string.IsNullOrEmpty(Person.SecondName))
+                {
+                    err.Append("*Фамилия не может быть пустой. \n");
+                }
+
+                Error = err.ToString();
+                if (err.Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void AddStudent()
         {
             if (!AddNewMode) Person = SelectedPerson;
@@ -245,7 +287,8 @@ namespace CourseAuditor.ViewModels
             (_AddStudentCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddStudent();
+                    if (Validate())
+                        AddStudent();
                 }
                 ));
 

@@ -18,7 +18,7 @@
             <TextBlock Margin="0, 0, 0, 20" Text="{Binding StudentInfo}"></TextBlock>
             <TextBlock Margin="0, 0, 0, 4" Text="Введите сумму возврата"></TextBlock>
             <TextBox Margin="0, 0, 0, 15" Style="{StaticResource DefaultTBox}" Text="{Binding Sum, Mode=TwoWay}"></TextBox>
-
+            <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
             <Button Style="{StaticResource DefaultButton}" Command="{Binding AddReturnCommand}" Content="Создать возврат"></Button>
         </StackPanel>
     </Grid>

@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace CourseAuditor.ViewModels
 {
-    public class AddModulePageVM : BaseVM, IPageVM
+    public class AddModulePageVM : BaseVM, IPageVM, IValidatable
     {
         void LoadData(Group selectedGroup = null)
         {
@@ -69,8 +69,8 @@ namespace CourseAuditor.ViewModels
                     Groups = new ObservableCollection<Group>(_SelectedCourse.Groups);
                     if (SelectedGroup == null)
                         SelectedGroup = Groups?.FirstOrDefault();
-                    _LessonCount = _SelectedCourse.LessonCount;
-                    _LessonPrice = _SelectedCourse.LessonPrice;
+                    _LessonCount = _SelectedCourse.LessonCount.ToString();
+                    _LessonPrice = _SelectedCourse.LessonPrice.ToString();
                 }
                 else
                 {
@@ -124,9 +124,9 @@ namespace CourseAuditor.ViewModels
                 {
                     if (_SelectedGroup.Modules.Count > 0)
                     {
-                        ModuleNumber = _SelectedGroup.Modules.OrderBy(x => x.Number).Select(x => x.Number).Last() + 1;
+                        ModuleNumber = (_SelectedGroup.Modules.OrderBy(x => x.Number).Select(x => x.Number).Last() + 1).ToString();
                     }
-                    else ModuleNumber = 1;
+                    else ModuleNumber = "1";
                 }
 
             }
@@ -180,8 +180,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private int _ModuleNumber;
-        public int ModuleNumber
+        private string _ModuleNumber;
+        public string ModuleNumber
         {
             get
             {
@@ -194,8 +194,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private int _LessonCount;
-        public int LessonCount
+        private string _LessonCount;
+        public string LessonCount
         {
             get
             {
@@ -208,8 +208,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double _LessonPrice;
-        public double LessonPrice
+        private string _LessonPrice;
+        public string LessonPrice
         {
             get
             {
@@ -219,6 +219,66 @@ namespace CourseAuditor.ViewModels
             {
                 _LessonPrice = value;
                 OnPropertyChanged("LessonPrice");
+            }
+        }
+
+
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+
+            if (DateTime.Compare(DateStart, DateEnd) > 0)
+            {
+                err.Append("*Дата начала не может быть позже даты окончания. \n");
+            }
+            
+            if (!Int32.TryParse(ModuleNumber, out int n))
+            {
+                err.Append("*Номер модуля должен быть числом. \n");
+            }
+
+            int lc;
+            if (!Int32.TryParse(LessonCount, out lc))
+            {
+                err.Append("*Количество занятий должно быть числом. \n");
+            }
+            else if (lc <= 0)
+            {
+                err.Append("*Количество занятий должно быть больше нуля. \n");
+            }
+
+            double d;
+            if (!Double.TryParse(LessonPrice, out d))
+            {
+                err.Append("*Цена занятия должна быть целым или вещественным числом. \n");
+            }
+            else if (d <= 0)
+            {
+                err.Append("*Цена занятия должна быть больше нуля. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -233,9 +293,9 @@ namespace CourseAuditor.ViewModels
                         DateStart = DateStart,
                         DateEnd = DateEnd,
                         Group_ID = SelectedGroup.ID,
-                        Number = ModuleNumber,
-                        LessonCount = LessonCount,
-                        LessonPrice = LessonPrice
+                        Number = int.Parse(ModuleNumber),
+                        LessonCount = int.Parse(LessonCount),
+                        LessonPrice = int.Parse(LessonPrice)
                     };
                     var added = _context.Modules.Add(module);
                     _context.SaveChanges();
@@ -252,7 +312,6 @@ namespace CourseAuditor.ViewModels
                     }
                     _context.SaveChanges();
                     EventsManager.RaiseObjectChangedEvent(module, ChangeType.Added);
-                    ModuleNumber++;
                 }
             }
             
@@ -264,7 +323,8 @@ namespace CourseAuditor.ViewModels
             (_AddModuleCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddModule();
+                    if (Validate())
+                        AddModule();
                 }
                 ));
 

@@ -24,23 +24,23 @@
                     <TextBox Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedGroup.Title, FallbackValue=''}" IsEnabled="False"></TextBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
-                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.Number, FallbackValue=''}"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber, FallbackValue=''}"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Количество занятий" Margin="0, 0, 0, 4"/>
-                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.LessonCount, FallbackValue=''}"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonCount, FallbackValue=''}"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Цена занятия" Margin="0, 0, 0, 4"/>
-                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedModule.LessonPrice, FallbackValue=''}"/>
+                    <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding LessonPrice, FallbackValue=''}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch"  Margin="0, 0, 0, 10" SelectedDate="{Binding SelectedModule.DateStart}"></DatePicker>
+                    <DatePicker Width="220" HorizontalAlignment="Left"  Margin="0, 0, 0, 10" SelectedDate="{Binding DateStart}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch"  Margin="0, 0, 0, 10" SelectedDate="{Binding SelectedModule.DateEnd}"></DatePicker>
+                    <DatePicker Width="220" HorizontalAlignment="Left"  Margin="0, 0, 0, 10" SelectedDate="{Binding DateEnd}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
-                    <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150">
+                    <ListBox  HorizontalAlignment="Left" ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150" Width="320">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
@@ -48,7 +48,8 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"> 
+                    <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"> 
                         <Button Margin="0, 0, 5, 0" Content="Изменить" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding UpdateModuleCommand}"/>
                         <Button Content="Удалить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding DeleteModuleCommand}"/>
                     </StackPanel>

@@ -35,15 +35,15 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Text="Дата начала" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
+                    <DatePicker Width="220" HorizontalAlignment="Left" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateStart,
                                             Mode=TwoWay}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Дата окончания" Margin="0, 0, 0, 4"/>
-                    <DatePicker HorizontalAlignment="Stretch" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
+                    <DatePicker Width="220" HorizontalAlignment="Left" Margin="0, 0, 0, 10" SelectedDate="{Binding Path=DateEnd,
                                             Mode=TwoWay}"></DatePicker>
 
                     <TextBlock TextWrapping="Wrap" Text="Студенты" Margin="0, 0, 0, 4"/>
-                    <ListBox ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150">
+                    <ListBox HorizontalAlignment="Left" ItemsSource="{Binding Persons}" Margin="0, 0, 0, 20" Height="150" Width="320">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">
@@ -51,7 +51,8 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Button Content="Добавить модуль" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding AddModuleCommand}"/>
+                    <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
+                    <Button Content="Добавить модуль" HorizontalAlignment="Left" Style="{StaticResource DefaultButton}" Command="{Binding AddModuleCommand}"/>
                 </StackPanel>
                 
             </StackPanel>

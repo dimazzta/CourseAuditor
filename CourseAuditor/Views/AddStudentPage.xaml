@@ -59,7 +59,7 @@
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
-                    
+                    <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
                     <Button  Style="{StaticResource DefaultButton}" Command="{Binding AddStudentCommand}" Padding="25, 5" HorizontalAlignment="Center"  Content="Добавить"></Button>    
                 </StackPanel>
                 <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" IsEnabled="{Binding ElementName=AEChecked, Path=IsChecked}">

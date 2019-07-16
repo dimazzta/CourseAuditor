@@ -33,8 +33,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double _Sum;
-        public double Sum
+        private string _Sum;
+        public string Sum
         {
             get
             {
@@ -42,7 +42,7 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _Sum = Convert.ToDouble(value);
+                _Sum = value;
                 OnPropertyChanged("Sum");
                 CalculateActualSum();
             }
@@ -50,11 +50,18 @@ namespace CourseAuditor.ViewModels
 
         void CalculateActualSum()
         {
-            if (Discount > 1) Discount = 1;
-            if (Discount < 0) Discount = 0;
+            try
+            {
+                if (double.Parse(Discount, CultureInfo.InvariantCulture) > 1) Discount = "1";
+                if (double.Parse(Discount, CultureInfo.InvariantCulture) < 0) Discount = "0";
 
-            if (Discount == 1) ActualSum = 0;
-            else ActualSum = Math.Round(Sum / (1 - Discount), 2);
+                if (double.Parse(Discount, CultureInfo.InvariantCulture) == 1) ActualSum = 0;
+                else ActualSum = Math.Round(double.Parse(Sum, CultureInfo.InvariantCulture) / (1 - double.Parse(Discount, CultureInfo.InvariantCulture)), 2);
+            }
+            catch
+            {
+                ActualSum = 0;
+            }
         }
 
         private double _ActualSum;
@@ -92,8 +99,8 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-        private double _Discount;
-        public double Discount
+        private string _Discount;
+        public string Discount
         {
             get
             {
@@ -101,7 +108,7 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                _Discount = Convert.ToDouble(value);
+                _Discount = value;
                 OnPropertyChanged("Discount");
                 CalculateActualSum();
             }
@@ -124,12 +131,12 @@ namespace CourseAuditor.ViewModels
         private void AddPayment()
         {
             CalculateActualSum();
-            SelectedStudent.Balance += Sum;
+            SelectedStudent.Balance += double.Parse(Sum, CultureInfo.InvariantCulture);
             using (var _context = new ApplicationContext())
             {
                 var payment = new Payment();
-                payment.Discount = Discount;
-                payment.Sum = Sum;
+                payment.Discount = double.Parse(Discount, CultureInfo.InvariantCulture);
+                payment.Sum = double.Parse(Sum, CultureInfo.InvariantCulture);
                 payment.Student_ID = SelectedStudent.ID;
                 payment.Date = DateTime.Now;
                 payment.Type = Type;
@@ -143,7 +150,51 @@ namespace CourseAuditor.ViewModels
             
         }
 
-   
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+            double d;
+            if (!double.TryParse(Sum, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out d))
+            {
+                err.Append("*Сумма не может быть пустой. \n");
+            }
+            else if (d <= 0)
+            {
+                err.Append("*Сумма платежа должна быть больше нуля. \n");
+            }
+            double disc;
+            if (!double.TryParse(Discount, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out disc))
+            {
+                err.Append("*Скидка не может быть пустой. \n");
+            }
+            else if (disc < 0 || disc > 100)
+            {
+                err.Append("*Скидка должна быть в пределах от 0 до 100%. \n");
+            }
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         private ICommand _AddPaymentCommand;
         public ICommand AddPaymentCommand =>
@@ -151,8 +202,12 @@ namespace CourseAuditor.ViewModels
             (_AddPaymentCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddPayment();
-                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    if (Validate())
+                    {
+                        AddPayment();
+                        CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    }
+                    
                 },
                 (obj) =>
                 {
@@ -175,15 +230,15 @@ namespace CourseAuditor.ViewModels
                             {
                                 case 0:
                                     Type = PaymentType.OneTime;
-                                    Discount = 0;
+                                    Discount = "0";
                                     break;
                                 case 1:
                                     Type = PaymentType.Month;
-                                    Discount = 0.1;
+                                    Discount = "0.1";
                                     break;
                                 case 2:
                                     Type = PaymentType.Module;
-                                    Discount = 0.2;
+                                    Discount = "0.2";
                                     break;
                                 default:
                                     Type = PaymentType.Arbitraty;
@@ -193,7 +248,7 @@ namespace CourseAuditor.ViewModels
                         catch
                         {
                             Type = PaymentType.Arbitraty;
-                            Discount = 0;
+                            Discount = "0";
                         }
                 }
                 ));
@@ -210,6 +265,7 @@ namespace CourseAuditor.ViewModels
         public PaymentVM(Student selectedStudent)
         {
             Type = PaymentType.OneTime;
+            Discount = "0";
             using (var _context = new ApplicationContext())
             {
                 SelectedStudent = _context.Students

@@ -6,6 +6,7 @@ using CourseAuditor.Helpers;
 using CourseAuditor.Models;
 using System.Data.Entity;
 using System.Windows;
+using System.Text;
 
 namespace CourseAuditor.ViewModels
 {
@@ -120,6 +121,47 @@ namespace CourseAuditor.ViewModels
                 _MedicalDocs = value;
                 OnPropertyChanged("MedicalDocs");
             }
+        }
+
+
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+         
+                StringBuilder err = new StringBuilder();
+
+                if (string.IsNullOrEmpty(Person.FirstName))
+                {
+                    err.Append("*Имя не может быть пустым. \n");
+                }
+                if (string.IsNullOrEmpty(Person.SecondName))
+                {
+                    err.Append("*Фамилия  не может быть пустой. \n");
+                }
+
+                Error = err.ToString();
+                if (err.Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+        
         }
 
         public static void DeleteStudent(Student student)
@@ -275,7 +317,8 @@ namespace CourseAuditor.ViewModels
             (_EditPersonCommand = new RelayCommand(
                 (obj) =>
                 {
-                    EditPerson();
+                    if (Validate())
+                        EditPerson();
                 }
                 ));
 

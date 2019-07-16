@@ -141,6 +141,7 @@
     <Compile Include="Helpers\ObjectChangedEventArgs.cs" />
     <Compile Include="Helpers\StudentPickerConverter.cs" />
     <Compile Include="Helpers\DiscountConverter.cs" />
+    <Compile Include="Helpers\ValidationRules\StringValidationRule.cs" />
     <Compile Include="Helpers\WordHelpers.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\TableViewData.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Models\IExpandable.cs" />
     <Compile Include="ViewModels\InactiveModuleBottomPanelVM.cs" />
     <Compile Include="ViewModels\IPageVM.cs" />
+    <Compile Include="ViewModels\IValidatable.cs" />
     <Compile Include="ViewModels\IViewVM.cs" />
     <Compile Include="ViewModels\JournalPageVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />

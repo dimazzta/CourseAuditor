@@ -12,6 +12,7 @@ using CourseAuditor.Views;
 using System.Data.Entity;
 using System.Windows.Input;
 using System.Windows;
+using System.Globalization;
 
 namespace CourseAuditor.ViewModels
 {
@@ -26,7 +27,7 @@ namespace CourseAuditor.ViewModels
                     .Include(x => x.Module.Group.Course)
                     .FirstOrDefault(x => x.ID == student.ID);
             }
-            Sum = 0;
+            Sum = "0";
         }
 
         private Student _SelectedStudent;
@@ -68,8 +69,8 @@ namespace CourseAuditor.ViewModels
                 $"Текущий баланс: {SelectedStudent.Balance}";
         }
 
-        private double _Sum;
-        public double Sum
+        private string _Sum;
+        public string Sum
         {
             get
             {
@@ -77,15 +78,47 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                try
-                {
-                    _Sum = Convert.ToDouble(value);
-                }
-                catch
-                {
-                    _Sum = 0;
-                }
+                _Sum = value;
                 OnPropertyChanged("Sum");
+            }
+        }
+
+
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+            double d;
+            if (!double.TryParse(Sum, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out d))
+            {
+                err.Append("*Сумма не может быть пустой. \n");
+            }
+            else if (d <= 0)
+            {
+                err.Append("*Сумма возврата должна быть больше нуля. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -95,8 +128,12 @@ namespace CourseAuditor.ViewModels
             (_AddReturnCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddReturn();
-                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    if (Validate())
+                    {
+                        AddReturn();
+                        CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    }
+                    
                 },
                 (obj) =>
                 {
@@ -110,12 +147,12 @@ namespace CourseAuditor.ViewModels
         {
             using (var _context = new ApplicationContext())
             {
-                if (SelectedStudent.Balance >= Sum)
+                if (SelectedStudent.Balance >= double.Parse(Sum, CultureInfo.InvariantCulture))
                 {
-                    SelectedStudent.Balance -= Sum;
+                    SelectedStudent.Balance -= double.Parse(Sum, CultureInfo.InvariantCulture);
                     var @return = new Return();
                     @return.Student_ID = SelectedStudent.ID;
-                    @return.Sum = Sum;
+                    @return.Sum = double.Parse(Sum, CultureInfo.InvariantCulture);
                     @return.Date = DateTime.Now;
                     _context.Returns.Add(@return);
                     var student = _context.Students.First(x => x.ID == SelectedStudent.ID);

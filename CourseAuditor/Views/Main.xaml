@@ -64,9 +64,9 @@
             </StackPanel>
         </StackPanel>
         
-        <TreeView x:Name="TVCourseGroups" Grid.Row="2" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
+        <TreeView BorderThickness="1" x:Name="TVCourseGroups" Grid.Row="2" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">
             <TreeView.ContextMenu>
-                <ContextMenu Name="TreeViewMenu">
+                <ContextMenu Name="TreeViewMenu">s
                     <MenuItem Header="Добавить курс" Command="{Binding AddCoursePage}"></MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
@@ -177,6 +177,6 @@
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
-        <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
+        <sdk:GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Width="4" HorizontalAlignment="Right" Background="Transparent" VerticalAlignment="Stretch"   />
     </Grid>
 </Window>

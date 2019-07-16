@@ -22,6 +22,12 @@ namespace CourseAuditor.ViewModels
             if (selectedModule != null)
             {
                 SelectedModule = selectedModule;
+                ModuleNumber = selectedModule.Number.ToString();
+                LessonPrice = selectedModule.LessonPrice.ToString();
+                LessonCount = selectedModule.LessonCount.ToString();
+                DateStart = selectedModule.DateStart;
+                DateEnd = selectedModule.DateEnd.Value;
+
                 SelectedGroup = SelectedModule.Group;
                 SelectedCourse = SelectedGroup.Course;
             }
@@ -84,7 +90,6 @@ namespace CourseAuditor.ViewModels
             }
         }
 
-    
 
         private Course _SelectedCourse;
         public Course SelectedCourse
@@ -145,6 +150,134 @@ namespace CourseAuditor.ViewModels
             }
         }
 
+        private DateTime _DateStart;
+        public DateTime DateStart
+        {
+            get
+            {
+                return _DateStart;
+            }
+            set
+            {
+                _DateStart = value;
+                OnPropertyChanged("DateStart");
+            }
+        }
+
+        private DateTime _DateEnd;
+        public DateTime DateEnd
+        {
+            get
+            {
+                return _DateEnd;
+            }
+            set
+            {
+                _DateEnd = value;
+                OnPropertyChanged("DateEnd");
+            }
+        }
+
+        private string _ModuleNumber;
+        public string ModuleNumber
+        {
+            get
+            {
+                return _ModuleNumber;
+            }
+            set
+            {
+                _ModuleNumber = value;
+                OnPropertyChanged("ModuleNumber");
+            }
+        }
+
+        private string _LessonCount;
+        public string LessonCount
+        {
+            get
+            {
+                return _LessonCount;
+            }
+            set
+            {
+                _LessonCount = value;
+                OnPropertyChanged("LessonCount");
+            }
+        }
+
+        private string _LessonPrice;
+        public string LessonPrice
+        {
+            get
+            {
+                return _LessonPrice;
+            }
+            set
+            {
+                _LessonPrice = value;
+                OnPropertyChanged("LessonPrice");
+            }
+        }
+
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+
+            if (DateTime.Compare(DateStart, DateEnd) > 0)
+            {
+                err.Append("*Дата начала не может быть позже даты окончания. \n");
+            }
+
+            if (!Int32.TryParse(ModuleNumber, out int n))
+            {
+                err.Append("*Номер модуля должен быть числом. \n");
+            }
+
+            int lc;
+            if (!Int32.TryParse(LessonCount, out lc))
+            {
+                err.Append("*Количество занятий должно быть числом. \n");
+            }
+            else if (lc <= 0)
+            {
+                err.Append("*Количество занятий должно быть больше нуля. \n");
+            }
+
+            double d;
+            if (!Double.TryParse(LessonPrice, out d))
+            {
+                err.Append("*Цена занятия должна быть целым или вещественным числом. \n");
+            }
+            else if (d <= 0)
+            {
+                err.Append("*Цена занятия должна быть больше нуля. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         private void UpdateModule()
         {
             if (SelectedModule != null)
@@ -154,11 +287,11 @@ namespace CourseAuditor.ViewModels
                     var module = _context.Modules.Include(x => x.Students.Select(t => t.Person)).FirstOrDefault(x => x.ID == SelectedModule.ID);
                     if (module != null)
                     {
-                        module.Number = SelectedModule.Number;
-                        module.LessonPrice = SelectedModule.LessonPrice;
-                        module.LessonCount = SelectedModule.LessonCount;
-                        module.DateStart = SelectedModule.DateStart;
-                        module.DateEnd = SelectedModule.DateEnd;
+                        module.Number = int.Parse(ModuleNumber);
+                        module.LessonPrice = double.Parse(LessonPrice);
+                        module.LessonCount = int.Parse(LessonCount);
+                        module.DateStart = DateStart;
+                        module.DateEnd = DateEnd;
 
                         List<Student> toDelete = new List<Student>();
                         foreach(var person in Persons.Where(x => !x.IsChecked))
@@ -173,7 +306,7 @@ namespace CourseAuditor.ViewModels
                             {
                                 Student student = new Student()
                                 {
-                                    DateStart = SelectedModule.DateStart,
+                                    DateStart = DateStart,
                                     Person_ID = person.Item.ID,
                                     Module_ID = SelectedModule.ID
                                 };
@@ -220,7 +353,8 @@ namespace CourseAuditor.ViewModels
             (_UpdateModuleCommand = new RelayCommand(
                 (obj) =>
                 {
-                    UpdateModule();
+                    if (Validate())
+                        UpdateModule();
                 }
                 ));
 

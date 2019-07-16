@@ -17,12 +17,12 @@
         <ScrollViewer>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
                 <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-                <TextBox Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedCourse.Name}" IsEnabled="False" ></TextBox>
+                <TextBox Width="200" Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedCourse.Name}" IsEnabled="False" ></TextBox>
 
                 <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
                 <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedGroup.Title, FallbackValue=''}"/>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Content="Изменить" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding EditGroupCommand}" Margin="0,0,5,0"/>
                     <Button Content="Удалить группу" HorizontalAlignment="Center" Style="{StaticResource DefaultButton}" Command="{Binding DeleteGroupCommand}"/>
                 </StackPanel>

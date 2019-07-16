@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace CourseAuditor.Models
 {
-    public class Module : ObservableObject, IExpandable
+    public class Module : ObservableObject, IExpandable, ICloneable
     {
         private bool _Expanded;
         [NotMapped]
@@ -156,6 +156,24 @@ namespace CourseAuditor.Models
         public override string ToString()
         {
             return "Модуль " + Number.ToString();
+        }
+
+        public object Clone()
+        {
+            return new Module()
+            {
+                DateEnd = DateEnd,
+                DateStart = DateStart,
+                Expanded = Expanded,
+                Group = Group,
+                Group_ID = Group_ID,
+                ID = ID,
+                IsClosed = IsClosed,
+                LessonCount = LessonCount,
+                LessonPrice = LessonPrice,
+                Number = Number,
+                Students = Students
+            };
         }
     }
 }

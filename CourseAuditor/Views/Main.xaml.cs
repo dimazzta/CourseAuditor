@@ -89,8 +89,14 @@ namespace CourseAuditor.Views
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var phrase = SearchPhrase.Text;
+            var phrase = SearchPhrase.Text;
+            (DataContext as MainVM).FilterNameCommand.Execute(phrase);
+        }
 
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var state = cbModules.IsChecked.Value ? 0 : 1;
+            (DataContext as MainVM).FilterModuleCommand.Execute(state);
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseAuditor.Models
 {
-    public class Course : ObservableObject, IExpandable
+    public class Course : ObservableObject, IExpandable, ICloneable
     {
         private bool _Expanded;
         [NotMapped]
@@ -84,6 +85,11 @@ namespace CourseAuditor.Models
         public override string ToString()
         {
             return $"ID - {ID} Название: {Name}";
+        }
+
+        public object Clone()
+        {
+            return new Course() { Name = Name, Expanded = Expanded, Groups = Groups, ID = ID, LessonCount = LessonCount, LessonPrice = LessonPrice };
         }
     }
 }

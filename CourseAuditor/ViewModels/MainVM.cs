@@ -16,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.Entity;
 using CourseAuditor.ViewModels.Dialogs;
+using CourseAuditor.Filters;
 
 namespace CourseAuditor.ViewModels
 {
@@ -176,7 +177,7 @@ namespace CourseAuditor.ViewModels
                 },
                 (obj) =>
                 {
-                    return AppState.I.SelectedModule.IsClosed == 0;
+                    return AppState.I.SelectedContextStudent?.Module?.IsClosed == 0;
                 }
              ));
 
@@ -202,7 +203,7 @@ namespace CourseAuditor.ViewModels
                 },
                 (obj) =>
                 {
-                    return AppState.I.SelectedModule.IsClosed == 0;
+                    return AppState.I.SelectedContextStudent?.Module?.IsClosed == 0;
                 }
              ));
 
@@ -264,9 +265,43 @@ namespace CourseAuditor.ViewModels
                     ChangeExpandState(false);
                 }));
 
-        public void Filter(string phrase)
-        {
+        private string _FilterNameParam = "";
+        private ICommand _FilterNameCommand;
+        public ICommand FilterNameCommand =>
+            _FilterNameCommand ??
+            (_FilterNameCommand = new RelayCommand(
+                (obj) =>
+                {
+                    _FilterNameParam = obj as string;
+                    Filter();
+                }
+                ));
 
+
+        private int? _FilterModuleParam = 1;
+        private ICommand _FilterModuleCommand;
+        public ICommand FilterModuleCommand =>
+            _FilterModuleCommand ??
+            (_FilterModuleCommand = new RelayCommand(
+                (obj) =>
+                {
+                    _FilterModuleParam = Convert.ToInt32(obj);
+                    Filter();
+                }
+                ));
+
+
+        private IFilter<Course> _NameFilter { get; set; }
+        private IFilter<Course> _ModuleFilter { get; set; }
+
+
+        public void Filter()
+        {
+            _NameFilter = new StudentsNameFilter(_FilterNameParam);
+            _ModuleFilter = new ActiveModuleFilter(_FilterModuleParam.Value);
+            var filtered = _NameFilter.Filter(CoursesUnfiltered);
+            filtered = _ModuleFilter.Filter(filtered);
+            Courses = new ObservableCollection<Course>(filtered);
         }
 
         private void ChangeExpandState(bool state)
@@ -303,6 +338,8 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("Courses");
             }
         }
+
+        private List<Course> CoursesUnfiltered { get; set; }
 
         private Group _SelectedGroup;
         public Group SelectedGroup
@@ -358,11 +395,17 @@ namespace CourseAuditor.ViewModels
         {
             using(var _context = new ApplicationContext())
             {
+              
                 Courses = new ObservableCollection<Course>(_context.Courses
                                                            .Include(x => x.Groups
                                                            .Select(t => t.Modules
                                                            .Select(m => m.Students
                                                            .Select(q => q.Person)))));
+                CoursesUnfiltered = _context.Courses
+                                                          .Include(x => x.Groups
+                                                          .Select(t => t.Modules
+                                                          .Select(m => m.Students
+                                                          .Select(q => q.Person)))).ToList();
             }
             EventsManager.ObjectChangedEvent += EventsManager_ObjectChangedEvent;
             AppState.I.PropertyChanged += StatePropertyChanged;
@@ -385,6 +428,11 @@ namespace CourseAuditor.ViewModels
                                                            .Select(t => t.Modules
                                                            .Select(m => m.Students
                                                            .Select(q => q.Person)))));
+                    CoursesUnfiltered = _context.Courses
+                                                           .Include(x => x.Groups
+                                                           .Select(t => t.Modules
+                                                           .Select(m => m.Students
+                                                           .Select(q => q.Person)))).ToList();
                 }
             }
         }

@@ -49,6 +49,8 @@ namespace CourseAuditor.Models
             }
         }
 
+      
+
         public virtual ICollection<MedicalDoc> MedicalDocs
         {
             get

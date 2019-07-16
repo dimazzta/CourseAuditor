@@ -185,6 +185,7 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("Table");
             }
         }
+
         public List<Tuple<Journal, Assessment>> TableInitialValues;
         #endregion
 
@@ -212,6 +213,7 @@ namespace CourseAuditor.ViewModels
                         .Include(x => x.Journals
                         .Select(t => t.Assessment))
                         .Include(x => x.Person)
+                        .Include(x => x.Module)
                         .ToList();
                     }
 

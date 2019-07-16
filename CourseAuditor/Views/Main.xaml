@@ -29,12 +29,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="115"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -49,12 +49,19 @@
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>
         </Menu>
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5, 5, 5, 0">
-            <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" Margin="0, 0, 0, 5">
+
+
+            
+            
+            <TextBlock Margin="0, 0, 0, 3" Text="Поиск студента"></TextBlock>
+            <TextBox Height="25" x:Name="SearchPhrase" TextChanged="TextBox_TextChanged"></TextBox>
+
+            <CheckBox x:Name="cbModules" Margin="0, 8, 0, 0" Content="Только открытые модули" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"></CheckBox>
+            
+            <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" Margin="0, 8, 0, 0">
                 <Button Padding="3" Margin="0, 0, 5, 0" Content="Раскрыть все" Command="{Binding ExpandCommand}"></Button>
                 <Button Padding="3" Content="Свернуть все" Command="{Binding CollapseCommand}"></Button>
             </StackPanel>
-            <!--<TextBlock Text="Начните вводить"></TextBlock>-->
-            <!--<TextBox x:Name="SearchPhrase" TextChanged="TextBox_TextChanged"></TextBox>-->
         </StackPanel>
         
         <TreeView x:Name="TVCourseGroups" Grid.Row="2" Grid.RowSpan="2" MouseUp="TVCourseGroups_MouseUp" ItemsSource="{Binding Courses}" SelectedItemChanged="TVCourseGroups_SelectedItemChanged">

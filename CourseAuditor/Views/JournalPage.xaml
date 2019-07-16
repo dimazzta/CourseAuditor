@@ -21,41 +21,7 @@
                 <ResourceDictionary>
                     <local1:ModuleDatesConverter x:Key="moduleDatesConverter" />
                 </ResourceDictionary>
-                <ResourceDictionary>
-                    <Style x:Key="BottomPanel" TargetType="{x:Type ContentControl}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsClosed}" Value="1">
-                                <Setter Property="ContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Grid Margin="5, 0, 0, 0">
-                                                <TextBlock  VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SelectedModule, Converter={StaticResource moduleDatesConverter}}" />
-                                            </Grid>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=SelectedModule.IsClosed}" Value="0">
-                                <Setter Property="ContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <Button  Content="Новое занятие" Style="{StaticResource DefaultButton}" Margin="10,0,0,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.AddNewClassCommand}"></Button>
-                                                </StackPanel>
-                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button Content="Сохранить изменения" Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SaveChangesCommand}"></Button>
-                                                    <Button Content="Отменить изменения"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.DiscardChangesCommand}"></Button>
-                                                    <Button Content="Закрыть модуль" Background="IndianRed" BorderBrush="DarkRed"  Style="{StaticResource DefaultButton}" Margin="0,0,10,0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CloseModule}"></Button>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ResourceDictionary>
+ 
                 
             </ResourceDictionary.MergedDictionaries>
             
@@ -121,7 +87,7 @@
                 </Style>
             </DataGrid.CellStyle>
         </DataGrid>
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Margin="5, 0, 0, 0" Grid.Column="0" Grid.Row="1">
             <ContentControl Content="{Binding CurrentPanel}">
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type viewmodels:ActiveModuleBottomPanelVM}">

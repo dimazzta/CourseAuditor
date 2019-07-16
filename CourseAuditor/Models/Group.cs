@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourseAuditor.Models
 {
-    public class Group : ObservableObject, IExpandable
+    public class Group : ObservableObject, IExpandable, ICloneable
     {
         private bool _Expanded;
         [NotMapped]
@@ -86,7 +86,17 @@ namespace CourseAuditor.Models
             return $"ID - {ID} Название: {Title}";
         }
 
-
-
+        public object Clone()
+        {
+            return new Group()
+            {
+                Course = Course,
+                Course_ID = Course_ID,
+                Expanded = Expanded,
+                ID = ID,
+                Modules = Modules,
+                Title = Title
+            };
+        }
     }
 }

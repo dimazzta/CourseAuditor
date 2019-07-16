@@ -61,7 +61,8 @@ namespace CourseAuditor.Views
                 DialogService.I.ShowDialog(paymentVM);
                 Students.CancelEdit();
             }
-            else if (e.Column.Header.ToString() == Constants.StudentColumnName)
+            else if (e.Column.Header.ToString() == Constants.StudentColumnName
+                 && (DataContext as JournalPageVM).SelectedModule.IsClosed == 0)
             {
                 Students.CancelEdit();
                 var student = (e.Row.Item as DataRowView).Row[Constants.StudentColumnName] as Student;

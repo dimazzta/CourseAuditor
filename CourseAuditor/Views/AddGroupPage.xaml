@@ -17,7 +17,7 @@
         <ScrollViewer>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
                 <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-                <ComboBox Width="200" Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
+                <ComboBox HorizontalAlignment="Left" Width="200" Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
 
                 <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
                 <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding GroupName, Mode=TwoWay}"/>

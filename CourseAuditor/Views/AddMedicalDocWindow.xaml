@@ -26,7 +26,7 @@
 
             <TextBlock Margin="0, 0, 0, 4" Text="Комментарий"></TextBlock>
             <TextBox  Margin="0, 0, 0, 20" Text="{Binding Comment}" Height="60"></TextBox>
-
+            <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Error}"></TextBlock>
             <Button Style="{StaticResource DefaultButton}" Command="{Binding AddMedicalDocCommand}" Content="Внести справку"></Button>
         </StackPanel>
 

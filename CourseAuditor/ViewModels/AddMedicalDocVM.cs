@@ -7,6 +7,7 @@ using System.Data.Entity;
 using CourseAuditor.Helpers;
 using System.Windows.Input;
 using CourseAuditor.ViewModels.Dialogs;
+using System.Text;
 
 namespace CourseAuditor.ViewModels
 {
@@ -97,6 +98,40 @@ namespace CourseAuditor.ViewModels
                 OnPropertyChanged("DateEnd");
             }
         }
+        private string _Error;
+        public string Error
+        {
+            get
+            {
+                return _Error;
+            }
+            set
+            {
+                _Error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
+        public bool Validate()
+        {
+            StringBuilder err = new StringBuilder();
+
+            if (DateTime.Compare(DateStart, DateEnd) > 0)
+            {
+                err.Append("*Дата начала не может быть позже даты окончания. \n");
+            }
+
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         private void AddMedicalDoc()
         {
@@ -138,8 +173,11 @@ namespace CourseAuditor.ViewModels
             (_AddMedicalDocCommand = new RelayCommand(
                 (obj) =>
                 {
-                    AddMedicalDoc();
-                    CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    if (Validate())
+                    {
+                        AddMedicalDoc();
+                        CloseRequested?.Invoke(this, new DialogCloseRequestedEventArgs(true));
+                    }
                 },
                 (obj) =>
                 {

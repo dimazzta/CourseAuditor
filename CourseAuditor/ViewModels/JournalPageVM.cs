@@ -275,7 +275,7 @@ namespace CourseAuditor.ViewModels
                     }
                     catch
                     {
-                        MessageBox.Show("Данная дата уже есть в таблице."); // TODO: нумерация одинаковых дат в таблице
+                        MessageBox.Show("Данная дата уже есть в таблице.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); // TODO: нумерация одинаковых дат в таблице
                         return;
                     }
 
@@ -351,7 +351,7 @@ namespace CourseAuditor.ViewModels
         {
             if (HasChanges)
             {
-                var result = MessageBox.Show("В журнале есть несохраненные данные. Сохранить перед переходом к новой группе?", "Несохраненные данные", MessageBoxButton.YesNo);
+                var result = MessageBox.Show("В журнале есть несохраненные данные. Сохранить перед переходом к новой группе?", "Несохраненные данные", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     SaveChanges();

@@ -59,6 +59,7 @@ namespace CourseAuditor.Models
                 module.DateEnd = DateEnd = DateTime.Now;
                 _context.SaveChanges();
             }
+            EventsManager.RaiseObjectChangedEvent(this, ChangeType.Updated);
         }
 
         public virtual ICollection<Student> Students
@@ -155,7 +156,12 @@ namespace CourseAuditor.Models
 
         public override string ToString()
         {
-            return "Модуль " + Number.ToString();
+            string t = "Модуль " + Number.ToString(); 
+            if (IsClosed == 1)
+            {
+                t += " (закрыт)";
+            }
+            return t;
         }
 
         public object Clone()

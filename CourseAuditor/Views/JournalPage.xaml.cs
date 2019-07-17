@@ -85,16 +85,23 @@ namespace CourseAuditor.Views
 
         private void Students_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Students.UnselectAllCells();
-            DataGridCell dataGridCell = VisualUpwardSearch(e.OriginalSource as DependencyObject);
-            Student student = (dataGridCell.DataContext as DataRowView)[dataGridCell.Column.DisplayIndex] as Student;
-            if (student != null)
+            try
             {
-                AppState.I.SelectedContextStudent = student;
-                dataGridCell.IsSelected = true;
-                ContextMenu CourseMenu = Students.Resources["StudentMenu"] as ContextMenu;
-                CourseMenu.PlacementTarget = dataGridCell;
-                CourseMenu.IsOpen = true;
+                Students.UnselectAllCells();
+                DataGridCell dataGridCell = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+                Student student = (dataGridCell.DataContext as DataRowView)[dataGridCell.Column.DisplayIndex] as Student;
+                if (student != null)
+                {
+                    AppState.I.SelectedContextStudent = student;
+                    dataGridCell.IsSelected = true;
+                    ContextMenu CourseMenu = Students.Resources["StudentMenu"] as ContextMenu;
+                    CourseMenu.PlacementTarget = dataGridCell;
+                    CourseMenu.IsOpen = true;
+                }
+            }
+            catch
+            {
+
             }
             
            

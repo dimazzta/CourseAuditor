@@ -327,7 +327,7 @@ namespace CourseAuditor.ViewModels
             {
                 if (selectedModule.Students.Count != 0)
                 {
-                    var f = MessageBox.Show("Модуль не пуст. Вы уверены, что хотите удалить его?", "Модуль не пуст", MessageBoxButton.YesNo);
+                    var f = MessageBox.Show("Модуль не пуст. Вы уверены, что хотите удалить его?", "Модуль не пуст", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (f == MessageBoxResult.No)
                     {
                         return;

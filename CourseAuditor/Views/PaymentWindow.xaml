@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CourseAuditor.Views"
         xmlns:local1="clr-namespace:CourseAuditor.Helpers"
         mc:Ignorable="d"
-        Title="Добавить оплату" Height="500" Width="250">
+        Title="Добавить оплату" Height="520" Width="250">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -34,7 +34,7 @@
             
             <TextBlock Margin="0, 0, 0, 4" Text="Сумма зачисления"></TextBlock>
             <TextBox Margin="0, 0, 0, 15" Style="{StaticResource DefaultTBox}" Text="{Binding ActualSum, Mode=TwoWay}" IsEnabled="False"></TextBox>
-            <TextBlock Foreground="Red" Text="{Binding Error}"></TextBlock>
+            <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Error}"></TextBlock>
             <Button Style="{StaticResource DefaultButton}" Command="{Binding AddPaymentCommand}" Content="Внести платеж"></Button>
         </StackPanel>
         

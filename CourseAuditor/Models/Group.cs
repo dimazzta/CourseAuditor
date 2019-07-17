@@ -31,12 +31,13 @@ namespace CourseAuditor.Models
         private string _Title;
         private ICollection<Module> _Modules;
 
+        
         [NotMapped]
         public Module LastModule
         {
             get
             {
-                return Modules.OrderBy(x => x.DateStart).LastOrDefault();
+                return Modules.FirstOrDefault(x => x.IsClosed == 0);
             }
         }
 

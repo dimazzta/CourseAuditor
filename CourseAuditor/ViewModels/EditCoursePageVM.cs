@@ -111,7 +111,7 @@ namespace CourseAuditor.ViewModels
             {
                 if (SelectedCourse.Groups.Count != 0)
                 {
-                    var f = MessageBox.Show("Вы уверены?", "Удаление курса", MessageBoxButton.YesNo);
+                    var f = MessageBox.Show("Вы уверены?", "Удаление курса", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (f == MessageBoxResult.No)
                     {
                         return;

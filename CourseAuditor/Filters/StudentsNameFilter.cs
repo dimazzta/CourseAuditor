@@ -18,6 +18,7 @@ namespace CourseAuditor.Filters
 
         public ICollection<Course> Filter(ICollection<Course> source)
         {
+            if (string.IsNullOrEmpty(_Criteria)) return source;
             List<Course> src = new List<Course>();
             foreach(var course in source)
             {

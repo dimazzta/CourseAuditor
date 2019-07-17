@@ -287,8 +287,16 @@ namespace CourseAuditor.ViewModels
             (_AddStudentCommand = new RelayCommand(
                 (obj) =>
                 {
-                    if (Validate())
-                        AddStudent();
+                    bool canAdd = SelectedGroup.LastModule != null;
+                    if (canAdd)
+                    {
+                        if (Validate())
+                            AddStudent();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Невозможно добавить студента в данную группу, поскольку в ней нет открытых модулей. Добавьте модуль и попробуйте снова.", "Невозможно добавить студента", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
                 }
                 ));
 

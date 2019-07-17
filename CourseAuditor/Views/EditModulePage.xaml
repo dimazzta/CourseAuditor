@@ -18,10 +18,10 @@
             <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 40, 20">
                     <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-                    <TextBox Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedCourse.Name, FallbackValue=''}" IsEnabled="False"></TextBox>
+                    <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedCourse.Name, FallbackValue=''}" IsEnabled="False"></TextBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
-                    <TextBox Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedGroup.Title, FallbackValue=''}" IsEnabled="False"></TextBox>
+                    <TextBox HorizontalAlignment="Left" Style="{StaticResource DefaultTBox}" Margin="0, 0, 0, 10" Text="{Binding SelectedGroup.Title, FallbackValue=''}" IsEnabled="False"></TextBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
                     <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber, FallbackValue=''}"/>

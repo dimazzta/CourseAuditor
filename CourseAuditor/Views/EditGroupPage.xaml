@@ -17,7 +17,7 @@
         <ScrollViewer>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 10, 0, 0">
                 <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-                <TextBox Width="200" Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedCourse.Name}" IsEnabled="False" ></TextBox>
+                <TextBox HorizontalAlignment="Left" Width="200" Margin="0, 0, 0, 20" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedCourse.Name}" IsEnabled="False" ></TextBox>
 
                 <TextBlock TextWrapping="Wrap" Text="Название группы" Margin="0, 0, 0, 4"/>
                 <TextBox  Margin="0, 0, 0, 20" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding SelectedGroup.Title, FallbackValue=''}"/>

@@ -17,7 +17,7 @@
         <StackPanel HorizontalAlignment="Left" Margin="20, 10, 0, 20">
             <TextBlock Margin="0, 0, 0, 8" Text="Выберите студентов"></TextBlock>
             <CheckBox Margin="0, 0, 0, 6" Content="Отметить всех" IsChecked="{Binding SelectAll}"></CheckBox>
-            <ListBox Width="300" ItemsSource="{Binding Students}" Margin="0, 0, 0, 20" Height="200">
+            <ListBox Width="300" ItemsSource="{Binding Students}" Margin="0, 0, 0, 20" Height="300">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}">

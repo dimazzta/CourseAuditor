@@ -163,7 +163,7 @@ namespace CourseAuditor.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Невозможно оформить вовзрат. Баланс студента с учетом возврата отрицательный.");
+                    MessageBox.Show("Невозможно оформить вовзрат. Баланс студента с учетом возврата отрицательный.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }

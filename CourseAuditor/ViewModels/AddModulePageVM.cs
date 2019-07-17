@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace CourseAuditor.ViewModels
 {
@@ -323,8 +324,16 @@ namespace CourseAuditor.ViewModels
             (_AddModuleCommand = new RelayCommand(
                 (obj) =>
                 {
-                    if (Validate())
-                        AddModule();
+                    bool canAdd = SelectedGroup?.LastModule == null;
+                    if (canAdd)
+                    {
+                        if (Validate())
+                            AddModule();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Невозможно добавить новый модуль, поскольку данная группа уже содержит открытый модуль. Закройте его и попробуйте снова.", "Невозможно добавить модуль", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
                 }
                 ));
 

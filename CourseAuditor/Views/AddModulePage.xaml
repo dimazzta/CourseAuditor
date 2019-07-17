@@ -19,10 +19,10 @@
             <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 40, 20">
                     <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 0, 0, 4"/>
-                    <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
+                    <ComboBox HorizontalAlignment="Left" Width="200" Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
-                    <ComboBox Margin="0, 0, 0, 20" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>
+                    <ComboBox HorizontalAlignment="Left" Width="200" Margin="0, 0, 0, 20" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Номер модуля" Margin="0, 0, 0, 4"/>
                     <TextBox  Margin="0, 0, 0, 10" HorizontalAlignment="Left" TextWrapping="Wrap" Style="{StaticResource DefaultTBox}" Text="{Binding ModuleNumber}"/>

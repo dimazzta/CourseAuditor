@@ -34,7 +34,7 @@
                 <RadioButton Content="Зачислить существующего" Grid.Column="2" x:Name="AEChecked"></RadioButton>
                 <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" IsEnabled="{Binding ElementName=CNChecked, Path=IsChecked}">
                     <TextBlock TextWrapping="Wrap" Text="Курс" Margin="0, 10, 0, 4"/>
-                    <ComboBox Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
+                    <ComboBox  Margin="0, 0, 0, 10" ItemsSource="{Binding Courses}" SelectedValuePath="ID" SelectedValue="{Binding SelectedCourse.ID}" SelectedItem="{Binding SelectedCourse}"></ComboBox>
 
                     <TextBlock TextWrapping="Wrap" Text="Группа" Margin="0, 0, 0, 4"/>
                     <ComboBox Margin="0, 0, 0, 20" ItemsSource="{Binding Groups}" SelectedValuePath="ID" SelectedValue="{Binding SelectedGroup.ID}" SelectedItem="{Binding SelectedGroup}"></ComboBox>

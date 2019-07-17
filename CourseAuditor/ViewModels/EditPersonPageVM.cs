@@ -175,7 +175,7 @@ namespace CourseAuditor.ViewModels
                     var group = module.Group;
                     if (deleted != null)
                     {
-                        var f = MessageBox.Show($"Вы действительно хотите удалить {deleted.Person.FullName} из {group.Title}, {module}?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                        var f = MessageBox.Show($"Вы действительно хотите удалить {deleted.Person.FullName} из {group.Title}, {module}?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (f == MessageBoxResult.No)
                         {
                             return;
@@ -204,7 +204,7 @@ namespace CourseAuditor.ViewModels
                     var groupCount = deleted.Students.Count;
                     if (deleted != null)
                     {
-                        var f = MessageBox.Show($"Вы действительно хотите удалить {deleted.FullName}? Данный студент состоит в {groupCount} группах", "Подтверждение удаления", MessageBoxButton.YesNo);
+                        var f = MessageBox.Show($"Вы действительно хотите удалить {deleted.FullName}? Данный студент состоит в {groupCount} группах", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (f == MessageBoxResult.No)
                         {
                             return;

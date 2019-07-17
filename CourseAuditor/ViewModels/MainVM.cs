@@ -84,6 +84,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new AddGroupPageVM(AppState.I.SelectedContextCourse);
+                    AppState.I.SelectedContextCourse = null;
                 }
              ));
 
@@ -93,7 +94,14 @@ namespace CourseAuditor.ViewModels
             (_AddModulePage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new AddModulePageVM(AppState.I.SelectedContextGroup);
+                    bool canAdd = AppState.I.SelectedContextGroup?.LastModule == null;
+                    if (canAdd || obj != null)
+                        CurrentPageVM = new AddModulePageVM(AppState.I.SelectedContextGroup);
+                    else
+                    {
+                        MessageBox.Show("Невозможно добавить новый модуль, поскольку данная группа уже содержит открытый модуль. Закройте его и попробуйте снова.", "Невозможно добавить модуль", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    AppState.I.SelectedContextGroup = null;
                 }
              ));
 
@@ -103,7 +111,12 @@ namespace CourseAuditor.ViewModels
             (_AddStudentPage = new RelayCommand(
                 (obj) =>
                 {
-                    CurrentPageVM = new AddStudentPageVM(AppState.I.SelectedContextGroup);
+                    bool canAdd = AppState.I.SelectedContextGroup == null || AppState.I.SelectedContextGroup?.LastModule != null;
+                    if (canAdd || obj != null)
+                        CurrentPageVM = new AddStudentPageVM(AppState.I.SelectedContextGroup);
+                    else
+                        MessageBox.Show("Невозможно добавить студента в данную группу, поскольку в ней нет открытых модулей. Добавьте модуль и попробуйте снова.", "Невозможно добавить студента", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    AppState.I.SelectedContextGroup = null;
                 }
              ));
 
@@ -114,6 +127,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new EditCoursePageVM(JournalPage, AppState.I.SelectedContextCourse);
+                    AppState.I.SelectedContextCourse = null;
                 }
              ));
 
@@ -124,6 +138,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new EditGroupPageVM(JournalPage, AppState.I.SelectedContextGroup);
+                    AppState.I.SelectedContextGroup = null;
                 }
              ));
 
@@ -134,6 +149,11 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new EditModulePageVM(JournalPage, AppState.I.SelectedContextModule);
+                    AppState.I.SelectedContextModule = null;
+                },
+                (obj) =>
+                {
+                    return AppState.I.SelectedContextModule?.IsClosed == 0;
                 }
              ));
 
@@ -144,6 +164,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     EditCoursePageVM.DeleteCourse(AppState.I.SelectedContextCourse);
+                    AppState.I.SelectedContextCourse = null;
                 }
                 ));
 
@@ -154,6 +175,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     EditGroupPageVM.DeleteGroup(AppState.I.SelectedContextGroup);
+                    AppState.I.SelectedContextGroup = null;
                 }
                 ));
 
@@ -164,6 +186,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     EditModulePageVM.DeleteModule(AppState.I.SelectedContextModule);
+                    AppState.I.SelectedContextModule = null;
                 }
                 ));
 
@@ -173,7 +196,9 @@ namespace CourseAuditor.ViewModels
             (_DeleteStudent = new RelayCommand(
                 (obj) =>
                 {
+                
                     EditPersonPageVM.DeleteStudent(AppState.I.SelectedContextStudent);
+                    AppState.I.SelectedContextStudent = null;
                 },
                 (obj) =>
                 {
@@ -189,6 +214,7 @@ namespace CourseAuditor.ViewModels
                 {
                     var paymentVM = new PaymentVM(AppState.I.SelectedContextStudent);
                     DialogService.I.ShowDialog(paymentVM);
+                    AppState.I.SelectedContextStudent = null;
                 }
              ));
 
@@ -200,6 +226,7 @@ namespace CourseAuditor.ViewModels
                 {
                     var medicalVM = new AddMedicalDocVM(AppState.I.SelectedContextStudent);
                     DialogService.I.ShowDialog(medicalVM);
+                    AppState.I.SelectedContextStudent = null;
                 },
                 (obj) =>
                 {
@@ -215,6 +242,7 @@ namespace CourseAuditor.ViewModels
                 {
                     var returnVM = new ReturnPaymentVM(AppState.I.SelectedContextStudent);
                     DialogService.I.ShowDialog(returnVM);
+                    AppState.I.SelectedContextStudent = null;
                 }
              ));
 
@@ -225,6 +253,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new EditPersonPageVM(JournalPage, AppState.I.SelectedContextStudent);
+                    AppState.I.SelectedContextStudent = null;
                 }
              ));
 
@@ -235,6 +264,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new CertificateModulePageVM(AppState.I.SelectedContextModule);
+                    AppState.I.SelectedContextModule = null;
                 }
              ));
 
@@ -245,6 +275,7 @@ namespace CourseAuditor.ViewModels
                 (obj) =>
                 {
                     CurrentPageVM = new CertificateStudentPageVM(AppState.I.SelectedContextStudent);
+                    AppState.I.SelectedContextStudent = null;
                 }));
 
         private ICommand _ExpandCommand;
@@ -302,6 +333,7 @@ namespace CourseAuditor.ViewModels
             var filtered = _NameFilter.Filter(CoursesUnfiltered);
             filtered = _ModuleFilter.Filter(filtered);
             Courses = new ObservableCollection<Course>(filtered);
+            ChangeExpandState(true);
         }
 
         private void ChangeExpandState(bool state)
@@ -368,7 +400,7 @@ namespace CourseAuditor.ViewModels
             }
             set
             {
-                if (value != _SelectedModule)
+                if (value != _SelectedModule && value != null)
                 {
                     _SelectedModule = value;
 
@@ -416,11 +448,51 @@ namespace CourseAuditor.ViewModels
             CurrentView.Show();
         }
 
+        Dictionary<string, Dictionary<int, bool>> expandedState = new Dictionary<string, Dictionary<int, bool>>();
+        private void PreserveExpandedState()
+        {
+            expandedState["Courses"] = new Dictionary<int, bool>();
+            expandedState["Groups"] = new Dictionary<int, bool>();
+            expandedState["Modules"] = new Dictionary<int, bool>();
+            foreach (var c in Courses)
+            {
+                expandedState["Courses"][c.ID] = c.Expanded;
+                foreach(var g in c.Groups)
+                {
+                    expandedState["Groups"][g.ID] = g.Expanded;
+                    foreach(var m in g.Modules)
+                    {
+                        expandedState["Modules"][m.ID] = m.Expanded;
+                    }
+                }
+            }
+        }
+
+        private void RestoreExpandedState()
+        {
+            foreach (var c in Courses)
+            {
+                if (expandedState["Courses"].ContainsKey(c.ID))
+                    c.Expanded = expandedState["Courses"][c.ID];
+                foreach (var g in c.Groups)
+                {
+                    if (expandedState["Groups"].ContainsKey(g.ID))
+                        g.Expanded = expandedState["Groups"][g.ID];
+                    foreach (var m in g.Modules)
+                    {
+                        if (expandedState["Modules"].ContainsKey(m.ID))
+                            m.Expanded = expandedState["Modules"][m.ID];
+                    }
+                }
+            }
+        }
+
         private void EventsManager_ObjectChangedEvent(object sender, ObjectChangedEventArgs e)
         {
             if (e.ObjectChanged is Group || e.ObjectChanged is Course || e.ObjectChanged is Student || e.ObjectChanged is Module
                 || e.ObjectChanged is Person)
             {
+                PreserveExpandedState();
                 using (var _context = new ApplicationContext())
                 {
                     Courses = new ObservableCollection<Course>(_context.Courses
@@ -428,12 +500,14 @@ namespace CourseAuditor.ViewModels
                                                            .Select(t => t.Modules
                                                            .Select(m => m.Students
                                                            .Select(q => q.Person)))));
+
                     CoursesUnfiltered = _context.Courses
                                                            .Include(x => x.Groups
                                                            .Select(t => t.Modules
                                                            .Select(m => m.Students
                                                            .Select(q => q.Person)))).ToList();
                 }
+                RestoreExpandedState();
             }
         }
 

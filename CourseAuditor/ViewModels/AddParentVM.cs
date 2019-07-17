@@ -26,6 +26,7 @@ namespace CourseAuditor.ViewModels
             set
             {
                 _Parents = value;
+
                 OnPropertyChanged("Parents");
             }
         }
@@ -118,10 +119,10 @@ namespace CourseAuditor.ViewModels
 
         public bool Validate()
         {
+            StringBuilder err = new StringBuilder();
             if (AddNewMode)
             {
-                StringBuilder err = new StringBuilder();
-
+               
                 if (string.IsNullOrEmpty(FirstName))
                 {
                     err.Append("*Имя не может быть пустым. \n");
@@ -134,17 +135,25 @@ namespace CourseAuditor.ViewModels
                 {
                     err.Append("*Телефон не может быть пустым. \n");
                 }
-                Error = err.ToString();
-                if (err.Length == 0)
+                
+            }
+            else
+            {
+                if (SelectedParent == null)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    err.Append("*Не выбран родитель. \n");
                 }
             }
-            return true;
+            Error = err.ToString();
+            if (err.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
 

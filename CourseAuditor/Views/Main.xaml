@@ -40,10 +40,10 @@
 
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Добавить">
-                <MenuItem Header="Курс" Command="{Binding AddCoursePage}"/>
-                <MenuItem Header="Группу" Command="{Binding AddGroupPage}"/>
-                <MenuItem Header="Модуль" Command="{Binding AddModulePage}"/>
-                <MenuItem Header="Студента" Command="{Binding AddStudentPage}"/>
+                <MenuItem Header="Курс" Command="{Binding AddCoursePage}" CommandParameter="1"/>
+                <MenuItem Header="Группу" Command="{Binding AddGroupPage}" CommandParameter="1"/>
+                <MenuItem Header="Модуль" Command="{Binding AddModulePage}" CommandParameter="1"/>
+                <MenuItem Header="Студента" Command="{Binding AddStudentPage}" CommandParameter="1"/>
             </MenuItem>
 
             <MenuItem Header="Журнал" Command="{Binding JournalPage}"/>

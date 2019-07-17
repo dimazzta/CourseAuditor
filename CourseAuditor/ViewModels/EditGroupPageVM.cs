@@ -76,7 +76,7 @@ namespace CourseAuditor.ViewModels
             {
                 if (SelectedGroup.Modules.Count != 0)
                 {
-                    var f = MessageBox.Show("Группа не пуста. Вы уверены, что хотите удалить ее?", "Группа не пуста", MessageBoxButton.YesNo);
+                    var f = MessageBox.Show("Группа не пуста. Вы уверены, что хотите удалить ее?", "Группа не пуста", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (f == MessageBoxResult.No)
                     {
                         return;

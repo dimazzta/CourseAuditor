@@ -1,2 +1,2 @@
 # CourseAuditor
-Simple app to autogenerate examination tickets
+Desktop application for teachers to control students attendance / debts
